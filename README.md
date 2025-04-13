@@ -1,2 +1,2 @@
 # sinkk-hole.github.io
-A gateway to Understanding 
+A gateway to Understanding  
