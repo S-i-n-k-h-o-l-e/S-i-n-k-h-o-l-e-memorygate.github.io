@@ -4,11 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MemoryGate</title>
+  <link rel="stylesheet" href="style.css?v=2">
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(145deg, #0e1f0e, #1a2d1a);
+      background-color: #000000;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: rippleAnim 10s linear infinite;
       color: #ffffff;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
@@ -16,9 +20,17 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      overflow: hidden;
+    }
+
+    @keyframes rippleAnim {
+      0% { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
     }
 
     .container {
+      position: relative;
+      z-index: 1;
       text-align: center;
       padding: 2rem;
       max-width: 600px;
@@ -38,20 +50,37 @@
       border: none;
       border-radius: 12px;
       outline: none;
-      background-color: #ffffff11;
-      color: #fff;
+      background-color: #ffffff;
+      color: #000000;
       box-shadow: 0 0 10px #ffffff22;
+    }
+
+    .echoes {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      color: #ffffff;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      min-height: 1.5rem;
+    }
+
+    .echoes.show {
+      opacity: 1 !important;
+      background-color: rgba(255,255,255,0.05);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
     }
 
     .footer-link {
       position: absolute;
       bottom: 20px;
       font-size: 0.9rem;
-      color: #bbb;
+      color: #888888;
+      z-index: 1;
     }
 
     .footer-link a {
-      color: #aad8aa;
+      color: #ffffff;
       text-decoration: underline;
     }
   </style>
@@ -59,11 +88,56 @@
 <body>
   <div class="container">
     <h1>what do you remember of what you forgot?</h1>
-    <input type="text" placeholder="Start typing..." />
+    <input type="text" id="memoryInput" placeholder="Start typing..." autofocus />
+    <div class="echoes" id="memoryEchoes"></div>
+    <p style="margin-top: 2rem; font-size: 1rem; color: #ccc; max-width: 500px;">
+      This is the personal ritual site of Jago Hooper – researcher, maker, and father. A soft machine of memory, signal, and story.
+    </p>
   </div>
 
   <div class="footer-link">
-    <a href="ritual-license.html" target="_blank">📜 View Forgetful Rituals License</a>
+    <a href="ritual-license.html?v=2" target="_blank">📜 View Forgetful Rituals License</a>
   </div>
+
+  <script>
+    const inputEl = document.getElementById("memoryInput");
+    const echoesEl = document.getElementById("memoryEchoes");
+
+    inputEl.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        generateEchoes();
+      }
+    });
+
+    function generateEchoes() {
+      const input = inputEl.value.trim().toLowerCase();
+      if (input === "") {
+        echoesEl.classList.remove("show");
+        echoesEl.textContent = "";
+        return;
+      }
+
+      const jagoWords = [
+        "lichen", "resin", "threadbare", "signal", "low hum", "elm", "static", "beetle", "mud", "oracle",
+        "fogbound", "whorl", "pulse", "scrap", "birch", "drift", "amber", "tether", "moth", "wither"
+      ];
+
+      const shuffled = [...jagoWords].sort(() => 0.5 - Math.random());
+      const suggestions = shuffled.slice(0, 5).join(", ");
+
+      // Clear previous output, reflow DOM, then show with new fade-in
+      echoesEl.classList.remove("show");
+      echoesEl.offsetWidth; // force reflow
+      echoesEl.textContent = suggestions;
+      echoesEl.classList.add("show");
+
+      const moodDuration = 4000 + Math.random() * 3000;
+      setTimeout(() => {
+        echoesEl.classList.remove("show");
+      }, moodDuration);
+    }
+  </script>
 </body>
 </html>
+
