@@ -71,6 +71,18 @@
       border-radius: 8px;
     }
 
+    .log {
+      position: absolute;
+      bottom: 60px;
+      font-size: 0.85rem;
+      max-height: 100px;
+      overflow-y: auto;
+      width: 90%;
+      color: #888;
+      font-style: italic;
+      text-align: center;
+    }
+
     .footer-link {
       position: absolute;
       bottom: 20px;
@@ -95,6 +107,8 @@
     </p>
   </div>
 
+  <div class="log" id="memoryLog"></div>
+
   <div class="footer-link">
     <a href="ritual-license.html?v=2" target="_blank">📜 View Forgetful Rituals License</a>
   </div>
@@ -102,6 +116,9 @@
   <script>
     const inputEl = document.getElementById("memoryInput");
     const echoesEl = document.getElementById("memoryEchoes");
+    const logEl = document.getElementById("memoryLog");
+
+    let memoryHistory = [];
 
     inputEl.addEventListener("keydown", function(event) {
       if (event.key === "Enter") {
@@ -126,11 +143,15 @@
       const shuffled = [...jagoWords].sort(() => 0.5 - Math.random());
       const suggestions = shuffled.slice(0, 5).join(", ");
 
-      // Clear previous output, reflow DOM, then show with new fade-in
       echoesEl.classList.remove("show");
-      echoesEl.offsetWidth; // force reflow
+      echoesEl.offsetWidth;
       echoesEl.textContent = suggestions;
       echoesEl.classList.add("show");
+
+      // Save history
+      memoryHistory.unshift(`You remembered: "${input}" → echoes: ${suggestions}`);
+      if (memoryHistory.length > 5) memoryHistory.pop();
+      logEl.innerHTML = memoryHistory.map(line => `<div>${line}</div>`).join("");
 
       const moodDuration = 4000 + Math.random() * 3000;
       setTimeout(() => {
