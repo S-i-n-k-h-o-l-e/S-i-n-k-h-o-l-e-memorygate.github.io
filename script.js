@@ -1,9 +1,10 @@
+
 const inputEl = document.getElementById("memoryInput");
-const echoesEl = document.getElementById("memoryEchoes");
-const logEl = document.getElementById("memoryLog");
 const locationInput = document.getElementById("locationInput");
 const timeInput = document.getElementById("timeInput");
 const activityInput = document.getElementById("activityInput");
+const logEl = document.getElementById("memoryLog");
+const echoesEl = document.getElementById("memoryEchoes");
 const treeCanvas = document.getElementById("treeCanvas");
 const ctx = treeCanvas.getContext("2d");
 let currentMode = 'objects';
@@ -23,19 +24,24 @@ function resizeCanvas() {
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.tab-buttons button').forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`.tab-buttons button[onclick="setMode('${mode}')"]`).classList.add('active');
+}
+
 function drawBranches() {
   ctx.clearRect(0, 0, treeCanvas.width, treeCanvas.height);
-  ctx.strokeStyle = "rgba(255,255,255,0.3)";
+  ctx.strokeStyle = "rgba(255,255,255,0.4)";
   ctx.lineWidth = 1.5;
-  branches.forEach((b, i) => {
+  branches.forEach(b => {
     ctx.beginPath();
     ctx.moveTo(b.x, b.y);
     ctx.lineTo(b.x + b.dx, b.y + b.dy);
     ctx.stroke();
-
-    ctx.font = "12px Segoe UI";
-    ctx.fillStyle = "rgba(255,255,255,0.7)";
-    ctx.fillText(b.label, b.x + b.dx + 4, b.y + b.dy + 4);
+    ctx.fillStyle = "#fff";
+    ctx.font = "14px sans-serif";
+    ctx.fillText(b.label, b.x + b.dx + 5, b.y + b.dy);
   });
 }
 
@@ -47,53 +53,34 @@ function growBranch(baseX, baseY, label) {
   drawBranches();
 }
 
-function setMode(mode) {
-  currentMode = mode;
-  document.querySelectorAll('.tab-buttons button').forEach(btn => btn.classList.remove('active'));
-  document.querySelector(`.tab-buttons button[onclick="setMode('${mode}')"]`).classList.add('active');
-}
-
 inputEl.addEventListener("keydown", function(event) {
   if (event.key === "Enter") {
     event.preventDefault();
-    generateEchoes();
+    handleMemory();
   }
 });
 
-function generateEchoes() {
-  const input = inputEl.value.trim().toLowerCase();
+function handleMemory() {
+  const input = inputEl.value.trim();
   const where = locationInput.value.trim();
   const when = timeInput.value.trim();
   const what = activityInput.value.trim();
-  if (input === "") {
-    echoesEl.classList.remove("show");
-    echoesEl.textContent = "";
-    return;
-  }
+  if (!input) return;
 
   const pool = echoPools[currentMode] || [];
-  const shuffled = [...pool].sort(() => 0.5 - Math.random());
-  const suggestions = shuffled.slice(0, 5).join(", ");
-
-  echoesEl.classList.remove("show");
-  echoesEl.offsetWidth;
-  echoesEl.textContent = suggestions;
-  echoesEl.classList.add("show");
-
+  const echoes = [...pool].sort(() => 0.5 - Math.random()).slice(0, 5).join(", ");
   const baseX = treeCanvas.width / 2;
   const baseY = 150;
   growBranch(baseX, baseY, input);
 
-  let memoryLine = `You remembered: "${input}" (${currentMode}) → echoes: ${suggestions}`;
+  echoesEl.textContent = `echoes: ${echoes}`;
+  let line = `You remembered: "${input}" (${currentMode}) → echoes: ${echoes}`;
   if (where || when || what) {
-    memoryLine += `<br><span style='font-size:0.9em;color:#888;'>Context → Where: "${where}", When: "${when}", Doing: "${what}"</span>`;
+    line += `<br><span style="font-size:0.85em;color:#aaa;">Where: ${where}, When: ${when}, Doing: ${what}</span>`;
   }
-  memoryHistory.unshift(memoryLine);
-  if (memoryHistory.length > 5) memoryHistory.pop();
-  logEl.innerHTML = memoryHistory.map(line => `<div>${line}</div>`).join("");
+  memoryHistory.unshift(line);
+  if (memoryHistory.length > 6) memoryHistory.pop();
+  logEl.innerHTML = memoryHistory.map(x => `<div>${x}</div>`).join("");
 
-  const moodDuration = 4000 + Math.random() * 3000;
-  setTimeout(() => {
-    echoesEl.classList.remove("show");
-  }, moodDuration);
+  inputEl.value = "";
 }
