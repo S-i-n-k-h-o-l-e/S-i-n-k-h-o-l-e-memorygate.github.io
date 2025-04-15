@@ -1,0 +1,58 @@
+
+body {
+    margin: 0;
+    font-family: 'Helvetica Neue', sans-serif;
+    background: radial-gradient(ellipse at center, #0f0f0f 0%, #000000 100%);
+    color: white;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3rem;
+    color: #a3ffe5;
+    text-shadow: 0 0 10px rgba(163, 255, 229, 0.7);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #cccccc;
+}
+
+form input {
+    display: block;
+    margin: 1rem auto;
+    padding: 0.75rem;
+    width: 80%;
+    border: none;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+}
+
+button {
+    padding: 0.75rem 2rem;
+    background: #4fffb0;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 0 10px #4fffb0;
+}
+
+#memory-tree {
+    margin-top: 3rem;
+    min-height: 200px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+}
