@@ -38,4 +38,28 @@ document.addEventListener("DOMContentLoaded", function () {
   const growBtn = document.getElementById("grow-memory-btn");
   growBtn.addEventListener("click", growMemory);
 });
+document.getElementById('where').addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') document.getElementById('what').focus();
+});
+document.getElementById('what').addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') document.getElementById('feel').focus();
+});
+document.getElementById('feel').addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') document.getElementById('grow-button').click();
+});
+document.getElementById('grow-button').addEventListener('click', () => {
+  const inputs = {
+    where: document.getElementById('where').value.trim(),
+    what: document.getElementById('what').value.trim(),
+    feel: document.getElementById('feel').value.trim(),
+  };
+
+  if (inputs.where && inputs.what && inputs.feel) {
+    document.querySelector('.input-container').style.display = 'none';
+    document.getElementById('tree-container').style.display = 'block';
+
+    // Trigger your tree rendering logic here (custom logic or SVG drawing)
+    renderMemoryTree(inputs);
+  }
+});
 
