@@ -9,3 +9,20 @@ document.getElementById('memory-form').addEventListener('submit', function(e) {
     document.getElementById('memory-tree').appendChild(node);
     inputs.forEach(input => input.value = '');
 });
+document.addEventListener("DOMContentLoaded", function () {
+  const inputs = document.querySelectorAll("input[type='text']");
+
+  inputs.forEach((input, index) => {
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const next = inputs[index + 1];
+        if (next) {
+          next.focus();
+        } else {
+          document.querySelector("button").focus(); // focuses Grow Memory
+        }
+      }
+    });
+  });
+});
