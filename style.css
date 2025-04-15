@@ -66,4 +66,14 @@ button {
   display: flex;
   opacity: 1;
 }
+.license-footer {
+  text-align: center;
+  margin-top: 3rem;
+  opacity: 0.6;
+  font-size: 0.8rem;
+  color: white;
+}
+.license-footer img {
+  margin-bottom: 0.5rem;
+}
 
