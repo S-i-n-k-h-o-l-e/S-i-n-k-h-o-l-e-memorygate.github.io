@@ -56,3 +56,14 @@ button {
     padding: 2rem;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
 }
+#memory-tree {
+  display: none;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+#memory-tree.show {
+  display: flex;
+  opacity: 1;
+}
+
