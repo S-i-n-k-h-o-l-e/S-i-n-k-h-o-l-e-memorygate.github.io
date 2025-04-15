@@ -24,5 +24,18 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     });
-  });
+
+function growMemory() {
+  const form = document.getElementById("memory-form");
+  const tree = document.getElementById("memory-tree");
+
+  form.style.display = "none";
+  tree.style.display = "flex"; // assuming it’s flex/grid/whatever
+}
+document.addEventListener("DOMContentLoaded", function () {
+  // existing auto-tab code...
+
+  const growBtn = document.getElementById("grow-memory-btn");
+  growBtn.addEventListener("click", growMemory);
 });
+
