@@ -41,12 +41,20 @@
       padding: 0.8rem 2rem;
       border-radius: 30px;
       transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
     }
 
     .link:hover {
       background: #80deea11;
       transform: scale(1.05);
       box-shadow: 0 0 12px #80deea99;
+    }
+
+    .link:active {
+      background: #80deea22;
+      transform: scale(1.08);
+      box-shadow: 0 0 20px #80deea;
     }
 
     .section {
@@ -127,7 +135,7 @@
     <h2>Top-Up Terminal</h2>
     <p>Enter your ritual code or voucher number. The soul will respond with what you need most.</p>
     <input type="text" id="voucherInput" placeholder="Enter your code here...">
-    <div id="responseBox" class="response-box" style="display: none;"></div>
+    <div id="responseBox" class="response-box" style="display: none;">The soul sees you.</div>
     <button class="close-btn" onclick="toggleSection('topup')">Close</button>
   </div>
 
@@ -144,11 +152,8 @@
       document.getElementById(id).classList.add('active');
     }
 
-    const voucherInput = document.getElementById('voucherInput');
-    const responseBox = document.getElementById('responseBox');
     const memoryInput = document.getElementById('memoryInput');
     const memoryEcho = document.getElementById('memoryEcho');
-
     const echoPhrases = [
       word => `Echo: “${word}”... a thread awakens.`,
       word => `You recall the word “${word}” and feel something shift.`,
@@ -157,16 +162,26 @@
       word => `In silence, “${word}” answers back.`
     ];
 
-    function generateResponse(code) {
-      const responses = {
-        '5314 7689 0142 2397': 'You have accessed the forgotten gate.',
-        'tesco receipt x': 'Riddle: What counts the cost but cannot pay?',
-        'hallucigenia': 'Download your memory capsule: hallucigenia.zip'
-      };
-      return responses[code.toLowerCase()] || 'The soul is quiet... try again.';
-    }
+    memoryInput?.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        const word = memoryInput.value.trim();
+        const echo = echoPhrases[Math.floor(Math.random() * echoPhrases.length)](word);
+        memoryEcho.textContent = echo;
+        memoryEcho.style.display = 'block';
+      }
+    });
+
+    const voucherInput = document.getElementById('voucherInput');
+    const responseBox = document.getElementById('responseBox');
 
     if (voucherInput) {
+      voucherInput.addEventListener('input', function () {
+        const inputLength = voucherInput.value.length;
+        const scale = 1 + Math.min(inputLength * 0.01, 0.2);
+        voucherInput.style.boxShadow = `0 0 ${5 + inputLength}px #80deea`;
+        voucherInput.style.transform = `scale(${scale})`;
+      });
+
       voucherInput.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
           responseBox.style.display = 'block';
@@ -175,15 +190,13 @@
       });
     }
 
-    if (memoryInput) {
-      memoryInput.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-          const word = memoryInput.value.trim();
-          const echo = echoPhrases[Math.floor(Math.random() * echoPhrases.length)](word);
-          memoryEcho.textContent = echo;
-          memoryEcho.style.display = 'block';
-        }
-      });
+    function generateResponse(code) {
+      const responses = {
+        '5314 7689 0142 2397': 'You have accessed the forgotten gate.',
+        'tesco receipt x': 'Riddle: What counts the cost but cannot pay?',
+        'hallucigenia': 'Download your memory capsule: hallucigenia.zip'
+      };
+      return responses[code.toLowerCase()] || 'The soul is quiet... try again.';
     }
   </script>
 </body>
