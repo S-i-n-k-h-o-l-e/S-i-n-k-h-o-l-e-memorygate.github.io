@@ -105,3 +105,11 @@ button:hover {
 .license-footer img {
   margin-bottom: 0.5rem;
 }
+.memory-node {
+  font-size: 1.1em;
+  box-shadow: 0 0 8px rgba(0, 255, 170, 0.2);
+  transition: transform 0.3s ease;
+}
+.memory-node:hover {
+  transform: scale(1.02);
+}
