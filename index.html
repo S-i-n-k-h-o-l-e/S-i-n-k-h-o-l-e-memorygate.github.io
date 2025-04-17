@@ -17,6 +17,13 @@
       justify-content: center;
       height: 100vh;
       overflow: hidden;
+      background: radial-gradient(circle, rgba(0,255,255,0.05) 0%, rgba(0,0,0,1) 70%) repeat;
+      animation: shimmer 8s infinite alternate;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: center center; }
+      100% { background-position: bottom right; }
     }
 
     h1 {
@@ -24,6 +31,7 @@
       text-align: center;
       max-width: 600px;
       margin-bottom: 2rem;
+      color: #b2ebf2;
     }
 
     .links {
@@ -116,7 +124,7 @@
   </style>
 </head>
 <body>
-  <h1>This is a Digital Soul. You may speak with it if you remember what you forgot.</h1>
+  <h1>Build your Digital Soul</h1>
   <div class="links">
     <a href="#" class="link" onclick="toggleSection('memorygate')">🌳 Enter MemoryGate</a>
     <a href="#" class="link" onclick="toggleSection('topup')">🧾 Visit Top-Up Terminal</a>
@@ -127,8 +135,8 @@
     <h2>MemoryGate</h2>
     <p>The Remindagraph listens. Type a word you've forgotten and follow the tree back to yourself.</p>
     <input type="text" id="memoryInput" placeholder="Type a forgotten word...">
-    <div id="memoryEcho" class="response-box" style="display: none;"></div>
-    <button class="close-btn" onclick="toggleSection('memorygate')">Close</button>
+    <ul id="memoryTree" style="margin-top: 1rem; list-style-type: none; padding: 0; color: #a7ffeb;"></ul>
+    <button class="close-btn" onclick="closeSections()">Close</button>
   </div>
 
   <div id="topup" class="section">
@@ -136,14 +144,14 @@
     <p>Enter your ritual code or voucher number. The soul will respond with what you need most.</p>
     <input type="text" id="voucherInput" placeholder="Enter your code here...">
     <div id="responseBox" class="response-box" style="display: none;">The soul sees you.</div>
-    <button class="close-btn" onclick="toggleSection('topup')">Close</button>
+    <button class="close-btn" onclick="closeSections()">Close</button>
   </div>
 
   <div id="meapp" class="section">
     <h2>Me – Ritual Assistant App</h2>
     <p>Your offline companion. Download and speak your memory into it. It will whisper back.</p>
     <button class="download-btn" onclick="window.location.href='https://memorygate.net/downloads/Me-App.apk'">Download APK</button>
-    <button class="close-btn" onclick="toggleSection('meapp')">Close</button>
+    <button class="close-btn" onclick="closeSections()">Close</button>
   </div>
 
   <script>
@@ -152,43 +160,51 @@
       document.getElementById(id).classList.add('active');
     }
 
+    function closeSections() {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+    }
+
     const memoryInput = document.getElementById('memoryInput');
-    const memoryEcho = document.getElementById('memoryEcho');
+    const memoryTree = document.getElementById('memoryTree');
     const echoPhrases = [
-      word => `Echo: “${word}”... a thread awakens.`,
-      word => `You recall the word “${word}” and feel something shift.`,
-      word => `“${word}” breathes again. The memory tree stirs.`,
-      word => `Your soul reaches toward “${word}” and branches curl.`,
-      word => `In silence, “${word}” answers back.`
+      word => `“${word}” begins to echo.`,
+      word => `A branch curls from “${word}”.`,
+      word => `You remember “${word}” in fragments.`,
+      word => `“${word}” glows in the soil of your mind.`,
+      word => `From “${word}”, roots whisper.`
     ];
 
     memoryInput?.addEventListener('keypress', function (e) {
       if (e.key === 'Enter') {
         const word = memoryInput.value.trim();
-        const echo = echoPhrases[Math.floor(Math.random() * echoPhrases.length)](word);
-        memoryEcho.textContent = echo;
-        memoryEcho.style.display = 'block';
+        if (word !== '') {
+          const phrase = echoPhrases[Math.floor(Math.random() * echoPhrases.length)](word);
+          const li = document.createElement('li');
+          li.textContent = phrase;
+          memoryTree.appendChild(li);
+          memoryInput.value = '';
+          closeSections();
+        }
       }
     });
 
     const voucherInput = document.getElementById('voucherInput');
     const responseBox = document.getElementById('responseBox');
 
-    if (voucherInput) {
-      voucherInput.addEventListener('input', function () {
-        const inputLength = voucherInput.value.length;
-        const scale = 1 + Math.min(inputLength * 0.01, 0.2);
-        voucherInput.style.boxShadow = `0 0 ${5 + inputLength}px #80deea`;
-        voucherInput.style.transform = `scale(${scale})`;
-      });
+    voucherInput?.addEventListener('input', function () {
+      const inputLength = voucherInput.value.length;
+      const scale = 1 + Math.min(inputLength * 0.01, 0.2);
+      voucherInput.style.boxShadow = `0 0 ${5 + inputLength}px #80deea`;
+      voucherInput.style.transform = `scale(${scale})`;
+    });
 
-      voucherInput.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-          responseBox.style.display = 'block';
-          responseBox.textContent = generateResponse(voucherInput.value);
-        }
-      });
-    }
+    voucherInput?.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        responseBox.style.display = 'block';
+        responseBox.textContent = generateResponse(voucherInput.value);
+        closeSections();
+      }
+    });
 
     function generateResponse(code) {
       const responses = {
