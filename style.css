@@ -1,4 +1,4 @@
-@keyframes fadeIn {
+@keyframes fadeIn { 
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
@@ -30,7 +30,7 @@ h1 {
   color: #cccccc;
 }
 
-form input {
+.input-container input {
   display: block;
   margin: 1rem auto;
   padding: 0.75rem;
@@ -40,9 +40,10 @@ form input {
   background: rgba(255, 255, 255, 0.05);
   color: white;
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+  font-size: 1rem;
 }
 
-form input:focus,
+.input-container input:focus,
 button:focus {
   outline: none;
   box-shadow: 0 0 12px #4fffb0;
@@ -57,6 +58,7 @@ button {
   cursor: pointer;
   box-shadow: 0 0 10px #4fffb0;
   transition: background 0.3s, box-shadow 0.3s;
+  font-size: 1rem;
 }
 
 button:hover {
@@ -74,14 +76,31 @@ button:hover {
   display: none;
   opacity: 0;
   transition: opacity 1s ease;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 #memory-tree.show {
   display: flex;
   opacity: 1;
   animation: fadeIn 1s ease;
-  flex-direction: column;
-  align-items: flex-start;
+}
+
+.memory-node {
+  font-size: 1.1em;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #00ffaa;
+  border-radius: 8px;
+  color: #ccffee;
+  background: rgba(0,255,150,0.1);
+  box-shadow: 0 0 8px rgba(0, 255, 170, 0.2);
+  animation: fadeIn 1s ease;
+  transition: transform 0.3s ease;
+}
+
+.memory-node:hover {
+  transform: scale(1.02);
 }
 
 .branch-node {
@@ -105,11 +124,4 @@ button:hover {
 .license-footer img {
   margin-bottom: 0.5rem;
 }
-.memory-node {
-  font-size: 1.1em;
-  box-shadow: 0 0 8px rgba(0, 255, 170, 0.2);
-  transition: transform 0.3s ease;
-}
-.memory-node:hover {
-  transform: scale(1.02);
-}
+
