@@ -17,8 +17,8 @@
       justify-content: center;
       height: 100vh;
       overflow: hidden;
-      background: radial-gradient(circle, rgba(0,255,255,0.05) 0%, rgba(0,0,0,1) 70%) repeat;
-      animation: shimmer 8s infinite alternate;
+      background: radial-gradient(circle, rgba(0,255,255,0.02) 0%, rgba(0,0,0,1) 70%) repeat;
+      animation: shimmer 30s ease-in-out infinite alternate;
     }
 
     @keyframes shimmer {
@@ -117,8 +117,8 @@
     }
 
     @keyframes ripple {
-      0% { box-shadow: 0 0 0px #80deea88; }
-      50% { box-shadow: 0 0 10px #80deea; }
+      0% { box-shadow: 0 0 0px #80deea22; }
+      50% { box-shadow: 0 0 6px #80deea55; }
       100% { box-shadow: 0 0 0px #80deea00; }
     }
   </style>
@@ -183,7 +183,6 @@
           li.textContent = phrase;
           memoryTree.appendChild(li);
           memoryInput.value = '';
-          closeSections();
         }
       }
     });
