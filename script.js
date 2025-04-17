@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const inputs = document.querySelectorAll("input[type='text']");
   const growBtn = document.getElementById("grow-button");
 
-  // Auto-tab logic
+  // Auto-tab
   inputs.forEach((input, index) => {
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
@@ -17,37 +17,35 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // On grow click
+  // Grow Memory button click
   growBtn.addEventListener("click", () => {
-    const inputValues = {
-      where: document.getElementById('where').value.trim(),
-      what: document.getElementById('what').value.trim(),
-      feel: document.getElementById('feel').value.trim(),
-    };
+    const where = document.getElementById("where").value.trim();
+    const what = document.getElementById("what").value.trim();
+    const feel = document.getElementById("feel").value.trim();
 
-    if (inputValues.where && inputValues.what && inputValues.feel) {
-      document.querySelector('.input-container').style.display = 'none';
-      document.getElementById('tree-container').style.display = 'block';
+    if (where && what && feel) {
+      document.getElementById("input-section").style.display = "none";
+      document.getElementById("tree-container").style.display = "block";
 
-      renderMemoryTree(inputValues);
+      renderMemoryTree({ where, what, feel });
     }
   });
 });
 
-// 🌱 Tree rendering logic
+// Render memory node
 function renderMemoryTree({ where, what, feel }) {
-  const tree = document.getElementById('memory-tree');
+  const tree = document.getElementById("memory-tree");
 
-  const node = document.createElement('div');
-  node.className = 'memory-node';
+  const node = document.createElement("div");
+  node.className = "memory-node";
   node.innerText = `${where} — ${what} — ${feel}`;
-  node.style.margin = '10px';
-  node.style.padding = '10px';
-  node.style.border = '1px solid #00ffaa';
-  node.style.borderRadius = '8px';
-  node.style.color = '#ccffee';
-  node.style.background = 'rgba(0,255,150,0.1)';
-  node.style.animation = 'fadeIn 1s ease';
+  node.style.margin = "10px";
+  node.style.padding = "10px";
+  node.style.border = "1px solid #00ffaa";
+  node.style.borderRadius = "8px";
+  node.style.color = "#ccffee";
+  node.style.background = "rgba(0,255,150,0.1)";
+  node.style.animation = "fadeIn 1s ease";
 
   tree.appendChild(node);
 }
