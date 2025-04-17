@@ -1,3 +1,5 @@
+console.log("Memorygate JS loaded!");
+
 document.addEventListener("DOMContentLoaded", function () {
   const inputs = document.querySelectorAll("input[type='text']");
   const growBtn = document.getElementById("grow-button");
