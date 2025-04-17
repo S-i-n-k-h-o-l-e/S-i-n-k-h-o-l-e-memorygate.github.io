@@ -3,216 +3,163 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MemoryGate: A Digital Soul</title>
+  <title>MemoryGate: Build Your Digital Soul</title>
   <style>
-    body {
-  margin: 0;
-  padding: 0;
-  background-color: #000;
-  color: #cfd8dc;
-  font-family: 'Inter', sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  overflow: hidden;
-  background: radial-gradient(circle, rgba(0,255,255,0.005) 0%, rgba(0,0,0,1) 70%) repeat;
-  animation: shimmer 40s ease-in-out infinite alternate;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes shimmer {
-      0% { background-position: center center; }
-      100% { background-position: bottom right; }
+    body {
+      margin: 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      background: radial-gradient(ellipse at center, #0f0f0f 0%, #000000 100%);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2rem;
+      text-align: center;
     }
 
     h1 {
-      font-size: 1.5rem;
-      text-align: center;
-      max-width: 600px;
-      margin-bottom: 2rem;
-      color: #b2ebf2;
+      font-size: 3rem;
+      color: #a3ffe5;
+      text-shadow: 0 0 10px rgba(163, 255, 229, 0.7);
     }
 
-    .links {
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-      align-items: center;
-    }
-
-    .link {
-      color: #80deea;
-      text-decoration: none;
+    .subtitle {
       font-size: 1.2rem;
-      border: 2px solid #80deea;
-      padding: 0.8rem 2rem;
-      border-radius: 30px;
-      transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
-      position: relative;
-      overflow: hidden;
+      margin-bottom: 2rem;
+      color: #cccccc;
     }
 
-    .link:hover {
-      background: #80deea11;
-      transform: scale(1.05);
-      box-shadow: 0 0 12px #80deea99;
-    }
-
-    .link:active {
-      background: #80deea22;
-      transform: scale(1.08);
-      box-shadow: 0 0 20px #80deea;
-    }
-
-    .section {
-      display: none;
-      position: absolute;
-      top: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80%;
-      max-width: 700px;
-      background: #111;
-      padding: 2rem;
-      border-radius: 20px;
-      box-shadow: 0 0 15px #80deea66;
-      z-index: 10;
-    }
-
-    .section.active {
+    .input-container input {
       display: block;
-    }
-
-    .close-btn {
-      margin-top: 1.5rem;
-      color: #80deea;
-      background: none;
-      border: 1px solid #80deea;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-
-    input, button.download-btn {
-      margin-top: 1rem;
-      width: 100%;
-      font-size: 1rem;
-      border-radius: 12px;
+      margin: 1rem auto;
       padding: 0.75rem;
-      box-sizing: border-box;
-      background-color: #222;
-      color: #cfd8dc;
-      border: 1px solid #80deea;
+      width: 80%;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+      font-size: 1rem;
     }
 
-    .response-box {
-      margin-top: 1rem;
-      background-color: #181818;
-      padding: 1rem;
-      border-radius: 12px;
-      color: #a7ffeb;
-      font-style: italic;
-      animation: ripple 1s ease-out;
+    .input-container input:focus,
+    button:focus {
+      outline: none;
+      box-shadow: 0 0 12px #4fffb0;
     }
 
-    @keyframes ripple {
-      0% { box-shadow: 0 0 0px #80deea22; }
-      50% { box-shadow: 0 0 6px #80deea55; }
-      100% { box-shadow: 0 0 0px #80deea00; }
+    button {
+      padding: 0.75rem 2rem;
+      background: #4fffb0;
+      color: black;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #4fffb0;
+      transition: background 0.3s, box-shadow 0.3s;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background: #3fd99a;
+      box-shadow: 0 0 14px #3fd99a;
+    }
+
+    #memory-tree {
+      margin-top: 3rem;
+      min-height: 200px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+      display: none;
+      opacity: 0;
+      transition: opacity 1s ease;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    #memory-tree.show {
+      display: flex;
+      opacity: 1;
+      animation: fadeIn 1s ease;
+    }
+
+    .memory-node {
+      font-size: 1.1em;
+      margin: 10px;
+      padding: 10px;
+      border: 1px solid #00ffaa;
+      border-radius: 8px;
+      color: #ccffee;
+      background: rgba(0,255,150,0.1);
+      box-shadow: 0 0 8px rgba(0, 255, 170, 0.2);
+      animation: fadeIn 1s ease;
+      transition: transform 0.3s ease;
+    }
+
+    .memory-node:hover {
+      transform: scale(1.02);
+    }
+
+    .license-footer {
+      text-align: center;
+      margin-top: 3rem;
+      opacity: 0.6;
+      font-size: 0.8rem;
+      color: white;
+    }
+
+    .license-footer img {
+      margin-bottom: 0.5rem;
     }
   </style>
 </head>
 <body>
-  <h1>Build your Digital Soul</h1>
-  <div class="links">
-    <a href="#" class="link" onclick="toggleSection('memorygate')">🌳 Enter MemoryGate</a>
-    <a href="#" class="link" onclick="toggleSection('topup')">🧾 Visit Top-Up Terminal</a>
-    <a href="#" class="link" onclick="toggleSection('meapp')">📲 Download Me</a>
-  </div>
-
-  <div id="memorygate" class="section">
-    <h2>MemoryGate</h2>
-    <p>The Remindagraph listens. Type a word you've forgotten and follow the tree back to yourself.</p>
-    <input type="text" id="memoryInput" placeholder="Type a forgotten word...">
-    <ul id="memoryTree" style="margin-top: 1rem; list-style-type: none; padding: 0; color: #a7ffeb;"></ul>
-    <button class="close-btn" onclick="closeSections()">Close</button>
-  </div>
-
-  <div id="topup" class="section">
-    <h2>Top-Up Terminal</h2>
-    <p>Enter your ritual code or voucher number. The soul will respond with what you need most.</p>
-    <input type="text" id="voucherInput" placeholder="Enter your code here...">
-    <div id="responseBox" class="response-box" style="display: none;">The soul sees you.</div>
-    <button class="close-btn" onclick="closeSections()">Close</button>
-  </div>
-
-  <div id="meapp" class="section">
-    <h2>Me – Ritual Assistant App</h2>
-    <p>Your offline companion. Download and speak your memory into it. It will whisper back.</p>
-    <button class="download-btn" onclick="window.location.href='https://memorygate.net/downloads/Me-App.apk'">Download APK</button>
-    <button class="close-btn" onclick="closeSections()">Close</button>
+  <div class="container">
+    <h1>Build your Digital Soul</h1>
+    <p class="subtitle">Plant your memories below. Let them branch and echo.</p>
+    <div class="input-container">
+      <input type="text" id="memoryInput" placeholder="Type a forgotten word..." />
+    </div>
+    <div id="memory-tree"></div>
+    <div class="license-footer">
+      <p>This work is licensed under a Creative Commons License.</p>
+    </div>
   </div>
 
   <script>
-    function toggleSection(id) {
-      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
-
-    function closeSections() {
-      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-    }
-
     const memoryInput = document.getElementById('memoryInput');
-    const memoryTree = document.getElementById('memoryTree');
-    const echoPhrases = [
-      word => `“${word}” begins to echo.`,
-      word => `A branch curls from “${word}”.`,
-      word => `You remember “${word}” in fragments.`,
-      word => `“${word}” glows in the soil of your mind.`,
-      word => `From “${word}”, roots whisper.`
+    const memoryTree = document.getElementById('memory-tree');
+
+    const phrases = [
+      word => `"${word}" glows in the soil of your mind.`,
+      word => `From "${word}", roots whisper.`,
+      word => `You remember "${word}" in fragments.`,
+      word => `"${word}" begins to echo.`
     ];
 
-    memoryInput?.addEventListener('keypress', function (e) {
+    memoryInput.addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         const word = memoryInput.value.trim();
         if (word !== '') {
-          const phrase = echoPhrases[Math.floor(Math.random() * echoPhrases.length)](word);
-          const li = document.createElement('li');
-          li.textContent = phrase;
-          memoryTree.appendChild(li);
+          const branch = document.createElement('div');
+          branch.classList.add('memory-node');
+          branch.textContent = phrases[Math.floor(Math.random() * phrases.length)](word);
+          memoryTree.appendChild(branch);
+          memoryTree.classList.add('show');
           memoryInput.value = '';
         }
       }
     });
-
-    const voucherInput = document.getElementById('voucherInput');
-    const responseBox = document.getElementById('responseBox');
-
-    voucherInput?.addEventListener('input', function () {
-      const inputLength = voucherInput.value.length;
-      const scale = 1 + Math.min(inputLength * 0.01, 0.2);
-      voucherInput.style.boxShadow = `0 0 ${5 + inputLength}px #80deea`;
-      voucherInput.style.transform = `scale(${scale})`;
-    });
-
-    voucherInput?.addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') {
-        responseBox.style.display = 'block';
-        responseBox.textContent = generateResponse(voucherInput.value);
-        closeSections();
-      }
-    });
-
-    function generateResponse(code) {
-      const responses = {
-        '5314 7689 0142 2397': 'You have accessed the forgotten gate.',
-        'tesco receipt x': 'Riddle: What counts the cost but cannot pay?',
-        'hallucigenia': 'Download your memory capsule: hallucigenia.zip'
-      };
-      return responses[code.toLowerCase()] || 'The soul is quiet... try again.';
-    }
   </script>
 </body>
 </html>
