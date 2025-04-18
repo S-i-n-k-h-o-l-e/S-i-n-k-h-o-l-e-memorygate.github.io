@@ -1,116 +1,120 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MemoryGate – Build Your Digital Soul</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MemoryGate</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Helvetica Neue', sans-serif;
-      background: radial-gradient(ellipse at center, #0f0f0f 0%, #000000 100%);
-      color: #a3ffe5;
       overflow: hidden;
+      background-color: #000;
+      color: #a7ffeb;
+      font-family: 'Inter', sans-serif;
     }
 
-    .side-buttons {
+    .sidebar {
       position: fixed;
-      top: 80px;
-      left: 2vw;
+      top: 20px;
+      left: 20px;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      z-index: 2;
+      gap: 10px;
+      z-index: 10;
     }
 
-    .side-buttons button {
-      background: #a3ffe5;
-      color: #000;
+    .sidebar button {
+      background-color: #caffd6;
       border: none;
-      padding: 0.7rem 1rem;
-      border-radius: 10px;
-      font-size: 0.95rem;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 1rem;
       cursor: pointer;
-      box-shadow: 0 0 10px #a3ffe577;
+      color: black;
+      box-shadow: 0 0 10px #9effc5aa;
     }
 
-    .main-area {
-      margin-left: 20vw;
-      padding: 2rem;
+    .main-content {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 5;
     }
 
     h1 {
       font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 0 10px #a3ffe588;
+      color: #b2fff3;
+      text-shadow: 0 0 10px #7affda;
     }
 
     .subtitle {
-      margin-bottom: 1.5rem;
-      font-size: 1.2rem;
-      color: #ccc;
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      color: #d0fdf8;
     }
 
     input[type="text"] {
-      padding: 0.8rem 1rem;
+      padding: 12px;
+      width: 300px;
       border-radius: 10px;
-      border: none;
+      border: 1px solid #80deea;
       background: rgba(255, 255, 255, 0.05);
-      color: #a3ffe5;
+      color: #a7ffeb;
       font-size: 1rem;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 0 8px #a3ffe533;
     }
 
-    .support-note {
+    .support-text {
+      margin-top: 10px;
+      color: #9ff;
       font-size: 0.9rem;
-      margin-top: 0.5rem;
-      color: #a3ffe5;
     }
 
-    .license-footer {
+    .license {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
       text-align: center;
-      margin-top: 4rem;
-      font-size: 0.75rem;
-      opacity: 0.6;
+      font-size: 0.8rem;
+      color: #b7ffec88;
     }
 
     canvas {
       position: absolute;
       top: 0;
-      right: 0;
-      width: 60vw;
-      height: 100vh;
-      z-index: 0;
+      left: 0;
+      z-index: 1;
     }
   </style>
 </head>
 <body>
-  <div class="side-buttons">
+  <div class="sidebar">
     <button onclick="window.location.href='topup.html'">🧾 Top-Up</button>
     <button onclick="window.location.href='downloads/Me-App.apk'">📲 Download Me</button>
-    <button onclick="window.open('https://www.paypal.com/donate/?business=jagohooper@yahoo.com')">💖 Support the Project</button>
+    <button onclick="window.location.href='https://www.paypal.com/paypalme/jagohooper'">❤️ Support the Project</button>
   </div>
 
-  <div class="main-area">
+  <div class="main-content">
     <h1>Build your Digital Soul</h1>
     <div class="subtitle">Plant your memories below. Let them branch and echo.</div>
-    <input type="text" id="memoryInput" placeholder="Type a forgotten word...">
-    <div class="support-note">I am one person so any support for this project would be amazing.</div>
-    <div class="license-footer">This work is licensed under the <strong>Forgetful Rituals License</strong>.</div>
+    <input type="text" id="memoryInput" placeholder="Type a forgotten word..." />
+    <div class="support-text">
+      I am one person so any support for this project would be amazing.
+    </div>
   </div>
 
   <canvas id="treeCanvas"></canvas>
+
+  <div class="license">
+    This work is licensed under the <strong>Forgetful Rituals License</strong>.
+  </div>
 
   <script>
     const canvas = document.getElementById('treeCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
-    let nodes = [];
 
     class Node {
       constructor(text, x, y, parent = null) {
@@ -122,14 +126,15 @@
       }
     }
 
-    const root = new Node("General", canvas.width * 0.7, canvas.height / 2);
+    let nodes = [];
+    const root = new Node("General", canvas.width * 0.65, canvas.height * 0.5);
     nodes.push(root);
 
     function drawTree() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.lineWidth = 1.5;
       ctx.strokeStyle = '#a7ffeb33';
-      ctx.font = '16px Helvetica Neue';
+      ctx.font = '14px Inter';
 
       nodes.forEach(node => {
         if (node.parent) {
@@ -142,23 +147,23 @@
 
       nodes.forEach(node => {
         ctx.beginPath();
-        ctx.arc(node.x, node.y, 5, 0, Math.PI * 2);
+        ctx.arc(node.x, node.y, 4, 0, Math.PI * 2);
         ctx.fillStyle = '#a7ffeb88';
         ctx.fill();
         ctx.fillStyle = '#a7ffeb';
-        ctx.fillText(node.text, node.x + 8, node.y + 4);
+        ctx.fillText(node.text, node.x + 6, node.y + 4);
       });
     }
 
     function addNode(text) {
-      const lastNode = nodes[nodes.length - 1];
+      const parent = nodes[Math.floor(Math.random() * nodes.length)];
       const angle = Math.random() * Math.PI * 2;
-      const radius = 70 + Math.random() * 40;
-      const newX = lastNode.x + Math.cos(angle) * radius;
-      const newY = lastNode.y + Math.sin(angle) * radius;
+      const radius = 70 + Math.random() * 50;
+      const newX = parent.x + Math.cos(angle) * radius;
+      const newY = parent.y + Math.sin(angle) * radius;
 
-      const newNode = new Node(text, newX, newY, lastNode);
-      lastNode.children.push(newNode);
+      const newNode = new Node(text, newX, newY, parent);
+      parent.children.push(newNode);
       nodes.push(newNode);
       drawTree();
     }
@@ -177,3 +182,4 @@
   </script>
 </body>
 </html>
+
