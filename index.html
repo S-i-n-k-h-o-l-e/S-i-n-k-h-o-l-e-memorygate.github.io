@@ -1,9 +1,10 @@
+<!-- PASTE THIS INTO YOUR index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MemoryGate - Remindagraph</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MemoryGate</title>
   <style>
     body {
       margin: 0;
@@ -12,37 +13,75 @@
       font-family: 'Inter', sans-serif;
       overflow: hidden;
     }
-    .input-area {
+    .input-wrapper {
       position: absolute;
-      top: 30px;
+      top: 40px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
+    }
+    .input-box {
+      padding: 14px 24px;
+      font-size: 1.1rem;
+      border-radius: 12px;
+      border: 2px solid #a7ffeb;
+      background: #111;
+      color: #a7ffeb;
+      width: 300px;
+    }
+    .tree-button-panel {
+      position: absolute;
+      top: 40px;
+      left: 40px;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      gap: 12px;
     }
-    input[type="text"] {
-      padding: 10px;
-      width: 300px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid #80deea;
-      border-radius: 10px;
-      color: #a7ffeb;
+    .tree-button-panel button {
+      background: #b0ffe2;
+      border: none;
+      padding: 10px 16px;
       font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+    .tree-button-panel button:hover {
+      background: #95f6d5;
+    }
+    .support-text {
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.9rem;
+      color: #b0fff0;
+    }
+    .license {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #a7ffeb99;
     }
     canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
+      display: block;
     }
   </style>
 </head>
 <body>
-  <div class="input-area">
-    <input type="text" id="memoryInput" placeholder="Type a forgotten word..."/>
+  <div class="tree-button-panel">
+    <button onclick="alert('Top-Up Terminal Coming Soon')">🧾 Top-Up</button>
+    <button onclick="alert('Download Me App Coming Soon')">📲 Download Me</button>
+    <button onclick="window.open('https://www.paypal.com/paypalme/jagohooper')">💖 Support the Project</button>
   </div>
+  <div class="input-wrapper">
+    <input class="input-box" type="text" id="memoryInput" placeholder="Type a forgotten word..." />
+  </div>
+  <div class="support-text">I am one person so any support for this project would be amazing.</div>
   <canvas id="treeCanvas"></canvas>
+  <div class="license">This work is licensed under the Forgetful Rituals License.</div>
 
   <script>
     const canvas = document.getElementById('treeCanvas');
@@ -50,19 +89,17 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    let nodes = [];
-
     class Node {
-      constructor(text, x, y, depth = 0, parent = null) {
+      constructor(text, x, y, parent = null) {
         this.text = text;
         this.x = x;
         this.y = y;
-        this.depth = depth;
         this.parent = parent;
         this.children = [];
       }
     }
 
+    const nodes = [];
     const root = new Node("General", canvas.width / 2, 100);
     nodes.push(root);
 
@@ -72,45 +109,41 @@
       ctx.strokeStyle = '#a7ffeb33';
       ctx.font = '16px Inter';
 
-      nodes.forEach(node => {
+      for (const node of nodes) {
         if (node.parent) {
           ctx.beginPath();
           ctx.moveTo(node.parent.x, node.parent.y);
           ctx.lineTo(node.x, node.y);
           ctx.stroke();
         }
-      });
+      }
 
-      nodes.forEach(node => {
+      for (const node of nodes) {
         ctx.beginPath();
         ctx.arc(node.x, node.y, 5, 0, Math.PI * 2);
         ctx.fillStyle = '#a7ffeb88';
         ctx.fill();
         ctx.fillStyle = '#a7ffeb';
         ctx.fillText(node.text, node.x + 8, node.y + 4);
-      });
+      }
     }
 
     function addNode(text) {
-      const depth = nodes[nodes.length - 1].depth + 1;
-      const siblings = nodes.filter(n => n.depth === depth);
-      const spacing = 80;
-      const offset = siblings.length * spacing - (spacing * siblings.length / 2);
-
-      const x = canvas.width / 2 + offset;
-      const y = 100 + depth * 80;
-      const parent = nodes.findLast(n => n.depth === depth - 1);
-      const newNode = new Node(text, x, y, depth, parent);
+      const parent = nodes[nodes.length - 1];
+      const verticalSpacing = 60;
+      const newX = parent.x;
+      const newY = parent.y + verticalSpacing;
+      const newNode = new Node(text, newX, newY, parent);
+      parent.children.push(newNode);
       nodes.push(newNode);
-      if (parent) parent.children.push(newNode);
       drawTree();
     }
 
     document.getElementById('memoryInput').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
-        const val = this.value.trim();
-        if (val !== '') {
-          addNode(val);
+        const word = this.value.trim();
+        if (word !== '') {
+          addNode(word);
           this.value = '';
         }
       }
