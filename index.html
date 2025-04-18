@@ -2,14 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MemoryGate: Build Your Digital Soul</title>
   <style>
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     body {
       margin: 0;
       font-family: 'Helvetica Neue', sans-serif;
@@ -19,7 +14,7 @@
     }
 
     .container {
-      max-width: 700px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 2rem;
       text-align: center;
@@ -33,15 +28,22 @@
 
     .subtitle {
       font-size: 1.2rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       color: #cccccc;
     }
 
+    .memory-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
     .input-container input {
-      display: block;
-      margin: 1rem auto;
+      flex: 1 1 60%;
       padding: 0.75rem;
-      width: 80%;
       border: none;
       border-radius: 10px;
       background: rgba(255, 255, 255, 0.05);
@@ -50,22 +52,16 @@
       font-size: 1rem;
     }
 
-    .input-container input:focus,
-    button:focus {
-      outline: none;
-      box-shadow: 0 0 12px #4fffb0;
-    }
-
     button {
-      padding: 0.75rem 2rem;
+      padding: 0.75rem 1.2rem;
       background: #4fffb0;
       color: black;
       border: none;
       border-radius: 10px;
       cursor: pointer;
       box-shadow: 0 0 10px #4fffb0;
-      transition: background 0.3s, box-shadow 0.3s;
-      font-size: 1rem;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
     }
 
     button:hover {
@@ -74,7 +70,7 @@
     }
 
     #memory-tree {
-      margin-top: 3rem;
+      margin-top: 2rem;
       min-height: 200px;
       background: rgba(255, 255, 255, 0.03);
       border-radius: 20px;
@@ -90,7 +86,6 @@
     #memory-tree.show {
       display: flex;
       opacity: 1;
-      animation: fadeIn 1s ease;
     }
 
     .memory-node {
@@ -102,12 +97,16 @@
       color: #ccffee;
       background: rgba(0,255,150,0.1);
       box-shadow: 0 0 8px rgba(0, 255, 170, 0.2);
-      animation: fadeIn 1s ease;
-      transition: transform 0.3s ease;
     }
 
-    .memory-node:hover {
-      transform: scale(1.02);
+    .bottom-links {
+      margin-top: 2rem;
+    }
+
+    .support-text {
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      color: #a3ffe5;
     }
 
     .license-footer {
@@ -117,20 +116,32 @@
       font-size: 0.8rem;
       color: white;
     }
-
-    .license-footer img {
-      margin-bottom: 0.5rem;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Build your Digital Soul</h1>
     <p class="subtitle">Plant your memories below. Let them branch and echo.</p>
-    <div class="input-container">
-      <input type="text" id="memoryInput" placeholder="Type a forgotten word..." />
+
+    <div class="memory-group">
+      <button onclick="window.location.href='topup.html'">🧾 Top-Up</button>
+
+      <div class="input-container">
+        <input type="text" id="memoryInput" placeholder="Type a forgotten word..."/>
+      </div>
+
+      <button onclick="window.location.href='downloads/Me-App.apk'">📲 Download Me</button>
     </div>
+
+    <div class="bottom-links">
+      <button onclick="window.open('https://www.paypal.com/paypalme/jagohooper', '_blank')">
+        💖 Support the Project
+      </button>
+      <p class="support-text">I am one person so any support for this project would be amazing.</p>
+    </div>
+
     <div id="memory-tree"></div>
+
     <div class="license-footer">
       <p>This work is licensed under a Creative Commons License.</p>
     </div>
@@ -163,3 +174,5 @@
   </script>
 </body>
 </html>
+
+   
