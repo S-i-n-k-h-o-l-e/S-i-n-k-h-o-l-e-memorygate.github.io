@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MemoryGate: Build Your Digital Soul</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      background: radial-gradient(ellipse at center, #0f0f0f 0%, #000000 100%);
+      color: white;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+      text-align: left;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #a3ffe5;
+      text-shadow: 0 0 10px rgba(163, 255, 229, 0.7);
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      color: #cccccc;
+      text-align: center;
+    }
+
+    .side-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      position: absolute;
+      left: 2rem;
+      top: 8rem;
+    }
+
+    .side-buttons button {
+      background: #a3ffe5;
+      color: black;
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      box-shadow: 0 0 10px #a3ffe555;
+      transition: all 0.3s ease;
+    }
+
+    .side-buttons button:hover {
+      background: #80ffcc;
+    }
+
+    .input-container {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .input-container input {
+      padding: 0.75rem;
+      width: 100%;
+      max-width: 500px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      font-size: 1rem;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+    }
+
+    .support-text {
+      margin-top: 1rem;
+      color: #a3ffe5;
+      font-size: 0.9rem;
+      text-align: left;
+      margin-left: 2rem;
+    }
+
+    #memory-tree {
+      margin-top: 2rem;
+      padding: 1rem;
+      display: none;
+    }
+
+    #memory-tree.show {
+      display: block;
+    }
+
+    .memory-node {
+      font-size: 1.1em;
+      margin: 10px;
+      padding: 10px;
+      border: 1px solid #00ffaa;
+      border-radius: 8px;
+      color: #ccffee;
+      background: rgba(0,255,150,0.1);
+      box-shadow: 0 0 8px rgba(0, 255, 170, 0.2);
+    }
+
+    .license-footer {
+      text-align: center;
+      margin-top: 3rem;
+      opacity: 0.6;
+      font-size: 0.8rem;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="side-buttons">
+    <button onclick="window.location.href='topup.html'">🧾 Top-Up</button>
+    <button onclick="window.location.href='downloads/Me-App.apk'">📲 Download Me</button>
+    <button onclick="window.open('https://www.paypal.com/donate/?business=jagohooper@yahoo.com')">💖 Support the Project</button>
+  </div>
+
+  <div class="container">
+    <h1>Build your Digital Soul</h1>
+    <p class="subtitle">Plant your memories below. Let them branch and echo.</p>
+
+    <div class="input-container">
+      <input type="text" id="memoryInput" placeholder="Type a forgotten word...">
+    </div>
+
+    <div class="support-text">I am one person so any support for this project would be amazing.</div>
+
+    <div id="memory-tree"></div>
+
+    <div class="license-footer">
+      <p>This work is licensed under the Forgetful Rituals License.</p>
+    </div>
+  </div>
+
+  <script>
+    const memoryInput = document.getElementById('memoryInput');
+    const memoryTree = document.getElementById('memory-tree');
+    const phrases = [
+      word => `"${word}" glows in the soil of your mind.`,
+      word => `From "${word}", roots whisper.`,
+      word => `You remember "${word}" in fragments.`,
+      word => `"${word}" begins to echo.`
+    ];
+
+    memoryInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        const word = memoryInput.value.trim();
+        if (word !== '') {
+          const branch = document.createElement('div');
+          branch.classList.add('memory-node');
+          branch.textContent = phrases[Math.floor(Math.random() * phrases.length)](word);
+          memoryTree.appendChild(branch);
+          memoryTree.classList.add('show');
+          memoryInput.value = '';
+        }
+      }
+    });
+  </script>
+</body>
+</html>
