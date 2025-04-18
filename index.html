@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MemoryGate – A Digital Soul</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="left-buttons">
+    <a href="topup.html" class="sub-button">🧾 Top-Up</a>
+    <a href="downloads/Me-App.apk" class="sub-button">📲 Download Me</a>
+    <a href="https://www.paypal.com/paypalme/jagohooper" class="sub-button">💖 Support the Project</a>
+  </div>
+
+  <div class="container">
+    <h1>Build your Digital Soul</h1>
+    <p class="subtitle">Plant your memories below. Let them branch and echo.</p>
+    <div class="input-container">
+      <input type="text" id="memory-input" placeholder="Type a forgotten word..."/>
+      <p class="support-note">I am one person so any support for this project would be amazing.</p>
+    </div>
+    <div id="memory-tree"></div>
+    <p class="license-footer">This work is licensed under the Forgetful Rituals License.</p>
+  </div>
+
+  <script>
+    const memoryInput = document.getElementById('memory-input');
+    const memoryTree = document.getElementById('memory-tree');
+    const phrases = [
+      word => `"${word}" glows in the soil of your mind.`,
+      word => `From "${word}", roots whisper.`,
+      word => `You remember "${word}" in fragments.`,
+      word => `"${word}" pulses like a forgotten star.`,
+      word => `“${word}” curls around your soul.`
+    ];
+
+    memoryInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        const word = memoryInput.value.trim();
+        if (word !== '') {
+          const message = phrases[Math.floor(Math.random() * phrases.length)](word);
+          const node = document.createElement('div');
+          node.className = 'memory-node';
+          node.textContent = message;
+          memoryTree.appendChild(node);
+          memoryTree.classList.add('show');
+          memoryInput.value = '';
+        }
+      }
+    });
+  </script>
+</body>
+</html>
