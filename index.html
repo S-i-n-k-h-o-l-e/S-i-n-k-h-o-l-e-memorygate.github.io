@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MemoryGate – Build Your Digital Soul</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      background: radial-gradient(ellipse at center, #0f0f0f 0%, #000000 100%);
+      color: #a3ffe5;
+      overflow: hidden;
+    }
+
+    .side-buttons {
+      position: fixed;
+      top: 80px;
+      left: 2vw;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 2;
+    }
+
+    .side-buttons button {
+      background: #a3ffe5;
+      color: #000;
+      border: none;
+      padding: 0.7rem 1rem;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      box-shadow: 0 0 10px #a3ffe577;
+    }
+
+    .main-area {
+      margin-left: 20vw;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 10px #a3ffe588;
+    }
+
+    .subtitle {
+      margin-bottom: 1.5rem;
+      font-size: 1.2rem;
+      color: #ccc;
+    }
+
+    input[type="text"] {
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255, 255, 255, 0.05);
+      color: #a3ffe5;
+      font-size: 1rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 0 8px #a3ffe533;
+    }
+
+    .support-note {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      color: #a3ffe5;
+    }
+
+    .license-footer {
+      text-align: center;
+      margin-top: 4rem;
+      font-size: 0.75rem;
+      opacity: 0.6;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60vw;
+      height: 100vh;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="side-buttons">
+    <button onclick="window.location.href='topup.html'">🧾 Top-Up</button>
+    <button onclick="window.location.href='downloads/Me-App.apk'">📲 Download Me</button>
+    <button onclick="window.open('https://www.paypal.com/donate/?business=jagohooper@yahoo.com')">💖 Support the Project</button>
+  </div>
+
+  <div class="main-area">
+    <h1>Build your Digital Soul</h1>
+    <div class="subtitle">Plant your memories below. Let them branch and echo.</div>
+    <input type="text" id="memoryInput" placeholder="Type a forgotten word...">
+    <div class="support-note">I am one person so any support for this project would be amazing.</div>
+    <div class="license-footer">This work is licensed under the <strong>Forgetful Rituals License</strong>.</div>
+  </div>
+
+  <canvas id="treeCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('treeCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let nodes = [];
+
+    class Node {
+      constructor(text, x, y, parent = null) {
+        this.text = text;
+        this.x = x;
+        this.y = y;
+        this.parent = parent;
+        this.children = [];
+      }
+    }
+
+    const root = new Node("General", canvas.width * 0.7, canvas.height / 2);
+    nodes.push(root);
+
+    function drawTree() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#a7ffeb33';
+      ctx.font = '16px Helvetica Neue';
+
+      nodes.forEach(node => {
+        if (node.parent) {
+          ctx.beginPath();
+          ctx.moveTo(node.parent.x, node.parent.y);
+          ctx.lineTo(node.x, node.y);
+          ctx.stroke();
+        }
+      });
+
+      nodes.forEach(node => {
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#a7ffeb88';
+        ctx.fill();
+        ctx.fillStyle = '#a7ffeb';
+        ctx.fillText(node.text, node.x + 8, node.y + 4);
+      });
+    }
+
+    function addNode(text) {
+      const lastNode = nodes[nodes.length - 1];
+      const angle = Math.random() * Math.PI * 2;
+      const radius = 70 + Math.random() * 40;
+      const newX = lastNode.x + Math.cos(angle) * radius;
+      const newY = lastNode.y + Math.sin(angle) * radius;
+
+      const newNode = new Node(text, newX, newY, lastNode);
+      lastNode.children.push(newNode);
+      nodes.push(newNode);
+      drawTree();
+    }
+
+    document.getElementById('memoryInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        const val = this.value.trim();
+        if (val !== '') {
+          addNode(val);
+          this.value = '';
+        }
+      }
+    });
+
+    drawTree();
+  </script>
+</body>
+</html>
