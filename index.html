@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MemoryGate - Remindagraph</title>
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: #a7ffeb;
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+    }
+    .input-area {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 300px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid #80deea;
+      border-radius: 10px;
+      color: #a7ffeb;
+      font-size: 1rem;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="input-area">
+    <input type="text" id="memoryInput" placeholder="Type a forgotten word..."/>
+  </div>
+  <canvas id="treeCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('treeCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let nodes = [];
+
+    class Node {
+      constructor(text, x, y, depth = 0, parent = null) {
+        this.text = text;
+        this.x = x;
+        this.y = y;
+        this.depth = depth;
+        this.parent = parent;
+        this.children = [];
+      }
+    }
+
+    const root = new Node("General", canvas.width / 2, 100);
+    nodes.push(root);
+
+    function drawTree() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#a7ffeb33';
+      ctx.font = '16px Inter';
+
+      nodes.forEach(node => {
+        if (node.parent) {
+          ctx.beginPath();
+          ctx.moveTo(node.parent.x, node.parent.y);
+          ctx.lineTo(node.x, node.y);
+          ctx.stroke();
+        }
+      });
+
+      nodes.forEach(node => {
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#a7ffeb88';
+        ctx.fill();
+        ctx.fillStyle = '#a7ffeb';
+        ctx.fillText(node.text, node.x + 8, node.y + 4);
+      });
+    }
+
+    function addNode(text) {
+      const depth = nodes[nodes.length - 1].depth + 1;
+      const siblings = nodes.filter(n => n.depth === depth);
+      const spacing = 80;
+      const offset = siblings.length * spacing - (spacing * siblings.length / 2);
+
+      const x = canvas.width / 2 + offset;
+      const y = 100 + depth * 80;
+      const parent = nodes.findLast(n => n.depth === depth - 1);
+      const newNode = new Node(text, x, y, depth, parent);
+      nodes.push(newNode);
+      if (parent) parent.children.push(newNode);
+      drawTree();
+    }
+
+    document.getElementById('memoryInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        const val = this.value.trim();
+        if (val !== '') {
+          addNode(val);
+          this.value = '';
+        }
+      }
+    });
+
+    drawTree();
+  </script>
+</body>
+</html>
