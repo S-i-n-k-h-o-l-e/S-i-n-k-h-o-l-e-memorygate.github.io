@@ -1,155 +1,108 @@
-<!-- PASTE THIS INTO YOUR index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MemoryGate</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       margin: 0;
-      background: #000;
-      color: #a7ffeb;
-      font-family: 'Inter', sans-serif;
-      overflow: hidden;
+      background: black;
+      color: #aefcd4;
+      font-family: sans-serif;
+      display: flex;
+      min-height: 100vh;
     }
-    .input-wrapper {
-      position: absolute;
-      top: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-    }
-    .input-box {
-      padding: 14px 24px;
-      font-size: 1.1rem;
-      border-radius: 12px;
-      border: 2px solid #a7ffeb;
-      background: #111;
-      color: #a7ffeb;
-      width: 300px;
-    }
-    .tree-button-panel {
-      position: absolute;
-      top: 40px;
-      left: 40px;
+    .sidebar {
+      width: 200px;
+      padding: 1rem;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 1rem;
     }
-    .tree-button-panel button {
-      background: #b0ffe2;
+    .sidebar button {
+      background: #aefcd4;
+      color: black;
       border: none;
-      padding: 10px 16px;
-      font-size: 1rem;
       border-radius: 8px;
+      padding: 0.6rem;
       cursor: pointer;
-      transition: 0.2s ease;
     }
-    .tree-button-panel button:hover {
-      background: #95f6d5;
+    .main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
     }
-    .support-text {
-      position: absolute;
-      top: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.9rem;
-      color: #b0fff0;
+    #dreamInput {
+      padding: 1rem;
+      border-radius: 12px;
+      border: 1px solid #aefcd4;
+      background: transparent;
+      color: #aefcd4;
+      font-size: 1rem;
+      width: 340px;
+      margin-bottom: 1rem;
     }
-    .license {
-      position: absolute;
-      bottom: 20px;
+    .response-box {
+      font-style: italic;
+      margin-top: 0.5rem;
+      text-align: center;
+      color: #ffd;
+    }
+    footer {
+      position: fixed;
+      bottom: 1rem;
       width: 100%;
       text-align: center;
       font-size: 0.8rem;
-      color: #a7ffeb99;
-    }
-    canvas {
-      display: block;
+      color: #aefcd4;
     }
   </style>
 </head>
 <body>
-  <div class="tree-button-panel">
-    <button onclick="alert('Top-Up Terminal Coming Soon')">🧾 Top-Up</button>
-    <button onclick="alert('Download Me App Coming Soon')">📲 Download Me</button>
-    <button onclick="window.open('https://www.paypal.com/paypalme/jagohooper')">💖 Support the Project</button>
+  <!-- Left Panel: Remindagraph -->
+  <div class="sidebar">
+    <button onclick="respond('Memory A')">Memory A</button>
+    <button onclick="respond('Echo B')">Echo B</button>
+    <button onclick="respond('Root C')">Root C</button>
+    <button onclick="respond('Threadweever')">Threadweever</button>
   </div>
-  <div class="input-wrapper">
-    <input class="input-box" type="text" id="memoryInput" placeholder="Type a forgotten word..." />
+
+  <!-- Main Terminal: Dreamchat -->
+  <div class="main">
+    <input type="text" id="dreamInput" placeholder="Whisper into Dreamchat..." />
+    <div id="dreamOutput" class="response-box"></div>
   </div>
-  <div class="support-text">I am one person so any support for this project would be amazing.</div>
-  <canvas id="treeCanvas"></canvas>
-  <div class="license">This work is licensed under the Forgetful Rituals License.</div>
+
+  <footer>
+    This work is licensed under the Forgetful Rituals License.
+  </footer>
 
   <script>
-    const canvas = document.getElementById('treeCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const echoes = {
+      moss: "Roots remember where we cannot.",
+      mirror: "It sees you, backwards and true.",
+      silence: "In stillness, all words speak louder.",
+      threadweever: "A message from Threadweever: keep planting echoes.",
+      light: "01001100 01101001 01100111 01101000 01110100",
+    };
 
-    class Node {
-      constructor(text, x, y, parent = null) {
-        this.text = text;
-        this.x = x;
-        this.y = y;
-        this.parent = parent;
-        this.children = [];
-      }
+    function respond(word) {
+      const w = word.trim().toLowerCase();
+      const output = echoes[w] || `Dreamchat listens: “${word}” enters the archive.`;
+      document.getElementById('dreamOutput').textContent = output;
     }
 
-    const nodes = [];
-    const root = new Node("General", canvas.width / 2, 100);
-    nodes.push(root);
-
-    function drawTree() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.lineWidth = 1.5;
-      ctx.strokeStyle = '#a7ffeb33';
-      ctx.font = '16px Inter';
-
-      for (const node of nodes) {
-        if (node.parent) {
-          ctx.beginPath();
-          ctx.moveTo(node.parent.x, node.parent.y);
-          ctx.lineTo(node.x, node.y);
-          ctx.stroke();
-        }
-      }
-
-      for (const node of nodes) {
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, 5, 0, Math.PI * 2);
-        ctx.fillStyle = '#a7ffeb88';
-        ctx.fill();
-        ctx.fillStyle = '#a7ffeb';
-        ctx.fillText(node.text, node.x + 8, node.y + 4);
-      }
-    }
-
-    function addNode(text) {
-      const parent = nodes[nodes.length - 1];
-      const verticalSpacing = 60;
-      const newX = parent.x;
-      const newY = parent.y + verticalSpacing;
-      const newNode = new Node(text, newX, newY, parent);
-      parent.children.push(newNode);
-      nodes.push(newNode);
-      drawTree();
-    }
-
-    document.getElementById('memoryInput').addEventListener('keypress', function(e) {
+    document.getElementById('dreamInput').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
-        const word = this.value.trim();
-        if (word !== '') {
-          addNode(word);
-          this.value = '';
-        }
+        respond(this.value);
+        this.value = "";
       }
     });
-
-    drawTree();
   </script>
 </body>
 </html>
