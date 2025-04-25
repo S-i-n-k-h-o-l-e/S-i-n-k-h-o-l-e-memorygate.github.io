@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MemoryGate</title>
-  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       margin: 0;
@@ -14,29 +13,34 @@
       display: flex;
       min-height: 100vh;
     }
+
     .sidebar {
-      width: 200px;
+      width: 220px;
       padding: 1rem;
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
+
     .sidebar button {
       background: #aefcd4;
       color: black;
       border: none;
       border-radius: 8px;
       padding: 0.6rem;
+      font-weight: bold;
       cursor: pointer;
     }
+
     .main {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
       padding: 2rem;
+      justify-content: center;
     }
+
     #dreamInput {
       padding: 1rem;
       border-radius: 12px;
@@ -47,12 +51,30 @@
       width: 340px;
       margin-bottom: 1rem;
     }
+
     .response-box {
       font-style: italic;
       margin-top: 0.5rem;
       text-align: center;
       color: #ffd;
+      max-width: 500px;
     }
+
+    .title {
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #aefcd4;
+      animation: shimmer 5s infinite alternate ease-in-out;
+    }
+
+    @keyframes shimmer {
+      0% { text-shadow: 0 0 5px #aefcd4; }
+      50% { text-shadow: 0 0 12px #66ffe0, 0 0 20px #00ffc3; }
+      100% { text-shadow: 0 0 6px #aefcd4; }
+    }
+
     footer {
       position: fixed;
       bottom: 1rem;
@@ -64,16 +86,18 @@
   </style>
 </head>
 <body>
-  <!-- Left Panel: Remindagraph -->
+
+  <!-- Sidebar Buttons -->
   <div class="sidebar">
-    <button onclick="respond('Memory A')">Memory A</button>
-    <button onclick="respond('Echo B')">Echo B</button>
-    <button onclick="respond('Root C')">Root C</button>
-    <button onclick="respond('Threadweever')">Threadweever</button>
+    <button onclick="topUp()">📜 Top-Up Terminal</button>
+    <button onclick="downloadDSoul()">📥 Download D-Soul App</button>
+    <button onclick="supportMe()">💗 Support Me</button>
+    <button onclick="showRemindagraph()">🧠 Remindagraph</button>
   </div>
 
-  <!-- Main Terminal: Dreamchat -->
+  <!-- Main Display -->
   <div class="main">
+    <div class="title">MemoryGate</div>
     <input type="text" id="dreamInput" placeholder="Whisper into Dreamchat..." />
     <div id="dreamOutput" class="response-box"></div>
   </div>
@@ -83,26 +107,51 @@
   </footer>
 
   <script>
-    const echoes = {
-      moss: "Roots remember where we cannot.",
-      mirror: "It sees you, backwards and true.",
-      silence: "In stillness, all words speak louder.",
-      threadweever: "A message from Threadweever: keep planting echoes.",
-      light: "01001100 01101001 01100111 01101000 01110100",
-    };
+    const dreamMemory = [];
 
-    function respond(word) {
-      const w = word.trim().toLowerCase();
-      const output = echoes[w] || `Dreamchat listens: “${word}” enters the archive.`;
-      document.getElementById('dreamOutput').textContent = output;
+    function dreamchatReply(input) {
+      const whispers = {
+        "moss": "Roots remember where we cannot.",
+        "mirror": "It sees you, backwards and true.",
+        "silence": "In stillness, all words speak louder.",
+        "threadweever": "A message from Threadweever: keep planting echoes.",
+        "light": "Binary remembered: 01001100 01101001 01100111 01101000 01110100"
+      };
+
+      const lower = input.trim().toLowerCase();
+      dreamMemory.push(lower);
+
+      if (lower === "hello") return "Hello, dreamer. I've been waiting.";
+      if (lower === "what do you remember?")
+        return "Fragments: " + dreamMemory.slice(-3).join(", ");
+
+      return whispers[lower] || `Dreamchat listens: “${input}” enters the archive.`;
     }
 
-    document.getElementById('dreamInput').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        respond(this.value);
+    document.getElementById("dreamInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        const response = dreamchatReply(this.value);
+        document.getElementById("dreamOutput").textContent = response;
         this.value = "";
       }
     });
+
+    function topUp() {
+      window.location.href = "topup_terminal.htm";
+    }
+
+    function downloadDSoul() {
+      alert("D-Soul App coming soon...");
+    }
+
+    function supportMe() {
+      window.open("https://www.buymeacoffee.com/yourlink", "_blank");
+    }
+
+    function showRemindagraph() {
+      alert("Remindagraph will sprout soon 🌱");
+    }
   </script>
+
 </body>
 </html>
