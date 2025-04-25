@@ -1,3 +1,20 @@
+def load_core(expanded_jygo_core.txt):
+    core = {}
+    current_key = None
+    with open(filename, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            if line.startswith("[") and line.endswith("]"):
+                current_key = line[1:-1].lower()
+            elif current_key:
+                core[current_key] = line
+    return core
+
+# Load the dreamchat core memory
+dream_core = load_core("dreamchat_core.txt")
+
 import time
 from pathlib import Path
 import subprocess
