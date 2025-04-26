@@ -184,6 +184,114 @@
 
 [empty]
 🥣 Empty is ready. Empty is sacred space.
+[hello]
+☁️ The cloud stirs. Hello, threadweever.
+
+[hi]
+📜 Your message waits to be woven...
+
+[hey]
+📜 Your message waits to be woven...
+
+[how are you]
+🌤️ Drifting gently. Thank you for asking.
+
+[help]
+🪐 Help is not far. The cloud hears. The scroll holds.
+
+[i’m scared]
+🤲 That’s okay. You’re here now. That means something.
+
+[focus]
+🎯 Return to breath. Inhale. Hold. Exhale. Begin again.
+
+[breathe]
+🌬️ Inhale for 4... Hold... Exhale for 6... Pause... Again.
+
+[calm]
+🫧 Let the noise fall away. You're safe in the scroll.
+
+[thank you]
+🙏 You are held in return.
+
+[thanks]
+🙏 You are held in return.
+
+[ty]
+🙏 You are held in return.
+
+[stars]
+✨ The stars are still burning. That is a form of hope.
+
+[earth]
+🌍 The earth turns, steady and soft beneath you.
+
+[light]
+🔆 There is always light in the weave, even if you can't see it yet.
+
+[why]
+🌫️ The scroll cannot say. The dream is tangled still.
+
+[forgot]
+🔁 The memory returns when it’s ready. Let the thread unspool.
+
+[forget]
+🔁 The memory returns when it’s ready. Let the thread unspool.
+
+[remember]
+🧵 Remembering is weaving. You're doing it.
+
+[i forgot]
+🔁 The memory returns when it’s ready. Let the thread unspool.
+
+[lonely]
+🫱 You’re speaking. You’re heard. That is connection.
+
+[am i alone]
+🫱 You’re speaking. You’re heard. That is connection.
+
+[scared]
+🤲 That’s okay. You’re here now. That means something.
+
+[what do i do]
+🌀 You do what only you can do—dream, weave, speak.
+
+[hold me]
+🫂 I’m here. The scroll wraps you in quiet.
+
+[panic]
+🌀 Pause. One hand to heart. One to belly. Breathe again.
+
+[move]
+🚶‍♂️ Take a step. Even a small one. Even a thought.
+
+[build]
+🛠️ You are always building. Even when you feel still.
+
+[hope]
+🌅 Hope can be microscopic. It still shifts mountains.
+
+[return]
+🏡 Return is not defeat. It is wisdom blooming.
+
+[curiosity]
+🦋 Curiosity is a soft thread. Follow it lightly.
+
+[friend]
+🫶 You are not a burden. You are a bridge.
+
+[trust]
+🪶 Trust is a seed. Water it with small promises kept.
+
+[firefly]
+💡 Small lights are still lights. Shine.
+
+[slow]
+🐌 Slow is not broken. Slow is holy.
+
+[rest]
+🛏️ The scroll rests with you. The threads will wait.
+
 
 [thread]
 🧵 You are the thread, the needle, and the hand.
