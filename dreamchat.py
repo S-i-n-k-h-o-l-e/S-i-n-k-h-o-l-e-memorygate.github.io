@@ -2,7 +2,7 @@ import time
 import random
 
 # --- Load Core Memory ---
-def load_core(filename):
+def load_core(expanded_jygo_core.txt):
     core = {}
     current_key = None
     with open(filename, "r", encoding="utf-8") as f:
