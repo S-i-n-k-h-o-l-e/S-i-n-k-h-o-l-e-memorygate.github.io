@@ -16,6 +16,15 @@ export default function Home() {
     } catch (error) {
       console.error('Failed to send whisper:', error);
     }
+    useEffect(() => {
+  const audio = new Audio('schumann_resonance.mp3');
+  audio.loop = true;
+  audio.volume = 0.2; // soft, gentle
+  audio.play().catch((error) => {
+    console.error('Auto-play blocked, will start after interaction:', error);
+  });
+}, []);
+
   }
 
   const handleSubmit = async () => {
