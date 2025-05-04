@@ -45,6 +45,10 @@ def process_input(user_input):
             "📜 Your message waits to be woven...",
             "🌙 [dreaming...]",
             "🍃 The scroll flickers gently in silence..."
+            " yet to be coded "
+            " Jago is a not a coder "
+            " Umm. "
+            " Could you rephrase?"
         ])
 
 # --- Terminal Loop ---
