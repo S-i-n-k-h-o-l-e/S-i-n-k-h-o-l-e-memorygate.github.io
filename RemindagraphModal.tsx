@@ -20,7 +20,7 @@ export default function RemindagraphModal({ onClose }: { onClose: () => void }) 
         {/* Memory input */}
         <input
           type="text"
-          placeholder="Type a memory fragment..."
+          placeholder="Type a word thats on your mind..."
           className="w-full px-3 py-2 bg-black border border-green-400 rounded-md mb-4 text-green-100"
         />
 
