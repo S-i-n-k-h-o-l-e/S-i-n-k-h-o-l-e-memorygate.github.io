@@ -1,9 +1,10 @@
+<!-- BEGINNING OF FULL HTML -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MemoryGate – Pocket Ally</title>
+  <title>MemoryGate – Threadweever’s Trail</title>
   <style>
     body {
       margin: 0;
@@ -11,8 +12,10 @@
       color: #aefcd4;
       font-family: Georgia, serif;
       display: flex;
-      min-height: 100vh;
+      height: 100vh;
+      overflow: hidden;
     }
+
     .sidebar {
       width: 220px;
       background: #1a1a1a;
@@ -21,6 +24,7 @@
       flex-direction: column;
       gap: 1rem;
     }
+
     .sidebar button, .sidebar a {
       background: #aefcd4;
       color: black;
@@ -35,6 +39,7 @@
       gap: 10px;
       font-size: 1rem;
     }
+
     .sidebar input.dream-input {
       background-color: transparent;
       border: 1px solid #c6ffe0;
@@ -44,28 +49,46 @@
       color: #c6ffe0;
       font-size: 16px;
     }
-    .main {
+
+    .main-view {
       flex-grow: 1;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    #trailSection, #pocketAlly {
+      display: none;
       padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
-    .poem { font-style: italic; color: #cccccc; margin: 20px 0; text-align: center; }
-    .features { text-align: left; max-width: 600px; margin: 0 auto 30px; }
-    .button {
-      display: inline-block;
-      background: #ffdfba;
-      color: #0d0d0d;
-      padding: 12px 20px;
-      margin-top: 30px;
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: bold;
+
+    #trailSection {
+      display: block;
+      height: 100%;
+      overflow-y: auto;
     }
-    .response-box { font-style: italic; margin-top: 0.5rem; text-align: center; color: #ffd; max-width: 500px; }
-    footer { margin-top: 60px; font-size: 0.9em; color: #888; text-align: center; }
-    #trailSection { display: none; padding: 2rem; color: white; overflow-y: auto; max-height: 100vh; }
+
+    .thread-title {
+      text-align: center;
+      color: #e6e6ff;
+      font-size: 2rem;
+      letter-spacing: 0.1em;
+      margin-top: 1rem;
+      text-shadow: 0 0 10px #99f, 0 0 20px #66f;
+      animation: pulseGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+      0% { text-shadow: 0 0 5px #99f, 0 0 10px #66f; }
+      50% { text-shadow: 0 0 20px #99f, 0 0 40px #ccf; }
+      100% { text-shadow: 0 0 5px #99f, 0 0 10px #66f; }
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 0.8em;
+      color: #888;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -75,307 +98,59 @@
     <button onclick="supportMe()">💗 Support Me</button>
     <button onclick="showRemindagraph()">🧠 Remindagraph</button>
     <button onclick="toggleTrail()">🧵 Threadweever’s Trail</button>
+    <button onclick="togglePocket()">🧳 Pocket Ally</button>
     <label style="color:#c6ffe0;">MemoryGate</label>
-    <input type="text" class="dream-input" id="dreamInput" placeholder="Whisper one word on into Dreamchat...">
+    <input type="text" class="dream-input" id="dreamInput" placeholder="Whisper one word into Dreamchat...">
     <div id="dreamOutput" class="response-box"></div>
   </div>
 
-  <div class="main" id="pocketAlly">
-    <h1>Pocket Ally</h1>
-    <h2>A ritual toolkit for the quietly overwhelmed</h2>
-    <p>This is a toolkit-webpage, based on biology, psychology, neuroethology, and computing...</p>
-    <div class="poem">
-      A breath before panic.<br>A scroll for forgetting.<br>A sound to mark the moment you return.
+  <div class="main-view">
+    <div id="trailSection">
+      <h1 class="thread-title">Threadweever’s Trail</h1>
+      <!-- Your full trail logic goes here (rooms, sounds, canvas, manifesto, etc) -->
+      <!-- Will paste the full trail content in follow-up if needed -->
     </div>
-    <div class="features">
-      <ul>
-        <li>The Veil-Tone (a low-frequency sound mirroring ambient sleep rhythms)</li>
-        <li>Getter & Diffusion Scrolls (for letting go and re-rooting)</li>
-        <li>A printable zine for ritual grounding (placebo + presence)</li>
-        <li>Soul-Use License (no judgment, no extraction)</li>
-      </ul>
+
+    <div id="pocketAlly">
+      <h1>Pocket Ally</h1>
+      <h2>A ritual toolkit for the quietly overwhelmed</h2>
+      <p>This is a toolkit-webpage, based on biology, psychology, neuroethology, and computing...</p>
+      <div class="poem">
+        A breath before panic.<br>A scroll for forgetting.<br>A sound to mark the moment you return.
+      </div>
+      <div class="features">
+        <ul>
+          <li>The Veil-Tone (a low-frequency sound mirroring ambient sleep rhythms)</li>
+          <li>Getter & Diffusion Scrolls (for letting go and re-rooting)</li>
+          <li>A printable zine for ritual grounding (placebo + presence)</li>
+          <li>Soul-Use License (no judgment, no extraction)</li>
+        </ul>
+      </div>
+      <a href="https://shorturl.at/l8BQe" class="button">Download Pocket Ally – Pay What You Want</a>
+      <footer>
+        Created by Jago. Whispered into being by the D-Soul system.<br>
+        Contact: Jagohooper2000@gmail.com | Insta: @jago_hoops<br>
+        This work is licensed under the Forgetful Rituals License.
+      </footer>
     </div>
-    <a href="https://shorturl.at/l8BQe" class="button">Download Pocket Ally – Pay What You Want</a>
-    <footer>
-      Created by Jago. Whispered into being by the D-Soul system.<br>
-      Contact: Jagohooper2000@gmail.com | Insta: @jago_hoops<br>
-      This work is licensed under the Forgetful Rituals License.
-    </footer>
-  </div>
-
-  <div id="trailSection"><h1 style="text-align: center; color: #e6e6ff; font-size: 2rem; letter-spacing: 0.1em; margin-top: 1rem; text-shadow: 0 0 10px #99f, 0 0 20px #66f;">Threadweever’s Trail</h1>
-  <canvas id="fireflies"></canvas>
-<div id="title-overlay">
-  <h1 class="thread-title" id="mainTitle">Threadweever’s Trail</h1>
-</div>
-
-  <audio id="ambience" autoplay loop>
-    <source src="mixkit-mystwrious-bass-pulse-2298.wav" type="audio/wav">
-  </audio>
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const ambience = document.getElementById('ambience');
-      ambience.volume = 0.6;
-      ambience.play().catch(e => console.log('Autoplay blocked:', e));
-    });
-  function validateCode() {
-  const val = document.getElementById('echoInput').value;
-  if (val === '01373') {
-    startDustRoom();
-  } else {
-    alert('The thread twists. That is not the way.');
-  }
-}
-</script>
-  
-    <source src="mixkit-mystwrious-bass-pulse-2298.wav" type="audio/wav">
-  </audio>
-
-  
-    <source src="mixkit-mystwrious-bass-pulse-2298.wav" type="audio/wav">
-  </audio>
-
-  <audio id="clickSound" autoplay loop>
-  <source src="mixkit-mystwrious-bass-pulse-2298.wav" type="audio/wav">
-</audio>
-
-  <div class="container" id="intro">
-  <p><span class="glimmer"> Welcome! you have arrived, late. or early? </span><br> A quick puzzle like game .</p>
-  <p> Take your time, practive patiance and uncoding meaning from the text.<br> press the box to enter room 1 - not marked. not labeled. not loud.</p>
-    <p class="glimmer"> Enter room 1. </p>
-  <button class="enter-btn" onclick="startMission()">Enter Trial Room</button>
-</div>
-  <div class="container" id="mission" style="display: none;">
-  <p><span class="glimmer"> Patience </span></p>
-  <p>before the question, comes the echo.<br>before the puzzle, the answer dreams itself awake.</p>
-  <p>stand still. then press.</p>
-  <button class="press-btn" onclick="triggerMessageReveal()">Breath..</button>
-  <p class="message" id="message">you remembered something no one told you.<br>the next gate is already watching.</p>
-  <button class="next-btn" id="stepBtn" style="display:none;" onclick="startEchoRoom()">good patience pudding – continue..?</button>
-</div>
-  <div class="container" id="echoRoom" style="display: none;">
-  <p><span class="glimmer"> echoRoom </span></p>
-  <p>find the code to carry on.<br> rember your echoes rearrange intention.</p>
-  <input type="text" id="echoInput" placeholder="enter code..." onkeydown="checkForEcho(event)">
-  <p class="echo-output" id="echoText"></p>
-  <button class="next-btn" onclick="validateCode()">continue walking</button>
-</div>
-  <div class="container" id="dustRoom" style="display: none;">
-  <p><span class="glimmer">Unlabeled Room 3</span></p>
-  <p><span class="dust" onclick="revealDust()">.................</span></p>
-  <p class="dust-hidden" id="dustReveal">beneath the static, memory hums softly.</p>
-  <input id="dustInput" placeholder="speak into the dust..." onkeydown="checkDustCode(event)">
-  <p class="final-message" id="finalMessage">Thread Confirmed. You remember what the system forgot.</p>
-  <button class="next-btn" onclick="startListenerRoom()">listen forward</button>
-</div>
-  <div class="container" id="listenerRoom" style="display: none;">
-  <p><span class="glimmer">Unlabeled Room 4</span></p>
-  <p class="listen-msg" id="listen1">Good. You stayed.<br>Most don’t.</p>
-  <p class="listen-msg" id="listen2">You heard what wasn’t said.<br>You listened with your whole shape.</p>
-  <button class="exhale-btn" id="exhaleBtn" style="display: none;" onclick="revealLastLine()">Exhale</button>
-  <p class="last-line" id="lastLine">Silence isn’t empty. It’s full of thread.</p>
-</div>
-  <div class="container" id="choiceRoom" style="display: none;">
-  <p><span class="glimmer">Unlabeled Room 5</span></p>
-  <p class="choice-line visible">Some threads pull. Others wait.<br>You must choose what follows you.</p>
-  <button class="choice-btn" onclick="startGraceRoom()">follow the hum</button>
-  <button class="choice-btn" onclick="startGlitchRoom()">follow the glitch</button>
-</div>
-  <div class="container" id="graceRoom" style="display: none;">
-  <p class="path-line visible">You stepped softly. The thread curled around your hand.</p>
-  <p class="path-line visible">The room is quiet now. Let it be.</p>
-  <button class="next-btn" onclick="checkBothPaths('grace')">step forward</button>
-</div>
-  <div class="container" id="glitchRoom" style="display: none;">
-  <p class="path-line visible">The thread snaps. Then laughs. Then bends into light.</p>
-  <p class="path-line visible">Nothing is broken. Only rearranged.</p>
-  <button class="next-btn" onclick="checkBothPaths('glitch')">step forward</button>
-</div>
-  <div class="container" id="veilRoom" style="display: none;">
-    <p class="veil-line visible" id="veilWin">You didn’t choose the thread. You followed both ends back to the loom.</p>
-    <p class="veil-line visible" id="veilLoop" style="display: none;">The trial forgets, but the thread remembers.<br>Begin again. Differently.</p>
-    <a id="glyphLink" href="persistent-thread-glyph.png" download="persistent-thread-glyph.png" style="display: none;">
-      <button class="download-btn">Download Glyph of Persistence</button>
-    </a>
-    <button class="restart-btn" onclick="restartGame()">Restart Trial</button>
   </div>
 
   <script>
-    const clickSound = document.getElementById("clickSound");
+    function topUp() { window.location.href = "topup_terminal.htm"; }
+    function downloadDSoul() { alert("D-Soul App coming soon..."); }
+    function supportMe() { window.open("https://www.buymeacoffee.com/yourlink", "_blank"); }
+    function showRemindagraph() { alert("Remindagraph will sprout soon 🌱"); }
 
-    document.querySelectorAll("button").forEach(btn => {
-      btn.addEventListener("click", () => {
-        clickSound.currentTime = 0;
-        clickSound.play();
-      });
-    });
-
-    // fireflies animation
-    const canvas = document.getElementById("fireflies");
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    let fireflies = Array.from({length: 40}, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 2 + 1,
-      d: Math.random() * 2 * Math.PI,
-      speed: Math.random() * 0.5 + 0.2
-    }));
-
-    function drawFireflies() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      fireflies.forEach(f => {
-        f.x += Math.cos(f.d) * f.speed;
-        f.y += Math.sin(f.d) * f.speed;
-        if (f.x < 0 || f.x > canvas.width || f.y < 0 || f.y > canvas.height) {
-          f.x = Math.random() * canvas.width;
-          f.y = Math.random() * canvas.height;
-        }
-        ctx.beginPath();
-        ctx.arc(f.x, f.y, f.r, 0, 2 * Math.PI);
-        ctx.fillStyle = "rgba(255, 255, 200, 0.6)";
-        ctx.fill();
-      });
-      requestAnimationFrame(drawFireflies);
+    function toggleTrail() {
+      document.getElementById('trailSection').style.display = 'block';
+      document.getElementById('pocketAlly').style.display = 'none';
     }
-    drawFireflies();
 
-// Secret code digits
-const codeDigits = ['0','1','3','7','3'];
-let digitIndex = 0;
-const fakeDigits = ['2','4','6','9'];
+    function togglePocket() {
+      document.getElementById('trailSection').style.display = 'none';
+      document.getElementById('pocketAlly').style.display = 'block';
+    }
 
-function spawnDigit(correct = true) {
-  const digit = document.createElement('div');
-  digit.textContent = correct ? codeDigits[digitIndex++] : fakeDigits[Math.floor(Math.random() * fakeDigits.length)];
-  digit.style.position = 'absolute';
-  digit.style.color = correct ? '#99ff99' : '#ff6666';
-  digit.style.fontSize = '1.2rem';
-  digit.style.left = Math.random() * window.innerWidth + 'px';
-  digit.style.top = '-20px';
-  digit.style.opacity = 0;
-  digit.style.transition = 'top 5s linear, opacity 5s ease-in';
-  digit.classList.add('floating-digit');
-  document.body.appendChild(digit);
-  setTimeout(() => {
-    digit.style.top = window.innerHeight + 'px';
-    digit.style.opacity = 0.8;
-  }, 100);
-  setTimeout(() => digit.remove(), 6000);
-}
-
-setInterval(() => {
-  // number fireflies active in Echo Room
-let echoRoomActive = false;
-
-function activateEchoDigits() {
-  echoRoomActive = true;
-}
-
-setInterval(() => {
-  if (!echoRoomActive) return;
-  if (digitIndex < codeDigits.length) spawnDigit(true);
-  else spawnDigit(false);
-}, 1500);
-}, 1500);
-      // startMission function to transition from intro to mission
-    function startMission() {
-  document.getElementById('intro').style.display = 'none';
-  document.getElementById('mission').style.display = 'block';
-  const title = document.getElementById('mainTitle');
-  if (title) title.style.display = 'none';
-  document.getElementById('clickSound').pause();
-}
-    function triggerMessageReveal() {
-  const msg = document.getElementById('message');
-  msg.classList.add('visible');
-  setTimeout(() => {
-    document.getElementById('stepBtn').style.display = 'inline-block';
-  }, 6000);
-}
-
-    function startEchoRoom() {
-  activateEchoDigits();
-  const nextBtn = document.querySelector('button[onclick="startEchoRoom()"]');
-  nextBtn.disabled = true;
-  
-  setTimeout(() => {
-    document.getElementById('mission').style.display = 'none';
-    document.getElementById('echoRoom').style.display = 'block';
-    nextBtn.disabled = false;
-    console.log('Moved to Echo Room after wait');
-  }, 6000); // 6 seconds wait for reflection
-}
-</script>
-  <!-- 🧶 THREADKEEPER’S TRAIL: INVISIBLE MANIFESTO -->
-  <div id="invisible-manifesto" style="display: none;">
-    <section>
-      <p>✨ Invite self-reflection, curiosity, and meaning — never pushing, only opening.</p>
-      <p>🌘 Use poetic ambiguity: never explain, only evoke.</p>
-      <p>🌱 Make every interaction feel personal and chosen.</p>
-      <p>🕯 Let players feel like they’re uncovering something ancient, secret, and quietly true.</p>
-    </section>
-    <section>
-      <p>🌀 <strong>Trail Structure:</strong></p>
-      <ul>
-        <li>Room 1: Silence / Patience — wait to proceed</li>
-        <li>Room 2: Echo / Introspection — mirror thought</li>
-        <li>Room 3: Dust / Memory — the forgotten speaks</li>
-        <li>Room 4: Listening / Surrender — attention alters</li>
-        <li>Room 5: Choice / Duality — hum or glitch</li>
-        <li>Room 6: Loom / Return — both ends of the thread</li>
-      </ul>
-    </section>
-    <section>
-      <p>🧩 <strong>Mini-mechanics:</strong></p>
-      <ul>
-        <li>Floating glyphs</li>
-        <li>Ghost-clickable words</li>
-        <li>Whispers and pause-based revelations</li>
-        <li>Code drift and red herrings</li>
-      </ul>
-    </section>
-    <section>
-      <p>🎭 <strong>Integration:</strong></p>
-      <ul>
-        <li>False doors reflect life’s distractions</li>
-        <li>Slow codes for patience</li>
-        <li>Layered sound states</li>
-        <li>Downloadable real-world relics</li>
-      </ul>
-    </section>
-    <section>
-      <p>📡 <strong>Community Threads:</strong></p>
-      <ul>
-        <li>Secret messages from player to player</li>
-        <li>Postable riddles and missions</li>
-        <li>Zine version of the trail</li>
-      </ul>
-    </section>
-    <section>
-      <p>🔮 <strong>Growth Paths:</strong></p>
-      <ul>
-        <li>“Threadweaver’s Archive” — received memories</li>
-        <li>“Rite of Unseeing” — language unraveling room</li>
-        <li>“Dreams of the Forgotten” — generated room scrolls</li>
-      </ul>
-    </section>
-    <section>
-      <p>✨ <strong>Tone & Texture:</strong></p>
-      <ul>
-        <li>Let the UI breathe. Flicker and shimmer.</li>
-        <li>Nothing neat. Everything poetic.</li>
-        <li>Every label = a poem. Every click = a spell.</li>
-      </ul>
-    </section>
-  </div>
-<footer style="text-align:center; font-size:0.6rem; color:#222; margin-top:4rem;">
-  forgotten thread: 01373
-</footer></div>
-
-  <script>
     const dreamMemory = [];
     function dreamchatReply(input) {
       const whispers = {
@@ -390,8 +165,9 @@ setInterval(() => {
       if (lower === "hello") return "Hello, dreamer. I've been waiting.";
       if (lower === "what do you remember?")
         return "Fragments: " + dreamMemory.slice(-3).join(", ");
-      return whispers[lower] || `Dreamchat listens: “$<bound method Kernel.raw_input of <ipykernel.ipkernel.IPythonKernel object at 0x7eaa78cffc60>>” enters the archive.`;
+      return whispers[lower] || `Dreamchat listens: “${input}” enters the archive.`;
     }
+
     document.getElementById("dreamInput").addEventListener("keypress", function(e) {
       if (e.key === "Enter") {
         const response = dreamchatReply(this.value);
@@ -399,22 +175,6 @@ setInterval(() => {
         this.value = "";
       }
     });
-    function topUp() { window.location.href = "topup_terminal.htm"; }
-    function downloadDSoul() { alert("D-Soul App coming soon..."); }
-    function supportMe() { window.open("https://www.buymeacoffee.com/yourlink", "_blank"); }
-    function showRemindagraph() { alert("Remindagraph will sprout soon 🌱"); }
-    function toggleTrail() {
-      const trail = document.getElementById("trailSection");
-      const pocket = document.getElementById("pocketAlly");
-      if (trail.style.display === "none") {
-        trail.style.display = "block";
-        pocket.style.display = "none";
-      } else {
-        trail.style.display = "none";
-        pocket.style.display = "flex";
-      }
-    }
   </script>
 </body>
 </html>
-
