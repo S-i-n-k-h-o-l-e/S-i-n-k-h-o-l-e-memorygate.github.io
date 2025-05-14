@@ -54,23 +54,17 @@
       display: none;
       padding: 2rem;
     }
+    #trailSection {
+      display: block;
+      color: #e6e6ff;
+    }
     .thread-title {
       text-align: center;
-      color: #e6e6ff;
       font-size: 2rem;
       letter-spacing: 0.1em;
       margin-top: 1rem;
       text-shadow: 0 0 10px #99f, 0 0 20px #66f;
       animation: pulseGlow 4s ease-in-out infinite;
-    }
-    #fireflies {
-      position: fixed;
-      top: 0;
-      left: 220px;
-      width: calc(100vw - 220px);
-      height: 100vh;
-      z-index: 0;
-      pointer-events: none;
     }
     @keyframes pulseGlow {
       0% { text-shadow: 0 0 5px #99f, 0 0 10px #66f; }
@@ -82,6 +76,15 @@
       font-size: 0.8em;
       color: #888;
       text-align: center;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 220px;
+      width: calc(100vw - 220px);
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
     }
   </style>
 </head>
@@ -101,10 +104,23 @@
   <div class="main-view">
     <div id="trailSection">
       <h1 class="thread-title">Threadweever’s Trail</h1>
-      <!-- ✨ INSERT FULL GAME STRUCTURE HERE (rooms, canvas, audio, etc) ✨ -->
+      <canvas id="fireflies"></canvas>
+      <div id="intro">
+        <p>✨ Welcome to the trail. Press below to begin.</p>
+        <button onclick="startTrail()">Enter Room 1</button>
+      </div>
+      <div id="room1" style="display:none;">
+        <p>Room 1: Wait patiently. Then press the button below.</p>
+        <button onclick="showRoom2()">Breath..</button>
+      </div>
+      <div id="room2" style="display:none;">
+        <p>Room 2: The echoes gather. Enter code: <input id="echoInput" placeholder="code..." /></p>
+        <button onclick="checkEcho()">continue walking</button>
+        <div id="echoOutput"></div>
+      </div>
     </div>
 
-    <div id="pocketAlly">
+    <div id="pocketAlly" style="display: none;">
       <h1>Pocket Ally</h1>
       <h2>A ritual toolkit for the quietly overwhelmed</h2>
       <p>This is a toolkit-webpage, based on biology, psychology, neuroethology, and computing...</p>
@@ -129,6 +145,7 @@
   </div>
 
   <script>
+    // Sidebar actions
     function topUp() { window.location.href = "topup_terminal.htm"; }
     function downloadDSoul() { alert("D-Soul App coming soon..."); }
     function supportMe() { window.open("https://www.buymeacoffee.com/yourlink", "_blank"); }
@@ -144,6 +161,7 @@
       document.getElementById('pocketAlly').style.display = 'block';
     }
 
+    // Dreamchat input logic
     const dreamMemory = [];
     function dreamchatReply(input) {
       const whispers = {
@@ -169,16 +187,57 @@
       }
     });
 
-    window.addEventListener("DOMContentLoaded", () => {
-      toggleTrail(); // Load trail by default
-      const intro = document.getElementById("intro");
-      if (intro) intro.style.display = "block";
+    // Fireflies
+    const canvas = document.getElementById("fireflies");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let fireflies = Array.from({length: 40}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 2 + 1,
+      d: Math.random() * 2 * Math.PI,
+      speed: Math.random() * 0.5 + 0.2
+    }));
+    function drawFireflies() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      fireflies.forEach(f => {
+        f.x += Math.cos(f.d) * f.speed;
+        f.y += Math.sin(f.d) * f.speed;
+        if (f.x < 0 || f.x > canvas.width || f.y < 0 || f.y > canvas.height) {
+          f.x = Math.random() * canvas.width;
+          f.y = Math.random() * canvas.height;
+        }
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, 2 * Math.PI);
+        ctx.fillStyle = "rgba(255, 255, 200, 0.6)";
+        ctx.fill();
+      });
+      requestAnimationFrame(drawFireflies);
+    }
+    drawFireflies();
 
-      const clickSound = document.getElementById("clickSound");
-      if (clickSound) {
-        clickSound.volume = 0.4;
-        clickSound.play().catch(() => {});
+    // Trail logic
+    function startTrail() {
+      document.getElementById("intro").style.display = "none";
+      document.getElementById("room1").style.display = "block";
+    }
+    function showRoom2() {
+      document.getElementById("room1").style.display = "none";
+      document.getElementById("room2").style.display = "block";
+    }
+    function checkEcho() {
+      const code = document.getElementById("echoInput").value;
+      if (code === "01373") {
+        document.getElementById("echoOutput").textContent = "✔ Thread Confirmed. Memory returns.";
+      } else {
+        document.getElementById("echoOutput").textContent = "✖ The thread twists. That is not the way.";
       }
+    }
+
+    // Start trail by default
+    window.addEventListener("DOMContentLoaded", () => {
+      toggleTrail();
     });
   </script>
 </body>
