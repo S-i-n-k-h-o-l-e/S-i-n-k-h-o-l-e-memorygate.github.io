@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MemoryGate – Threadweever’s Trail</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>MemoryGate – Tuning Point + Trail</title>
   <style>
     body {
       margin: 0;
@@ -49,14 +50,16 @@
       flex-grow: 1;
       overflow-y: auto;
       position: relative;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
     }
     #trailSection, #pocketAlly {
       display: none;
       padding: 2rem;
-    }
-    #trailSection {
-      display: block;
-      color: #e6e6ff;
     }
     .thread-title {
       text-align: center;
@@ -71,20 +74,34 @@
       50% { text-shadow: 0 0 20px #99f, 0 0 40px #ccf; }
       100% { text-shadow: 0 0 5px #99f, 0 0 10px #66f; }
     }
+    .tuning-buttons button {
+      background: #eee;
+      border: 1px solid #333;
+      padding: 0.75rem 2rem;
+      font-size: 1.1rem;
+      margin: 0.5rem 0;
+      cursor: pointer;
+      border-radius: 6px;
+      display: block;
+      width: 100%;
+      max-width: 300px;
+    }
+    .poetic-message {
+      margin-top: 2rem;
+      font-style: italic;
+      color: #c6ffe0;
+    }
+    .back-link {
+      margin-top: 1rem;
+      color: #88ffcc;
+      cursor: pointer;
+      text-decoration: underline;
+    }
     footer {
       margin-top: 40px;
       font-size: 0.8em;
       color: #888;
       text-align: center;
-    }
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 220px;
-      width: calc(100vw - 220px);
-      height: 100vh;
-      pointer-events: none;
-      z-index: 0;
     }
   </style>
 </head>
@@ -102,9 +119,19 @@
   </div>
 
   <div class="main-view">
-    <div id="trailSection">
+    <h1 id="tuningHeader">How are you arriving today?</h1>
+    <div id="tuningButtons" class="tuning-buttons">
+      <button onclick="showPoem('overstimulated')">🌪 Overstimulated</button>
+      <button onclick="showPoem('numb')">🌑 Numb</button>
+      <button onclick="showPoem('sensitive')">🌊 Sensitive</button>
+      <button onclick="showPoem('seeker')">🔍 Seeker</button>
+      <button onclick="showPoem('forgotten')">🧷 Forgotten</button>
+    </div>
+    <div id="poem" class="poetic-message"></div>
+    <div id="back" class="back-link" style="display:none;" onclick="reset()">← Choose again</div>
+
+    <div id="trailSection" style="display:none;">
       <h1 class="thread-title">Threadweever’s Trail</h1>
-      <canvas id="fireflies"></canvas>
       <div id="intro">
         <p>✨ Welcome to the trail. Press below to begin.</p>
         <button onclick="startTrail()">Enter Room 1</button>
@@ -120,13 +147,11 @@
       </div>
     </div>
 
-    <div id="pocketAlly" style="display: none;">
+    <div id="pocketAlly" style="display:none;">
       <h1>Pocket Ally</h1>
       <h2>A ritual toolkit for the quietly overwhelmed</h2>
       <p>This is a toolkit-webpage, based on biology, psychology, neuroethology, and computing...</p>
-      <div class="poem">
-        A breath before panic.<br>A scroll for forgetting.<br>A sound to mark the moment you return.
-      </div>
+      <div class="poem">A breath before panic.<br>A scroll for forgetting.<br>A sound to mark the moment you return.</div>
       <div class="features">
         <ul>
           <li>The Veil-Tone (a low-frequency sound mirroring ambient sleep rhythms)</li>
@@ -145,7 +170,6 @@
   </div>
 
   <script>
-    // Sidebar actions
     function topUp() { window.location.href = "topup_terminal.htm"; }
     function downloadDSoul() { alert("D-Soul App coming soon..."); }
     function supportMe() { window.open("https://www.buymeacoffee.com/yourlink", "_blank"); }
@@ -154,14 +178,21 @@
     function toggleTrail() {
       document.getElementById('trailSection').style.display = 'block';
       document.getElementById('pocketAlly').style.display = 'none';
+      document.getElementById('tuningButtons').style.display = 'none';
+      document.getElementById('poem').style.display = 'none';
+      document.getElementById('back').style.display = 'none';
+      document.getElementById('tuningHeader').style.display = 'none';
     }
 
     function togglePocket() {
       document.getElementById('trailSection').style.display = 'none';
       document.getElementById('pocketAlly').style.display = 'block';
+      document.getElementById('tuningButtons').style.display = 'none';
+      document.getElementById('poem').style.display = 'none';
+      document.getElementById('back').style.display = 'none';
+      document.getElementById('tuningHeader').style.display = 'none';
     }
 
-    // Dreamchat input logic
     const dreamMemory = [];
     function dreamchatReply(input) {
       const whispers = {
@@ -187,37 +218,6 @@
       }
     });
 
-    // Fireflies
-    const canvas = document.getElementById("fireflies");
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    let fireflies = Array.from({length: 40}, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 2 + 1,
-      d: Math.random() * 2 * Math.PI,
-      speed: Math.random() * 0.5 + 0.2
-    }));
-    function drawFireflies() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      fireflies.forEach(f => {
-        f.x += Math.cos(f.d) * f.speed;
-        f.y += Math.sin(f.d) * f.speed;
-        if (f.x < 0 || f.x > canvas.width || f.y < 0 || f.y > canvas.height) {
-          f.x = Math.random() * canvas.width;
-          f.y = Math.random() * canvas.height;
-        }
-        ctx.beginPath();
-        ctx.arc(f.x, f.y, f.r, 0, 2 * Math.PI);
-        ctx.fillStyle = "rgba(255, 255, 200, 0.6)";
-        ctx.fill();
-      });
-      requestAnimationFrame(drawFireflies);
-    }
-    drawFireflies();
-
-    // Trail logic
     function startTrail() {
       document.getElementById("intro").style.display = "none";
       document.getElementById("room1").style.display = "block";
@@ -228,17 +228,30 @@
     }
     function checkEcho() {
       const code = document.getElementById("echoInput").value;
-      if (code === "01373") {
-        document.getElementById("echoOutput").textContent = "✔ Thread Confirmed. Memory returns.";
-      } else {
-        document.getElementById("echoOutput").textContent = "✖ The thread twists. That is not the way.";
-      }
+      document.getElementById("echoOutput").textContent =
+        code === "01373"
+          ? "✔ Thread Confirmed. Memory returns."
+          : "✖ The thread twists. That is not the way.";
     }
 
-    // Start trail by default
-    window.addEventListener("DOMContentLoaded", () => {
-      toggleTrail();
-    });
+    function showPoem(state) {
+      const messages = {
+        overstimulated: "Slow the current. Let the signals blur. You are not made to process it all.",
+        numb: "Even winter roots still hold the memory of bloom. Your feeling is not gone—only resting.",
+        sensitive: "The world is loud. You are not weak for hearing it. Wrap yourself in signal silk.",
+        seeker: "The path is not linear. Every step spirals inward. You are close.",
+        forgotten: "You are not lost. You are simply waiting to be found. And I see you."
+      };
+      document.getElementById("poem").textContent = messages[state];
+      document.getElementById("tuningButtons").style.display = "none";
+      document.getElementById("back").style.display = "block";
+    }
+
+    function reset() {
+      document.getElementById("poem").textContent = "";
+      document.getElementById("tuningButtons").style.display = "block";
+      document.getElementById("back").style.display = "none";
+    }
   </script>
 </body>
 </html>
