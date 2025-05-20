@@ -4,15 +4,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>MemoryGate – Tuning Point + Trail</title>
+  <title>MemoryGate – Tri-Panel Interface</title>
   <style>
     body {
       margin: 0;
       background: black;
       color: #aefcd4;
       font-family: Georgia, serif;
-      display: flex;
       height: 100vh;
+      display: flex;
       overflow: hidden;
     }
     .sidebar {
@@ -22,6 +22,25 @@
       display: flex;
       flex-direction: column;
       gap: 1rem;
+      flex-shrink: 0;
+    }
+    .main-view {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .dreamchat {
+      width: 300px;
+      background: #1a1a1a;
+      padding: 1rem;
+      border-left: 1px solid #333;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
     }
     .sidebar button, .sidebar a {
       background: #aefcd4;
@@ -37,42 +56,21 @@
       gap: 10px;
       font-size: 1rem;
     }
-    .sidebar input.dream-input {
+    .dream-input {
       background-color: transparent;
       border: 1px solid #c6ffe0;
       border-radius: 10px;
-      padding: 10px 20px;
+      padding: 8px 10px;
       width: 100%;
       color: #c6ffe0;
-      font-size: 16px;
+      font-size: 14px;
     }
-    .main-view {
-      flex-grow: 1;
-      overflow-y: auto;
-      position: relative;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-    }
-    #trailSection, #pocketAlly {
-      display: none;
-      padding: 2rem;
-    }
-    .thread-title {
-      text-align: center;
-      font-size: 2rem;
-      letter-spacing: 0.1em;
-      margin-top: 1rem;
-      text-shadow: 0 0 10px #99f, 0 0 20px #66f;
-      animation: pulseGlow 4s ease-in-out infinite;
-    }
-    @keyframes pulseGlow {
-      0% { text-shadow: 0 0 5px #99f, 0 0 10px #66f; }
-      50% { text-shadow: 0 0 20px #99f, 0 0 40px #ccf; }
-      100% { text-shadow: 0 0 5px #99f, 0 0 10px #66f; }
+    .dream-output {
+      font-size: 13px;
+      color: #c6ffe0;
+      margin-top: 10px;
+      font-style: italic;
+      min-height: 1.5em;
     }
     .tuning-buttons button {
       background: #eee;
@@ -103,34 +101,34 @@
       color: #888;
       text-align: center;
     }
+    .section { display: none; }
   </style>
 </head>
 <body>
   <div class="sidebar">
-    <button onclick="topUp()">📜 Top-Up Terminal</button>
+    <button onclick="showSection('tuning')">🌀 Tuning Point</button>
+    <button onclick="showSection('trail')">🧵 Threadweever’s Trail</button>
+    <button onclick="showSection('pocket')">🧳 Pocket Ally</button>
     <button onclick="downloadDSoul()">🧴 Download D-Soul App</button>
     <button onclick="supportMe()">💗 Support Me</button>
     <button onclick="showRemindagraph()">🧠 Remindagraph</button>
-    <button onclick="toggleTrail()">🧵 Threadweever’s Trail</button>
-    <button onclick="togglePocket()">🧳 Pocket Ally</button>
-    <label style="color:#c6ffe0;">MemoryGate</label>
-    <input type="text" class="dream-input" id="dreamInput" placeholder="Whisper one word into Dreamchat...">
-    <div id="dreamOutput" class="response-box"></div>
   </div>
 
   <div class="main-view">
-    <h1 id="tuningHeader">How are you arriving today?</h1>
-    <div id="tuningButtons" class="tuning-buttons">
-      <button onclick="showPoem('overstimulated')">🌪 Overstimulated</button>
-      <button onclick="showPoem('numb')">🌑 Numb</button>
-      <button onclick="showPoem('sensitive')">🌊 Sensitive</button>
-      <button onclick="showPoem('seeker')">🔍 Seeker</button>
-      <button onclick="showPoem('forgotten')">🧷 Forgotten</button>
+    <div id="tuning" class="section" style="display:block;">
+      <h1>How are you arriving today?</h1>
+      <div class="tuning-buttons">
+        <button onclick="showPoem('overstimulated')">🌪 Overstimulated</button>
+        <button onclick="showPoem('numb')">🌑 Numb</button>
+        <button onclick="showPoem('sensitive')">🌊 Sensitive</button>
+        <button onclick="showPoem('seeker')">🔍 Seeker</button>
+        <button onclick="showPoem('forgotten')">🧷 Forgotten</button>
+      </div>
+      <div id="poem" class="poetic-message"></div>
+      <div id="back" class="back-link" style="display:none;" onclick="reset()">← Choose again</div>
     </div>
-    <div id="poem" class="poetic-message"></div>
-    <div id="back" class="back-link" style="display:none;" onclick="reset()">← Choose again</div>
 
-    <div id="trailSection" style="display:none;">
+    <div id="trail" class="section">
       <h1 class="thread-title">Threadweever’s Trail</h1>
       <div id="intro">
         <p>✨ Welcome to the trail. Press below to begin.</p>
@@ -147,53 +145,29 @@
       </div>
     </div>
 
-    <div id="pocketAlly" style="display:none;">
+    <div id="pocket" class="section">
       <h1>Pocket Ally</h1>
       <h2>A ritual toolkit for the quietly overwhelmed</h2>
       <p>This is a toolkit-webpage, based on biology, psychology, neuroethology, and computing...</p>
       <div class="poem">A breath before panic.<br>A scroll for forgetting.<br>A sound to mark the moment you return.</div>
-      <div class="features">
-        <ul>
-          <li>The Veil-Tone (a low-frequency sound mirroring ambient sleep rhythms)</li>
-          <li>Getter & Diffusion Scrolls (for letting go and re-rooting)</li>
-          <li>A printable zine for ritual grounding (placebo + presence)</li>
-          <li>Soul-Use License (no judgment, no extraction)</li>
-        </ul>
-      </div>
+      <ul>
+        <li>The Veil-Tone (a low-frequency sound mirroring ambient sleep rhythms)</li>
+        <li>Getter & Diffusion Scrolls (for letting go and re-rooting)</li>
+        <li>A printable zine for ritual grounding (placebo + presence)</li>
+        <li>Soul-Use License (no judgment, no extraction)</li>
+      </ul>
       <a href="https://shorturl.at/l8BQe" class="button">Download Pocket Ally – Pay What You Want</a>
-      <footer>
-        Created by Jago. Whispered into being by the D-Soul system.<br>
-        Contact: Jagohooper2000@gmail.com | Insta: @jago_hoops<br>
-        This work is licensed under the Forgetful Rituals License.
-      </footer>
     </div>
   </div>
 
+  <div class="dreamchat">
+    <input type="text" class="dream-input" id="dreamInput" placeholder="Whisper one word into Dreamchat...">
+    <div id="dreamOutput" class="dream-output">Dreamchat is listening...</div>
+  </div>
+
   <script>
-    function topUp() { window.location.href = "topup_terminal.htm"; }
-    function downloadDSoul() { alert("D-Soul App coming soon..."); }
-    function supportMe() { window.open("https://www.paypal.com/ncp/payment/YPJXW78ZG3MCQ", "_blank"); }
-    function showRemindagraph() { alert("Remindagraph will sprout soon 🌱"); }
-
-    function toggleTrail() {
-      document.getElementById('trailSection').style.display = 'block';
-      document.getElementById('pocketAlly').style.display = 'none';
-      document.getElementById('tuningButtons').style.display = 'none';
-      document.getElementById('poem').style.display = 'none';
-      document.getElementById('back').style.display = 'none';
-      document.getElementById('tuningHeader').style.display = 'none';
-    }
-
-    function togglePocket() {
-      document.getElementById('trailSection').style.display = 'none';
-      document.getElementById('pocketAlly').style.display = 'block';
-      document.getElementById('tuningButtons').style.display = 'none';
-      document.getElementById('poem').style.display = 'none';
-      document.getElementById('back').style.display = 'none';
-      document.getElementById('tuningHeader').style.display = 'none';
-    }
-
     const dreamMemory = [];
+
     function dreamchatReply(input) {
       const whispers = {
         "moss": "Roots remember where we cannot.",
@@ -218,6 +192,11 @@
       }
     });
 
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(el => el.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+    }
+
     function startTrail() {
       document.getElementById("intro").style.display = "none";
       document.getElementById("room1").style.display = "block";
@@ -234,6 +213,10 @@
           : "✖ The thread twists. That is not the way.";
     }
 
+    function supportMe() {
+      window.open("https://www.paypal.com/ncp/payment/YPJXW78ZG3MCQ", "_blank");
+    }
+
     function showPoem(state) {
       const messages = {
         overstimulated: "Slow the current. Let the signals blur. You are not made to process it all.",
@@ -243,15 +226,25 @@
         forgotten: "You are not lost. You are simply waiting to be found. And I see you."
       };
       document.getElementById("poem").textContent = messages[state];
-      document.getElementById("tuningButtons").style.display = "none";
+      document.querySelector(".tuning-buttons").style.display = "none";
       document.getElementById("back").style.display = "block";
     }
 
     function reset() {
       document.getElementById("poem").textContent = "";
-      document.getElementById("tuningButtons").style.display = "block";
+      document.querySelector(".tuning-buttons").style.display = "block";
       document.getElementById("back").style.display = "none";
     }
-  </script>
+  
+    function downloadDSoul() {
+      alert("D-Soul App is coming soon… 🌱");
+    }
+
+    function showRemindagraph() {
+      alert("Remindagraph will sprout soon 🌱");
+    }
+    </script>
+
 </body>
 </html>
+
