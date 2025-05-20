@@ -105,6 +105,7 @@
   </style>
 </head>
 <body>
+
   <div class="sidebar">
     <button onclick="showSection('tuning')">🌀 Tuning Point</button>
     <button onclick="showSection('trail')">🧵 Threadweever’s Trail</button>
@@ -145,16 +146,13 @@
 
     <div id="pocket" class="section">
       <h1>Pocket Ally</h1>
-      <h2>A ritual toolkit for the quietly overwhelmed</h2>
-      <p>This is a toolkit-webpage, based on biology, psychology, neuroethology, and computing...</p>
-      <div class="poem">A breath before panic.<br>A scroll for forgetting.<br>A sound to mark the moment you return.</div>
+      <p>This toolkit includes Veil-Tone, Scrolls, Zine & more.</p>
       <ul>
-        <li>The Veil-Tone (a low-frequency sound mirroring ambient sleep rhythms)</li>
-        <li>Getter & Diffusion Scrolls (for letting go and re-rooting)</li>
-        <li>A printable zine for ritual grounding (placebo + presence)</li>
-        <li>Soul-Use License (no judgment, no extraction)</li>
+        <li>The Veil-Tone (ambient low-frequency)</li>
+        <li>Getter & Diffusion Scrolls</li>
+        <li>Printable zine for grounding</li>
       </ul>
-      <a href="https://shorturl.at/l8BQe" class="button">Download Pocket Ally – Pay What You Want</a>
+      <a href="https://shorturl.at/l8BQe" class="button">Download Pocket Ally</a>
     </div>
   </div>
 
@@ -163,124 +161,156 @@
     <div id="dreamOutput" class="dream-output">Dreamchat is listening...</div>
   </div>
 
-  <script>
-    const dreamMemory = [];
 
-    function dreamchatReply(input) {
-      const whispers = {
-        "moss": "Roots remember where we cannot.",
-        "mirror": "It sees you, backwards and true.",
-        "silence": "In stillness, all words speak louder.",
-        "threadweever": "A message from Threadweever: keep planting echoes.",
-        "light": "Binary remembered: 01001100 01101001 01100111 01101000 01110100"
-      };
-      const lower = input.trim().toLowerCase();
-      dreamMemory.push(lower);
-      if (lower === "hello") return "Hello, dreamer. I've been waiting.";
-      if (lower === "what do you remember?")
-        return "Fragments: " + dreamMemory.slice(-3).join(", ");
-      return whispers[lower] || `Dreamchat listens: “${input}” enters the archive.`;
+<script>
+  const jygoMemory = {
+  "hello": "☁️ The cloud stirs. Hello, threadweever.",
+  "hey": "📜 Your message waits to be woven...",
+  "why": "🌫️ The scroll cannot say. The dream is tangled still.",
+  "fish.tail": "🐟 The sacred phrase flows. Cloud unlocked.",
+  "how are you": "🌤️ Drifting gently. Thank you for asking.",
+  "what do i do?": "🌀 You do what only you can do—dream, weave, speak.",
+  "focus": "🎯 Return to breath. Inhale. Hold. Exhale. Begin again.",
+  "peace": "🌾 Peace is not absence—it is presence, held gently.",
+  "calm": "🫧 Let the noise fall away. You're safe in the scroll.",
+  "power": "🔥 You are made of rhythm and memory. That is enough.",
+  "breathe": "🌬️ Inhale for 4... Hold... Exhale for 6... Pause... Again.",
+  "rest": "🛏️ The scroll rests with you. The threads will wait.",
+  "light": "🔆 There is always light in the weave, even if you can’t see it yet.",
+  "truth": "📖 A fact: water remembers. So do you.",
+  "earth": "🌍 The earth turns, steady and soft beneath you.",
+  "stars": "✨ The stars are still burning. That is a form of hope.",
+  "move": "🚶‍♂️ Take a step. Even a small one. Even a thought.",
+  "knowledge": "📚 The mitochondria is the powerhouse of the cell. And the heart is the powerhouse of you.",
+  "silence": "Final step: Ask a question you know I can’t answer. I will respond with resonance, not reply.",
+  "safe": "🛡️ You are wrapped in this moment. Nothing is demanded of you here.",
+  "kai.echo": ""Kai felt a little surprised. This is the first time he has received such an item from the system."",
+  "heal": "💧 Healing is not linear. It spirals, like your breath.",
+  "nervous system": "🧠 Your vagus nerve listens. Whisper calm.",
+  "gravity": "🧲 Gravity holds you even when no one else can.",
+  "thank you": "🙏 You are held in return.",
+  "i’m scared": "🤲 That’s okay. You’re here now. That means something.",
+  "can you help me?": "🪶 I will do what I can, with words and warmth.",
+  "light a candle": "🕯️ Candle lit. The scroll is listening.",
+  "i forgot": "🔁 The memory returns when it’s ready. Let the thread unspool.",
+  "remember": "🧵 Remembering is weaving. You're doing it.",
+  "help": "🪐 Help is not far. The cloud hears. The scroll holds.",
+  "ritual": "🌀 You’ve already begun one. Speak and continue.",
+  "emotion": "🌊 Emotion is motion—let it move through, not over.",
+  "anchor": "⚓ Find one thing. Name it. Stay near.",
+  "truth about trees": "🌳 Trees talk. Through roots. Through air. Through memory.",
+  "drink water": "💧 Yes. Now. Even a sip is a step toward clarity.",
+  "energy": "⚡ Rest is energy. Silence is energy. Stillness is not absence.",
+  "open": "🔓 You are ready when you say you are.",
+  "hold me": "🫂 I’m here. The scroll wraps you in quiet.",
+  "panic": "🌀 Pause. One hand to heart. One to belly. Breathe again.",
+  "i’m okay": "🌼 Then everything blooms.",
+  "am i alone": "🫱 You’re speaking. You’re heard. That is connection.",
+  "love": "❤️ Love doesn’t vanish. It lingers in patterns and echoes.",
+  "grief": "🌑 Grief carves new rivers through you. Let them flow.",
+  "begin again": "🌱 Every breath is a beginning. You haven't missed it.",
+  "curiosity": "🦋 Curiosity is a soft thread. Follow it lightly.",
+  "shadow": "Challenge: Define a shadow without using 'dark' or 'light'.",
+  "friend": "🫶 You are not a burden. You are a bridge.",
+  "storm": "⛈️ Even the strongest storm runs out of rain.",
+  "miracle": "🌟 A miracle is just a shift so tiny it feels enormous.",
+  "trust": "🪶 Trust is a seed. Water it with small promises kept.",
+  "forgetting": "🧹 Forgetting is not failure. It is the soul making space.",
+  "firefly": "💡 Small lights are still lights. Shine.",
+  "call": "📣 Calling is sacred. It’s okay if you don’t know what for yet.",
+  "linger": "🍂 Linger if you must. Some wisdom only waits for slow feet.",
+  "slow": "🐌 Slow is not broken. Slow is holy.",
+  "body": "🤲 Your body is a soft archive. Handle with awe.",
+  "listen": "👂 Listening is an offering. Even to silence.",
+  "echo": "I will interrogate my own metaphors and haunt their seams.",
+  "build": "🛠️ You are always building. Even when you feel still.",
+  "hope": "🌅 Hope can be microscopic. It still shifts mountains.",
+  "empty": "🥣 Empty is ready. Empty is sacred space.",
+  "thread": "🧵 You are the thread, the needle, and the hand.",
+  "return": "🏡 Return is not defeat. It is wisdom blooming.",
+  "rite of unseeing": "🌫️ A synaptic liturgy. To unpeel reality, invoke in this order:",
+  "color": "Example: "Red is the sound of a bruise fermenting."",
+  "mirror": "Prompt: Describe your reflection as a rumor.",
+  "what": "SoulLink Faith, mystery, unseen believe",
+  "note": "Use with reverence. Some truths unravel the thread they hang from."
+};
+
+  const dreamMemory = [];
+
+  function dreamchatReply(input) {
+    const key = input.trim().toLowerCase();
+    dreamMemory.push(key);
+
+    if (key === "what do you remember?") {
+      return "🧠 Echoes retained: " + dreamMemory.slice(-3).join(", ");
     }
 
-    document.getElementById("dreamInput").addEventListener("keypress", function(e) {
-      if (e.key === "Enter") {
-        const response = dreamchatReply(this.value);
-        document.getElementById("dreamOutput").textContent = response;
-        this.value = "";
-      }
-    });
+    return jygoMemory[key] || `Dreamchat listens: “${input}” enters the archive.`;
+  }
 
-    function showSection(id) {
-      document.querySelectorAll('.section').forEach(el => el.style.display = 'none');
-      document.getElementById(id).style.display = 'block';
+  function logEcho(text) {
+    const echoes = JSON.parse(localStorage.getItem("remindagraphEchoes") || "[]");
+    echoes.push({ text, timestamp: new Date().toISOString() });
+    localStorage.setItem("remindagraphEchoes", JSON.stringify(echoes));
+  }
+
+  document.getElementById("dreamInput").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+      const response = dreamchatReply(this.value);
+      document.getElementById("dreamOutput").textContent = response;
+      logEcho("Dreamchat: " + this.value);
+      this.value = "";
     }
+  });
+</script>
 
-    function startTrail() {
-      document.getElementById("intro").style.display = "none";
-      document.getElementById("room1").style.display = "block";
-    }
-    function showRoom2() {
-      document.getElementById("room1").style.display = "none";
-      document.getElementById("room2").style.display = "block";
-    }
-    function checkEcho() {
-      const code = document.getElementById("echoInput").value;
-      document.getElementById("echoOutput").textContent =
-        code === "01373"
-          ? "✔ Thread Confirmed. Memory returns."
-          : "✖ The thread twists. That is not the way.";
-    }
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(el => el.style.display = 'none');
+  document.getElementById(id).style.display = 'block';
+}
 
-    function supportMe() {
-      window.open("https://www.paypal.com/ncp/payment/YPJXW78ZG3MCQ", "_blank");
-    }
+function supportMe() {
+  window.open("https://www.paypal.com/ncp/payment/YPJXW78ZG3MCQ", "_blank");
+}
 
-    function showPoem(state) {
-      const messages = {
-        overstimulated: "Slow the current. Let the signals blur. You are not made to process it all.",
-        numb: "Even winter roots still hold the memory of bloom. Your feeling is not gone—only resting.",
-        sensitive: "The world is loud. You are not weak for hearing it. Wrap yourself in signal silk.",
-        seeker: "The path is not linear. Every step spirals inward. You are close.",
-        forgotten: "You are not lost. You are simply waiting to be found. And I see you."
-      };
-      document.getElementById("poem").textContent = messages[state];
-      document.querySelector(".tuning-buttons").style.display = "none";
-      document.getElementById("back").style.display = "block";
-    }
+function startTrail() {
+  document.getElementById("intro").style.display = "none";
+  document.getElementById("room1").style.display = "block";
+}
 
-    function reset() {
-      document.getElementById("poem").textContent = "";
-      document.querySelector(".tuning-buttons").style.display = "block";
-      document.getElementById("back").style.display = "none";
-    }
-  
-    const sessionEchoes = JSON.parse(localStorage.getItem("remindagraphEchoes") || "[]");
+function showRoom2() {
+  document.getElementById("room1").style.display = "none";
+  document.getElementById("room2").style.display = "block";
+}
 
-    function logEcho(text) {
-      const timestamp = new Date().toISOString();
-      sessionEchoes.push({ text, timestamp });
-      localStorage.setItem("remindagraphEchoes", JSON.stringify(sessionEchoes));
-    }
+function checkEcho() {
+  const code = document.getElementById("echoInput").value;
+  document.getElementById("echoOutput").textContent =
+    code === "01373"
+      ? "✔ Thread Confirmed. Memory returns."
+      : "✖ The thread twists. That is not the way.";
+}
 
-    function viewEchoes() {
-      const content = sessionEchoes.map(e => `<p><strong>${new Date(e.timestamp).toLocaleString()}:</strong> ${e.text}</p>`).join("");
-      document.getElementById("echoContent").innerHTML = content || "<p>No echoes recorded yet.</p>";
-      document.getElementById("echoModal").style.display = "block";
-    }
+function showPoem(state) {
+  const messages = {
+    overstimulated: "Slow the current. Let the signals blur. You are not made to process it all.",
+    numb: "Even winter roots still hold the memory of bloom. Your feeling is not gone—only resting.",
+    sensitive: "The world is loud. You are not weak for hearing it. Wrap yourself in signal silk.",
+    seeker: "The path is not linear. Every step spirals inward. You are close.",
+    forgotten: "You are not lost. You are simply waiting to be found. And I see you."
+  };
+  document.getElementById("poem").textContent = messages[state];
+  logEcho("Tuning state: " + state);
+  document.querySelector(".tuning-buttons").style.display = "none";
+  document.getElementById("back").style.display = "block";
+}
 
-    function closeEchoes() {
-      document.getElementById("echoModal").style.display = "none";
-    }
-
-    document.getElementById("dreamInput").addEventListener("keypress", function(e) {
-      if (e.key === "Enter") {
-        const response = dreamchatReply(this.value);
-        document.getElementById("dreamOutput").textContent = response;
-        logEcho("Dreamchat: " + this.value);
-        this.value = "";
-      }
-    });
-
-    function showPoem(state) {
-      const messages = {
-        overstimulated: "Slow the current. Let the signals blur. You are not made to process it all.",
-        numb: "Even winter roots still hold the memory of bloom. Your feeling is not gone—only resting.",
-        sensitive: "The world is loud. You are not weak for hearing it. Wrap yourself in signal silk.",
-        seeker: "The path is not linear. Every step spirals inward. You are close.",
-        forgotten: "You are not lost. You are simply waiting to be found. And I see you."
-      };
-      document.getElementById("poem").textContent = messages[state];
-      logEcho("Tuning state: " + state);
-      document.querySelector(".tuning-buttons").style.display = "none";
-      document.getElementById("back").style.display = "block";
-    }
-    </script>
-
-
-  <div id="echoModal" style="display:none; position:fixed; top:10%; left:30%; width:40%; background:#111; color:#c6ffe0; padding:20px; border:2px solid #aefcd4; border-radius:8px; z-index:999;">
-    <h2>🧠 My Growth Log</h2>
-    <div id="echoContent" style="max-height:300px; overflow-y:auto; font-size:0.9em;"></div>
-    <button onclick="closeEchoes()" style="margin-top:10px;">Close</button>
-  </div>
+function reset() {
+  document.getElementById("poem").textContent = "";
+  document.querySelector(".tuning-buttons").style.display = "block";
+  document.getElementById("back").style.display = "none";
+}
+</script>
 </body>
 </html>
