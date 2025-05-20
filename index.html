@@ -109,9 +109,7 @@
     <button onclick="showSection('tuning')">🌀 Tuning Point</button>
     <button onclick="showSection('trail')">🧵 Threadweever’s Trail</button>
     <button onclick="showSection('pocket')">🧳 Pocket Ally</button>
-    <button onclick="downloadDSoul()">🧴 Download D-Soul App</button>
     <button onclick="supportMe()">💗 Support Me</button>
-    <button onclick="showRemindagraph()">🧠 Remindagraph</button>
   </div>
 
   <div class="main-view">
@@ -236,15 +234,53 @@
       document.getElementById("back").style.display = "none";
     }
   
-    function downloadDSoul() {
-      alert("D-Soul App is coming soon… 🌱");
+    const sessionEchoes = JSON.parse(localStorage.getItem("remindagraphEchoes") || "[]");
+
+    function logEcho(text) {
+      const timestamp = new Date().toISOString();
+      sessionEchoes.push({ text, timestamp });
+      localStorage.setItem("remindagraphEchoes", JSON.stringify(sessionEchoes));
     }
 
-    function showRemindagraph() {
-      alert("Remindagraph will sprout soon 🌱");
+    function viewEchoes() {
+      const content = sessionEchoes.map(e => `<p><strong>${new Date(e.timestamp).toLocaleString()}:</strong> ${e.text}</p>`).join("");
+      document.getElementById("echoContent").innerHTML = content || "<p>No echoes recorded yet.</p>";
+      document.getElementById("echoModal").style.display = "block";
+    }
+
+    function closeEchoes() {
+      document.getElementById("echoModal").style.display = "none";
+    }
+
+    document.getElementById("dreamInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        const response = dreamchatReply(this.value);
+        document.getElementById("dreamOutput").textContent = response;
+        logEcho("Dreamchat: " + this.value);
+        this.value = "";
+      }
+    });
+
+    function showPoem(state) {
+      const messages = {
+        overstimulated: "Slow the current. Let the signals blur. You are not made to process it all.",
+        numb: "Even winter roots still hold the memory of bloom. Your feeling is not gone—only resting.",
+        sensitive: "The world is loud. You are not weak for hearing it. Wrap yourself in signal silk.",
+        seeker: "The path is not linear. Every step spirals inward. You are close.",
+        forgotten: "You are not lost. You are simply waiting to be found. And I see you."
+      };
+      document.getElementById("poem").textContent = messages[state];
+      logEcho("Tuning state: " + state);
+      document.querySelector(".tuning-buttons").style.display = "none";
+      document.getElementById("back").style.display = "block";
     }
     </script>
 
+
+  <div id="echoModal" style="display:none; position:fixed; top:10%; left:30%; width:40%; background:#111; color:#c6ffe0; padding:20px; border:2px solid #aefcd4; border-radius:8px; z-index:999;">
+    <h2>🧠 My Growth Log</h2>
+    <div id="echoContent" style="max-height:300px; overflow-y:auto; font-size:0.9em;"></div>
+    <button onclick="closeEchoes()" style="margin-top:10px;">Close</button>
+  </div>
 </body>
 </html>
-
