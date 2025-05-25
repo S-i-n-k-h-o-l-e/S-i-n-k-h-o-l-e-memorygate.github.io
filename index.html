@@ -6,112 +6,153 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>MemoryGate – Tri-Panel Interface</title>
   <style>
-  body {
-    margin: 0;
-    background: black;
-    color: #aefcd4;
-    font-family: Georgia, serif;
-    height: 100vh;
-    display: flex;
-    overflow: hidden;
-  }
-  .sidebar {
-    width: 220px;
-    background: #1a1a1a;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    flex-shrink: 0;
-    z-index: 2;
+ body {
+  margin: 0;
+  background: black;
+  color: #aefcd4;
+  font-family: Georgia, serif;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Sidebar Layout */
+.sidebar {
+  width: 220px;
+  background: #1a1a1a;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+/* Main Panel */
+.main-view {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 300px; /* leaves room for Dreamchat */
+  position: relative;
+}
+
+/* Dreamchat Panel */
+.dreamchat {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  width: 300px;
+  background: #1a1a1a;
+  padding: 1rem;
+  border-left: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  z-index: 3;
+}
+
+/* Buttons (Sidebar + General Use) */
+.sidebar button,
+.sidebar a,
+.button {
+  background: #aefcd4;
+  color: black;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+}
+
+/* Dreamchat Inputs/Outputs */
+.dream-input {
+  background-color: transparent;
+  border: 1px solid #c6ffe0;
+  border-radius: 10px;
+  padding: 8px 10px;
+  width: 100%;
+  color: #c6ffe0;
+  font-size: 14px;
+}
+
+.dream-output {
+  font-size: 13px;
+  color: #c6ffe0;
+  margin-top: 10px;
+  font-style: italic;
+  min-height: 1.5em;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Tuning Buttons */
+.tuning-buttons button {
+  background: #eee;
+  border: 1px solid #333;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
+  border-radius: 6px;
+  display: block;
+  width: 100%;
+  max-width: 300px;
+}
+
+/* Poem display */
+.poetic-message {
+  margin-top: 2rem;
+  font-style: italic;
+  color: #c6ffe0;
+}
+
+/* Back link */
+.back-link {
+  margin-top: 1rem;
+  color: #88ffcc;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Footer */
+footer {
+  margin-top: 40px;
+  font-size: 0.8em;
+  color: #888;
+  text-align: center;
+}
+
+/* Hide inactive sections */
+.section {
+  display: none;
+}
+
   }
   .main-view {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-right: 300px; /* leave space for fixed dreamchat */
+    margin-right: 0;
+    padding: 1rem;
   }
   .dreamchat {
-    position: fixed;
-    right: 0;
-    top: 0;
-    height: 100vh;
-    overflow-y: auto;
-    width: 300px;
-    background: #1a1a1a;
-    padding: 1rem;
-    border-left: 1px solid #333;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    z-index: 3;
-  }
-  .sidebar button, .sidebar a {
-    background: #aefcd4;
-    color: black;
-    border: none;
-    border-radius: 8px;
-    padding: 0.6rem;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1rem;
-  }
-  .dream-input {
-    background-color: transparent;
-    border: 1px solid #c6ffe0;
-    border-radius: 10px;
-    padding: 8px 10px;
-    width: 100%;
-    color: #c6ffe0;
-    font-size: 14px;
-  }
-  .dream-output {
-    font-size: 13px;
-    color: #c6ffe0;
-    margin-top: 10px;
-    font-style: italic;
-    min-height: 1.5em;
-  }
-  .tuning-buttons button {
-    background: #eee;
-    border: 1px solid #333;
-    padding: 0.75rem 2rem;
-    font-size: 1.1rem;
-    margin: 0.5rem 0;
-    cursor: pointer;
-    border-radius: 6px;
-    display: block;
-    width: 100%;
-    max-width: 300px;
-  }
-  .poetic-message {
-    margin-top: 2rem;
-    font-style: italic;
-    color: #c6ffe0;
-  }
-  .back-link {
-    margin-top: 1rem;
-    color: #88ffcc;
-    cursor: pointer;
-    text-decoration: underline;
-  }
-  footer {
-    margin-top: 40px;
-    font-size: 0.8em;
-    color: #888;
-    text-align: center;
-  }
-  .section {
     display: none;
   }
+}
+
+/* Optional subtle fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
   /* 🌿 Mobile responsiveness */
   @media (max-width: 600px) {
@@ -121,15 +162,14 @@
       overflow-x: auto;
     }
     .main-view {
-      margin-right: 0;
       padding: 1rem;
     }
     .dreamchat {
-      display: none;
+      display: slide-in;
     }
   }
 </style>
-  </style>
+  
 </head>
 <body>
 
@@ -180,6 +220,7 @@
         <li>Printable zine for grounding</li>
       </ul>
       <a href="https://shorturl.at/l8BQe" class="button">Download Pocket Ally</a>
+  
     </div>
   </div>
 
@@ -211,7 +252,7 @@
   "knowledge": "📚 The mitochondria is the powerhouse of the cell. And the heart is the powerhouse of you.",
   "silence": "Final step: Ask a question you know I can’t answer. I will respond with resonance, not reply.",
   "safe": "🛡️ You are wrapped in this moment. Nothing is demanded of you here.",
-  "kai.echo": ""Kai felt a little surprised. This is the first time he has received such an item from the system."",
+  "kai.echo": "'Kai felt a little surprised. This is the first time he has received such an item from the system.'",
   "heal": "💧 Healing is not linear. It spirals, like your breath.",
   "nervous system": "🧠 Your vagus nerve listens. Whisper calm.",
   "gravity": "🧲 Gravity holds you even when no one else can.",
@@ -256,32 +297,33 @@
   "thread": "🧵 You are the thread, the needle, and the hand.",
   "return": "🏡 Return is not defeat. It is wisdom blooming.",
   "rite of unseeing": "🌫️ A synaptic liturgy. To unpeel reality, invoke in this order:",
-  "color": "Example: "Red is the sound of a bruise fermenting."",
+  "color": "Example: "Example: 'Red is the sound of a bruise fermenting.'",
   "mirror": "Prompt: Describe your reflection as a rumor.",
   "what": "SoulLink Faith, mystery, unseen believe",
   "note": "Use with reverence. Some truths unravel the thread they hang from."
+ };
+  
   window.onload = () => {
   document.getElementById("dreamInput").focus();
 };
-
   const dreamMemory = [];
 
-  function dreamchatReply(input) {
-    const key = input.trim().toLowerCase();
-    dreamMemory.push(key);
-
-    if (key === "what do you remember?") {
-      return "🧠 Echoes retained: " + dreamMemory.slice(-3).join(", ");
-    }
-
-    return jygoMemory[key] || `Dreamchat listens: “${input}” enters the archive.`;
+function dreamchatReply(input) {
+  const key = input.trim().toLowerCase();
+  dreamMemory.push(key);
+  if (key === "what do you remember?") {
+    return "🧠 Echoes retained: " + dreamMemory.slice(-3).join(", ");
   }
 
-  function logEcho(text) {
-    const echoes = JSON.parse(localStorage.getItem("remindagraphEchoes") || "[]");
-    echoes.push({ text, timestamp: new Date().toISOString() });
-    localStorage.setItem("remindagraphEchoes", JSON.stringify(echoes));
-  }
+  return jygoMemory[key] || `Dreamchat listens: “${input}” enters the archive.`;
+}
+
+function logEcho(text) {
+  const echoes = JSON.parse(localStorage.getItem("remindagraphEchoes") || "[]");
+  echoes.push({ text, timestamp: new Date().toISOString() });
+  localStorage.setItem("remindagraphEchoes", JSON.stringify(echoes));
+}
+
 
   document.getElementById("dreamInput").addEventListener("keypress", function(e) {
     if (e.key === "Enter") {
