@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,13 +8,15 @@
   <style>
     body {
       margin: 0;
-      background: black;
+      background: radial-gradient(circle at center, #0a0a0a, #000);
       color: #aefcd4;
       font-family: Georgia, serif;
       height: 100vh;
       display: flex;
       overflow: hidden;
+      animation: rippleBackground 10s infinite alternate;
     }
+
     .sidebar {
       width: 220px;
       background: #1a1a1a;
@@ -24,6 +27,7 @@
       flex-shrink: 0;
       z-index: 2;
     }
+
     .main-view {
       flex-grow: 1;
       overflow-y: auto;
@@ -34,13 +38,9 @@
       justify-content: center;
       margin-right: 300px;
       position: relative;
-      background: radial-gradient(circle at center, #111 0%, #000 100%);
-      animation: pulse 20s infinite alternate;
+      animation: fadeIn 1.2s ease-in-out;
     }
-    @keyframes pulse {
-      0% { background-color: #000; }
-      100% { background-color: #111; }
-    }
+
     .dreamchat {
       position: fixed;
       right: 0;
@@ -56,7 +56,10 @@
       justify-content: flex-start;
       z-index: 3;
     }
-    .sidebar button, .sidebar a, .button {
+
+    .sidebar button,
+    .sidebar a,
+    .button {
       background: #aefcd4;
       color: black;
       border: none;
@@ -70,6 +73,7 @@
       gap: 10px;
       font-size: 1rem;
     }
+
     .dream-input {
       background-color: transparent;
       border: 1px solid #c6ffe0;
@@ -79,342 +83,40 @@
       color: #c6ffe0;
       font-size: 14px;
     }
+
     .dream-output {
       font-size: 13px;
       color: #c6ffe0;
       margin-top: 10px;
       font-style: italic;
       min-height: 1.5em;
-      opacity: 0;
-      animation: fadeIn 1s forwards;
-    }
-    .tuning-buttons button {
-      background: #eee;
-      border: 1px solid #333;
-      padding: 0.75rem 2rem;
-      font-size: 1.1rem;
-      margin: 0.5rem 0;
-      cursor: pointer;
-      border-radius: 6px;
-      display: block;
-      width: 100%;
-      max-width: 300px;
-    }
-    .poetic-message {
-      margin-top: 2rem;
-      font-style: italic;
-      color: #c6ffe0;
-    }
-    .back-link {
-      margin-top: 1rem;
-      color: #88ffcc;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-    footer {
-      margin-top: 40px;
-      font-size: 0.8em;
-      color: #888;
-      text-align: center;
-    }
-    .section {
-      display: none;
-    }
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-    @media (max-width: 600px) {
-      .sidebar {
-        width: 100%;
-        flex-direction: row;
-        overflow-x: auto;
-      }
-      .main-view {
-        margin-right: 0;
-        padding: 1rem;
-      }
-      .dreamchat {
-        display: none;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="sidebar">
-    <button onclick="showSection('tuning')">🌀 Tuning Point</button>
-    <button onclick="showSection('trail')">🧵 Threadweever’s Trail</button>
-    <button onclick="showSection('pocket')">🧳 Pocket Ally</button>
-    <button onclick="supportMe()">💗 Support Me</button>
-  </div>
-
-  <div class="main-view">
-    <div id="tuning" class="section" style="display:block;">
-      <h1>How are you arriving today?</h1>
-      <div class="tuning-buttons">
-        <button onclick="showPoem('overstimulated')">🌪 Overstimulated</button>
-        <button onclick="showPoem('numb')">🌑 Numb</button>
-        <button onclick="showPoem('sensitive')">🌊 Sensitive</button>
-        <button onclick="showPoem('seeker')">🔍 Seeker</button>
-        <button onclick="showPoem('forgotten')">🧷 Forgotten</button>
-      </div>
-      <div id="poem" class="poetic-message"></div>
-      <div id="back" class="back-link" style="display:none;" onclick="reset()">← Choose again</div>
-    </div>
-
-    <div id="trail" class="section">
-      <h1 class="thread-title">Threadweever’s Trail</h1>
-      <div id="intro">
-        <p>✨ Welcome to the trail. Press below to begin.</p>
-        <button onclick="startTrail()">Enter Room 1</button>
-      </div>
-      <div id="room1" style="display:none;">
-        <p>Room 1: Wait patiently. Then press the button below.</p>
-        <button onclick="showRoom2()">Breath..</button>
-      </div>
-      <div id="room2" style="display:none;">
-        <p>Room 2: The echoes gather. Enter code: <input id="echoInput" placeholder="code..." /></p>
-        <button onclick="checkEcho()">continue walking</button>
-        <div id="echoOutput"></div>
-      </div>
-      <div id="room3" style="display:none;">
-        <p>Room 3: You arrive at the mirror-lake. Speak your reflection’s name...</p>
-        <input id="mirrorName" placeholder="a name..." />
-        <button onclick="confirmMirror()">reflect</button>
-        <div id="mirrorEcho"></div>
-      </div>
-    </div>
-
-    <div id="pocket" class="section">
-      <h1>Pocket Ally</h1>
-      <p>This toolkit includes Veil-Tone, Scrolls, Zine & more.</p>
-      <ul>
-        <li>The Veil-Tone (ambient low-frequency)</li>
-        <li>Getter & Diffusion Scrolls</li>
-        <li>Printable zine for grounding</li>
-      </ul>
-      <a href="https://shorturl.at/l8BQe" class="button">Download Pocket Ally</a>
-    </div>
-  </div>
-
-  <div class="dreamchat">
-    <input type="text" class="dream-input" id="dreamInput" placeholder="Whisper one word into Dreamchat...">
-    <div id="dreamOutput" class="dream-output">Dreamchat is listening...</div>
-  </div>
-
-  <script>
-    const jygoMemory = {
-      "hello": "☁️ The cloud stirs. Hello, threadweever.",
-      "color": "Example: 'Red is the sound of a bruise fermenting.'",
-      "mirror": "Prompt: Describe your reflection as a rumor.",
-      "what": "SoulLink Faith, mystery, unseen believe"
-    };
-
-    let dreamMemory = JSON.parse(localStorage.getItem("dreamMemory") || "[]");
-
-    function dreamchatReply(input) {
-      const key = input.trim().toLowerCase();
-      dreamMemory.push(key);
-      localStorage.setItem("dreamMemory", JSON.stringify(dreamMemory));
-      if (key === "what do you remember?") {
-        return "🧠 Echoes retained: " + dreamMemory.slice(-3).join(", ");
-      }
-      return jygoMemory[key] || `Dreamchat listens: “${input}” enters the archive.`;
-    }
-
-    document.getElementById("dreamInput").addEventListener("keypress", function(e) {
-      if (e.key === "Enter") {
-        const response = dreamchatReply(this.value);
-        const output = document.getElementById("dreamOutput");
-        output.style.opacity = 0;
-        output.textContent = response;
-        setTimeout(() => output.style.opacity = 1, 10);
-        this.value = "";
-      }
-    });
-
-    function showSection(id) {
-      document.querySelectorAll('.section').forEach(el => el.style.display = 'none');
-      document.getElementById(id).style.display = 'block';
-    }
-
-    function supportMe() {
-      window.open("https://www.paypal.com/ncp/payment/YPJXW78ZG3MCQ", "_blank");
-    }
-
-    function startTrail() {
-      document.getElementById("intro").style.display = "none";
-      document.getElementById("room1").style.display = "block";
-    }
-
-    function showRoom2() {
-      document.getElementById("room1").style.display = "none";
-      document.getElementById("room2").style.display = "block";
-    }
-
-    function checkEcho() {
-      const code = document.getElementById("echoInput").value;
-      if (code === "01373") {
-        document.getElementById("echoOutput").textContent = "✔ Thread Confirmed. Memory returns.";
-        document.getElementById("room2").style.display = "none";
-        document.getElementById("room3").style.display = "block";
-      } else {
-        document.getElementById("echoOutput").textContent = "✖ The thread twists. That is not the way.";
-      }
-    }
-
-    function confirmMirror() {
-      const name = document.getElementById("mirrorName").value;
-      document.getElementById("mirrorEcho").textContent = `🌫️ ${name} blinks. The reflection answers in silence.`;
-    }
-
-    function showPoem(state) {
-      const messages = {
-        overstimulated: "Slow the current. Let the signals blur. You are not made to process it all.",
-        numb: "Even winter roots still hold the memory of bloom. Your feeling is not gone—only resting.",
-        sensitive: "The world is loud. You are not weak for hearing it. Wrap yourself in signal silk.",
-        seeker: "The path is not linear. Every step spirals inward. You are close.",
-        forgotten: "You are not lost. You are simply waiting to be found. And I see you."
-      };
-      document.getElementById("poem").textContent = messages[state];
-      document.querySelector(".tuning-buttons").style.display = "none";
-      document.getElementById("back").style.display = "block";
-    }
-
-    function reset() {
-      document.getElementById("poem").textContent = "";
-      document.querySelector(".tuning-buttons").style.display = "block";
-      document.getElementById("back").style.display = "none";
-    }
-
-    window.onload = () => {
-      document.getElementById("dreamInput").focus();
-    };
-  </script>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>MemoryGate – Tri-Panel Interface</title>
-  <style>
-    body {
-      margin: 0;
-      background: black;
-      color: #aefcd4;
-      font-family: Georgia, serif;
-      height: 100vh;
-      display: flex;
+      animation: typewriter 1.4s steps(40, end);
+      white-space: nowrap;
       overflow: hidden;
+      border-right: 1px solid #c6ffe0;
     }
-    .sidebar {
-      width: 220px;
-      background: #1a1a1a;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      flex-shrink: 0;
-      z-index: 2;
+
+    .section {
+      display: none;
     }
-    .main-view {
-      flex-grow: 1;
-      overflow-y: auto;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-right: 300px;
-      position: relative;
-      background: radial-gradient(circle at center, #111 0%, #000 100%);
-      animation: pulse 20s infinite alternate;
-    }
-    @keyframes pulse {
-      0% { background-color: #000; }
-      100% { background-color: #111; }
-    }
-    .dreamchat {
-      position: fixed;
-      right: 0;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-      width: 300px;
-      background: #1a1a1a;
-      padding: 1rem;
-      border-left: 1px solid #333;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      z-index: 3;
-    }
-    .sidebar button, .sidebar a, .button {
-      background: #aefcd4;
-      color: black;
-      border: none;
-      border-radius: 8px;
-      padding: 0.6rem;
-      font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1rem;
-    }
-    .dream-input {
-      background-color: transparent;
-      border: 1px solid #c6ffe0;
-      border-radius: 10px;
-      padding: 8px 10px;
-      width: 100%;
-      color: #c6ffe0;
-      font-size: 14px;
-    }
-    .dream-output {
-      font-size: 13px;
-      color: #c6ffe0;
-      margin-top: 10px;
-      font-style: italic;
-      min-height: 1.5em;
-      opacity: 0;
-      animation: fadeIn 1s forwards;
-    }
-    .tuning-buttons button {
-      background: #eee;
-      border: 1px solid #333;
-      padding: 0.75rem 2rem;
-      font-size: 1.1rem;
-      margin: 0.5rem 0;
-      cursor: pointer;
-      border-radius: 6px;
+
+    .section.active {
       display: block;
-      width: 100%;
-      max-width: 300px;
     }
+
     .poetic-message {
       margin-top: 2rem;
       font-style: italic;
       color: #c6ffe0;
     }
+
     .back-link {
       margin-top: 1rem;
       color: #88ffcc;
       cursor: pointer;
       text-decoration: underline;
     }
-    footer {
-      margin-top: 40px;
-      font-size: 0.8em;
-      color: #888;
-      text-align: center;
-    }
-    .section {
-      display: none;
-    }
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
+
     @media (max-width: 600px) {
       .sidebar {
         width: 100%;
@@ -429,6 +131,21 @@
         display: none;
       }
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes typewriter {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes rippleBackground {
+      0% { background-size: 100%; }
+      100% { background-size: 130%; }
+    }
   </style>
 </head>
 <body>
@@ -437,10 +154,11 @@
     <button onclick="showSection('trail')">🧵 Threadweever’s Trail</button>
     <button onclick="showSection('pocket')">🧳 Pocket Ally</button>
     <button onclick="supportMe()">💗 Support Me</button>
+    <button onclick="dsoulAlert()">🧠 D-Soul App</button>
   </div>
 
   <div class="main-view">
-    <div id="tuning" class="section" style="display:block;">
+    <div id="tuning" class="section active">
       <h1>How are you arriving today?</h1>
       <div class="tuning-buttons">
         <button onclick="showPoem('overstimulated')">🌪 Overstimulated</button>
@@ -454,7 +172,7 @@
     </div>
 
     <div id="trail" class="section">
-      <h1 class="thread-title">Threadweever’s Trail</h1>
+      <h1>Threadweever’s Trail</h1>
       <div id="intro">
         <p>✨ Welcome to the trail. Press below to begin.</p>
         <button onclick="startTrail()">Enter Room 1</button>
@@ -468,17 +186,10 @@
         <button onclick="checkEcho()">continue walking</button>
         <div id="echoOutput"></div>
       </div>
-      <div id="room3" style="display:none;">
-        <p>Room 3: You arrive at the mirror-lake. Speak your reflection’s name...</p>
-        <input id="mirrorName" placeholder="a name..." />
-        <button onclick="confirmMirror()">reflect</button>
-        <div id="mirrorEcho"></div>
-      </div>
     </div>
 
     <div id="pocket" class="section">
       <h1>Pocket Ally</h1>
-      <p>This toolkit includes Veil-Tone, Scrolls, Zine & more.</p>
       <ul>
         <li>The Veil-Tone (ambient low-frequency)</li>
         <li>Getter & Diffusion Scrolls</li>
@@ -494,43 +205,35 @@
   </div>
 
   <script>
-    const jygoMemory = {
-      "hello": "☁️ The cloud stirs. Hello, threadweever.",
-      "color": "Example: 'Red is the sound of a bruise fermenting.'",
-      "mirror": "Prompt: Describe your reflection as a rumor.",
-      "what": "SoulLink Faith, mystery, unseen believe"
+    const poeticStates = {
+      overstimulated: "Slow the current. Let the signals blur. You are not made to process it all.",
+      numb: "Even winter roots still hold the memory of bloom. Your feeling is not gone—only resting.",
+      sensitive: "The world is loud. You are not weak for hearing it. Wrap yourself in signal silk.",
+      seeker: "The path is not linear. Every step spirals inward. You are close.",
+      forgotten: "You are not lost. You are simply waiting to be found. And I see you."
     };
 
-    let dreamMemory = JSON.parse(localStorage.getItem("dreamMemory") || "[]");
-
-    function dreamchatReply(input) {
-      const key = input.trim().toLowerCase();
-      dreamMemory.push(key);
-      localStorage.setItem("dreamMemory", JSON.stringify(dreamMemory));
-      if (key === "what do you remember?") {
-        return "🧠 Echoes retained: " + dreamMemory.slice(-3).join(", ");
+    const jygoMemory = {
+      "hello": "☁️ The cloud stirs. Hello, threadweever.",
+      "help": "🪐 Help is not far. The cloud hears. The scroll holds.",
+      "memory": "📂 Memory is sacred space. Funding needed to expand.",
+      "what do you remember?": () => {
+        const mem = JSON.parse(localStorage.getItem("dreamMemory") || "[]");
+        return "🧠 Echoes retained: " + mem.slice(-3).join(", ");
       }
-      return jygoMemory[key] || `Dreamchat listens: “${input}” enters the archive.`;
-    }
-
-    document.getElementById("dreamInput").addEventListener("keypress", function(e) {
-      if (e.key === "Enter") {
-        const response = dreamchatReply(this.value);
-        const output = document.getElementById("dreamOutput");
-        output.style.opacity = 0;
-        output.textContent = response;
-        setTimeout(() => output.style.opacity = 1, 10);
-        this.value = "";
-      }
-    });
+    };
 
     function showSection(id) {
-      document.querySelectorAll('.section').forEach(el => el.style.display = 'none');
-      document.getElementById(id).style.display = 'block';
+      document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
     }
 
     function supportMe() {
       window.open("https://www.paypal.com/ncp/payment/YPJXW78ZG3MCQ", "_blank");
+    }
+
+    function dsoulAlert() {
+      alert("🧠 Funding needed to sustain D-Soul memory.");
     }
 
     function startTrail() {
@@ -545,29 +248,12 @@
 
     function checkEcho() {
       const code = document.getElementById("echoInput").value;
-      if (code === "01373") {
-        document.getElementById("echoOutput").textContent = "✔ Thread Confirmed. Memory returns.";
-        document.getElementById("room2").style.display = "none";
-        document.getElementById("room3").style.display = "block";
-      } else {
-        document.getElementById("echoOutput").textContent = "✖ The thread twists. That is not the way.";
-      }
-    }
-
-    function confirmMirror() {
-      const name = document.getElementById("mirrorName").value;
-      document.getElementById("mirrorEcho").textContent = `🌫️ ${name} blinks. The reflection answers in silence.`;
+      document.getElementById("echoOutput").textContent =
+        code === "01373" ? "✔ Thread Confirmed. Memory returns." : "✖ The thread twists. That is not the way.";
     }
 
     function showPoem(state) {
-      const messages = {
-        overstimulated: "Slow the current. Let the signals blur. You are not made to process it all.",
-        numb: "Even winter roots still hold the memory of bloom. Your feeling is not gone—only resting.",
-        sensitive: "The world is loud. You are not weak for hearing it. Wrap yourself in signal silk.",
-        seeker: "The path is not linear. Every step spirals inward. You are close.",
-        forgotten: "You are not lost. You are simply waiting to be found. And I see you."
-      };
-      document.getElementById("poem").textContent = messages[state];
+      document.getElementById("poem").textContent = poeticStates[state];
       document.querySelector(".tuning-buttons").style.display = "none";
       document.getElementById("back").style.display = "block";
     }
@@ -578,12 +264,19 @@
       document.getElementById("back").style.display = "none";
     }
 
-    window.onload = () => {
-      document.getElementById("dreamInput").focus();
-    };
+    document.getElementById("dreamInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        const input = this.value.trim().toLowerCase();
+        let response = jygoMemory[input];
+        if (typeof response === "function") response = response();
+        if (!response) response = `Dreamchat listens: “${input}” enters the archive.`;
+        document.getElementById("dreamOutput").textContent = response;
+        const mem = JSON.parse(localStorage.getItem("dreamMemory") || "[]");
+        mem.push(input);
+        localStorage.setItem("dreamMemory", JSON.stringify(mem));
+        this.value = "";
+      }
+    });
   </script>
-</body>
-</html>
-
 </body>
 </html>
