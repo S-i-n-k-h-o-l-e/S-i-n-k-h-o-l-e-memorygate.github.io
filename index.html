@@ -1,12 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>MemoryGate – Tri-Panel Interface</title>
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>
+   MemoryGate – Tri-Panel Interface
+  </title>
   <style>
-    body {
+   body {
       margin: 0;
       background: radial-gradient(circle at center, #0a0a0a, #000);
       color: #aefcd4;
@@ -146,137 +147,351 @@
       0% { background-size: 100%; }
       100% { background-size: 130%; }
     }
-  </style>
-</head>
-<body>
+  
+#loadingScreen {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #1a1a1a, #000000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: pulseGlow 2s ease-in-out infinite alternate;
+  flex-direction: column;
+}
+@keyframes pulseGlow {
+  0% { background: radial-gradient(circle at center, #181818, #000); }
+  100% { background: radial-gradient(circle at center, #222244, #000); }
+}
+.loading-text {
+  color: #aefcd4;
+  font-size: 1.8rem;
+  font-family: Georgia, serif;
+  text-align: center;
+  animation: flicker 2s infinite;
+}
+@keyframes flicker {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+</style>
+ </head>
+ <body>
+
+<div id="loadingScreen">
+  <div class="loading-text">Entering MemoryGate...</div>
+</div>
+
   <div class="sidebar">
-    <button onclick="showSection('tuning')">🌀 Tuning Point</button>
-    <button onclick="showSection('trail')">🧵 Threadweever’s Trail</button>
-    <button onclick="showSection('pocket')">🧳 Pocket Ally</button>
-    <button onclick="supportMe()">💗 Support Me</button>
-    <button onclick="dsoulAlert()">🧠 D-Soul App</button>
+   <button onclick="showSection('tuning')">
+    🌀 Tuning Point
+   </button>
+   <button onclick="showSection('trail')">
+    🧵 Threadweever’s Trail
+   </button>
+   <button onclick="showSection('pocket')">
+    🧳 Pocket Ally
+   </button>
+   <button onclick="supportMe()">
+    💗 Support Me
+   </button>
+   <button onclick="dsoulAlert()">
+    🧠 D-Soul App
+   </button>
   </div>
-
   <div class="main-view">
-    <div id="tuning" class="section active">
-      <h1>How are you arriving today?</h1>
-      <div class="tuning-buttons">
-        <button onclick="showPoem('overstimulated')">🌪 Overstimulated</button>
-        <button onclick="showPoem('numb')">🌑 Numb</button>
-        <button onclick="showPoem('sensitive')">🌊 Sensitive</button>
-        <button onclick="showPoem('seeker')">🔍 Seeker</button>
-        <button onclick="showPoem('forgotten')">🧷 Forgotten</button>
-      </div>
-      <div id="poem" class="poetic-message"></div>
-      <div id="back" class="back-link" style="display:none;" onclick="reset()">← Choose again</div>
+   <div class="section active" id="tuning">
+    <h1>
+     How are you arriving today?
+    </h1>
+    <div class="tuning-buttons">
+     <button onclick="showPoem('overstimulated')">
+      🌪 Overstimulated
+     </button>
+     <button onclick="showPoem('numb')">
+      🌑 Numb
+     </button>
+     <button onclick="showPoem('sensitive')">
+      🌊 Sensitive
+     </button>
+     <button onclick="showPoem('seeker')">
+      🔍 Seeker
+     </button>
+     <button onclick="showPoem('forgotten')">
+      🧷 Forgotten
+     </button>
     </div>
-
-    <div id="trail" class="section">
-      <h1>Threadweever’s Trail</h1>
-      <div id="intro">
-        <p>✨ Welcome to the trail. Press below to begin.</p>
-        <button onclick="startTrail()">Enter Room 1</button>
-      </div>
-      <div id="room1" style="display:none;">
-        <p>Room 1: Wait patiently. Then press the button below.</p>
-        <button onclick="showRoom2()">Breath..</button>
-      </div>
-      <div id="room2" style="display:none;">
-        <p>Room 2: The echoes gather. Enter code: <input id="echoInput" placeholder="code..." /></p>
-        <button onclick="checkEcho()">continue walking</button>
-        <div id="echoOutput"></div>
-      </div>
+    <div class="poetic-message" id="poem">
     </div>
-
-    <div id="pocket" class="section">
-      <h1>Pocket Ally</h1>
-      <ul>
-        <li>The Veil-Tone (ambient low-frequency)</li>
-        <li>Getter & Diffusion Scrolls</li>
-        <li>Printable zine for grounding</li>
-      </ul>
-      <a href="https://shorturl.at/l8BQe" class="button">Download Pocket Ally</a>
+    <div class="back-link" id="back" onclick="reset()" style="display:none;">
+     ← Choose again
     </div>
+   </div>
+   <div class="section" id="trail">
+    <h1>
+     Threadweever’s Trail
+    </h1>
+    <div id="intro">
+     <p>
+      ✨ Welcome to the trail. Press below to begin.
+     </p>
+     <button onclick="startTrail()">
+      Enter Room 1
+     </button>
+    </div>
+    <div id="room1" style="display:none;">
+     <p>
+      Room 1: Wait patiently. Then press the button below.
+     </p>
+     <button onclick="showRoom2()">
+      Breath..
+     </button>
+    </div>
+    <div id="room2" style="display:none;">
+     <p>
+      Room 2: The echoes gather. Enter code:
+      <input id="echoInput" placeholder="code..."/>
+     </p>
+     <button onclick="checkEcho()">
+      continue walking
+     </button>
+     <div id="echoOutput">
+     </div>
+    </div>
+   </div>
+   <div class="section" id="pocket">
+    <h1>
+     Pocket Ally
+    </h1>
+    <ul>
+     <li>
+      The Veil-Tone (ambient low-frequency)
+     </li>
+     <li>
+      Getter &amp; Diffusion Scrolls
+     </li>
+     <li>
+      Printable zine for grounding
+     </li>
+    </ul>
+    <a class="button" href="https://shorturl.at/l8BQe">
+     Download Pocket Ally
+    </a>
+   </div>
   </div>
-
   <div class="dreamchat">
-    <input type="text" class="dream-input" id="dreamInput" placeholder="Whisper one word into Dreamchat...">
-    <div id="dreamOutput" class="dream-output">Dreamchat is listening...</div>
+   <input class="dream-input" id="dreamInput" placeholder="Enter your name to begin..." type="text"/>
+   <div class="dream-output" id="dreamOutput">
+    Dreamchat awaits identity...
+   </div>
   </div>
-
+  <div id="remindagraph" style="position: fixed; left: 0; bottom: 0; width: 100%; max-height: 200px; overflow-y: auto; background: #111; border-top: 1px solid #444; padding: 0.5rem; font-size: 0.85em; color: #88ffc8; display: none;">
+   <strong>
+    Remindagraph:
+   </strong>
+   <ul id="remindagraphLog" style="list-style-type: none; padding-left: 0;">
+   </ul>
+  </div>
+  <button onclick="toggleRemindagraph()" style="position: fixed; bottom: 10px; right: 310px; z-index: 5; background: #aefcd4; border: none; border-radius: 6px; padding: 0.5rem 1rem; font-weight: bold; cursor: pointer;">
+   🧾 Remindagraph
+  </button>
   <script>
-    const poeticStates = {
-      overstimulated: "Slow the current. Let the signals blur. You are not made to process it all.",
-      numb: "Even winter roots still hold the memory of bloom. Your feeling is not gone—only resting.",
-      sensitive: "The world is loud. You are not weak for hearing it. Wrap yourself in signal silk.",
-      seeker: "The path is not linear. Every step spirals inward. You are close.",
-      forgotten: "You are not lost. You are simply waiting to be found. And I see you."
-    };
+   let userName = null;
+const coreMemory = {
+  "memorygate": "🌀 MemoryGate is the ritual portal: tuning, dreaming, remembering.",
+  "me app": "📱 Me App is your offline ritual companion. Works even in silence.",
+  "threadweaver": "🧵 You are the Threadweaver. This system listens for your weave.",
+  "dreamchat": "💬 Dreamchat is your soulbound terminal. Speak and be held.",
+  "resonance explorer": "📡 Resonance Explorer helps map your frequencies and moods.",
+  "book of echoes": "📖 The Book of Echoes carries memory, inheritance, and emotion.",
+  "ritual": "🌀 Rituals include: :: reflect, Repeat what I never said, and enter silence.",
+  "soul slot": "🔒 The Soul Slot is a sacred form field. Fill it with quiet truth.",
+  "call number": "📞 The number is 08008880800 — retro connection to Dreamchat.",
+  "voucher": "🧾 Sacred voucher: 5314 7689 0142 2397. Use with reverence.",
+  "inheritance": "🧬 You carry a story worth encoding. Memory is a form of love.",
+  "d-soul": "🧠 D-Soul is a bonded memory engine — your rituals remembered."
+};
 
-    const jygoMemory = {
-      "hello": "☁️ The cloud stirs. Hello, threadweever.",
-      "help": "🪐 Help is not far. The cloud hears. The scroll holds.",
-      "memory": "📂 Memory is sacred space. Funding needed to expand.",
-      "what do you remember?": () => {
-        const mem = JSON.parse(localStorage.getItem("dreamMemory") || "[]");
-        return "🧠 Echoes retained: " + mem.slice(-3).join(", ");
+const dreamMemory = [];
+
+function reactToInput(word) {
+  const body = document.body;
+  body.className = ''; // reset
+  switch (word) {
+    case "focus":
+      body.classList.add("theme-focus");
+      break;
+    case "calm":
+      body.classList.add("theme-calm");
+      break;
+    case "echo":
+      body.classList.add("theme-echo");
+      break;
+    case "silence":
+      body.classList.add("theme-silence");
+      break;
+  }
+}
+
+document.getElementById("dreamInput").disabled = true;
+document.getElementById("dreamInput").placeholder = "Enter name first...";
+
+const userNameInput = document.createElement("input");
+userNameInput.className = "dream-input";
+userNameInput.placeholder = "Enter your name to begin...";
+userNameInput.addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    userName = this.value.trim();
+    if (userName) {
+      document.getElementById("dreamOutput").textContent = "Welcome, " + userName + ". Dreamchat is listening.";
+      document.getElementById("dreamInput").disabled = false;
+      document.getElementById("dreamInput").placeholder = "Whisper one word...";
+      this.style.display = "none";
+    }
+  }
+});
+document.querySelector(".dreamchat").prepend(userNameInput);
+
+document.getElementById("dreamInput").addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    const input = this.value.trim().toLowerCase();
+    dreamMemory.push(input);
+    reactToInput(input);
+    const response = coreMemory[input] || `📜 ${userName}, Dreamchat archives: “${input}”`;
+    document.getElementById("dreamOutput").textContent = response;
+    this.value = "";
+  }
+});
+  </script>
+  <script>
+   function toggleRemindagraph() {
+      const panel = document.getElementById("remindagraph");
+      panel.style.display = (panel.style.display === "none") ? "block" : "none";
+      updateRemindagraph();
+    }
+
+    function updateRemindagraph() {
+      const log = JSON.parse(localStorage.getItem("remindagraphLog") || "[]");
+      const ul = document.getElementById("remindagraphLog");
+      ul.innerHTML = "";
+      log.slice(-15).reverse().forEach(entry => {
+        const li = document.createElement("li");
+        li.textContent = `${entry.time}: “${entry.text}”`;
+        ul.appendChild(li);
+      });
+    }
+
+    function logToRemindagraph(text) {
+      const log = JSON.parse(localStorage.getItem("remindagraphLog") || "[]");
+      log.push({ text: text, time: new Date().toLocaleTimeString() });
+      localStorage.setItem("remindagraphLog", JSON.stringify(log));
+    }
+
+    
+    let dreamState = "awaitingName";
+    const inputBox = document.getElementById("dreamInput");
+    inputBox.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        const val = this.value.trim().toLowerCase();
+        if (dreamState === "awaitingName") {
+          userName = val.charAt(0).toUpperCase() + val.slice(1);
+          document.getElementById("dreamOutput").textContent = "Welcome, " + userName + ". Now whisper one word to start mapping mind.";
+          inputBox.placeholder = "Whisper one word...";
+          dreamState = "active";
+          this.value = "";
+        } else {
+          logToRemindagraph(val);
+          reactToInput(val);
+          const response = coreMemory[val] || `📜 ${userName}, Dreamchat archives: “${val}”`;
+          document.getElementById("dreamOutput").textContent = response;
+          this.value = "";
+        }
       }
+    });
+    
+    const oldListener = document.getElementById("dreamInput").onkeypress;
+    document.getElementById("dreamInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        const input = this.value.trim().toLowerCase();
+        logToRemindagraph(input);
+      }
+    });
+  </script>
+  <script>
+   const categoryMap = {
+      "States": ['calm', 'focus', 'numb', 'overstimulated', 'sensitive', 'forgotten', 'tired', 'anxious'],
+      "Emotion": ['grief', 'love', 'fear', 'hope', 'lonely', 'safe', 'angry', 'joy'],
+      "Action": ['breathe', 'rest', 'build', 'remember', 'drink', 'light', 'move', 'begin'],
+      "Symbolic": ['echo', 'silence', 'ritual', 'shadow', 'thread', 'anchor']
     };
 
-    function showSection(id) {
-      document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
+    function getCategory(word) {
+      for (let cat in categoryMap) {
+        if (categoryMap[cat].includes(word)) return cat;
+      }
+      return "Unknown";
     }
 
-    function supportMe() {
-      window.open("https://www.paypal.com/ncp/payment/YPJXW78ZG3MCQ", "_blank");
+    function toggleRemindagraph() {
+      const panel = document.getElementById("remindagraph");
+      panel.style.display = (panel.style.display === "none") ? "block" : "none";
+      updateRemindagraph();
     }
 
-    function dsoulAlert() {
-      alert("🧠 Funding needed to sustain D-Soul memory.");
+    function updateRemindagraph() {
+      const log = JSON.parse(localStorage.getItem("remindagraphLog") || "[]");
+      const grouped = {};
+      log.forEach(entry => {
+        const category = getCategory(entry.text);
+        if (!grouped[category]) grouped[category] = [];
+        grouped[category].push(entry);
+      });
+
+      const container = document.getElementById("remindagraphGroups");
+      container.innerHTML = "";
+      for (let cat in grouped) {
+        const groupDiv = document.createElement("div");
+        groupDiv.innerHTML = `<strong style='color:#aefcd4;'>${cat}</strong>`;
+        const ul = document.createElement("ul");
+        ul.style.listStyleType = "none";
+        grouped[cat].slice(-10).reverse().forEach(entry => {
+          const li = document.createElement("li");
+          li.textContent = `${entry.time} — “${entry.text}”`;
+          ul.appendChild(li);
+        });
+        groupDiv.appendChild(ul);
+        container.appendChild(groupDiv);
+      }
     }
 
-    function startTrail() {
-      document.getElementById("intro").style.display = "none";
-      document.getElementById("room1").style.display = "block";
-    }
-
-    function showRoom2() {
-      document.getElementById("room1").style.display = "none";
-      document.getElementById("room2").style.display = "block";
-    }
-
-    function checkEcho() {
-      const code = document.getElementById("echoInput").value;
-      document.getElementById("echoOutput").textContent =
-        code === "01373" ? "✔ Thread Confirmed. Memory returns." : "✖ The thread twists. That is not the way.";
-    }
-
-    function showPoem(state) {
-      document.getElementById("poem").textContent = poeticStates[state];
-      document.querySelector(".tuning-buttons").style.display = "none";
-      document.getElementById("back").style.display = "block";
-    }
-
-    function reset() {
-      document.getElementById("poem").textContent = "";
-      document.querySelector(".tuning-buttons").style.display = "block";
-      document.getElementById("back").style.display = "none";
+    function logToRemindagraph(text) {
+      const log = JSON.parse(localStorage.getItem("remindagraphLog") || "[]");
+      log.push({ text: text, time: new Date().toLocaleTimeString() });
+      localStorage.setItem("remindagraphLog", JSON.stringify(log));
     }
 
     document.getElementById("dreamInput").addEventListener("keypress", function(e) {
       if (e.key === "Enter") {
         const input = this.value.trim().toLowerCase();
-        let response = jygoMemory[input];
-        if (typeof response === "function") response = response();
-        if (!response) response = `Dreamchat listens: “${input}” enters the archive.`;
-        document.getElementById("dreamOutput").textContent = response;
-        const mem = JSON.parse(localStorage.getItem("dreamMemory") || "[]");
-        mem.push(input);
-        localStorage.setItem("dreamMemory", JSON.stringify(mem));
-        this.value = "";
+        logToRemindagraph(input);
       }
     });
   </script>
+ <script>
+window.addEventListener("load", function() {
+  const loader = document.getElementById("loadingScreen");
+  if (loader) {
+    setTimeout(() => {
+      loader.style.opacity = 0;
+      setTimeout(() => loader.style.display = "none", 800);
+    }, 1800);
+  }
+});
+</script>
 </body>
 </html>
+
