@@ -209,19 +209,19 @@
      How are you arriving today?
     </h1>
     <div class="tuning-buttons">
-     <button onclick="showPoem('overstimulated')">
+     <button onclick="setThread('Overstimulated')">
       🌪 Overstimulated
      </button>
-     <button onclick="showPoem('numb')">
+     <button onclick="setThread('Numb')">
       🌑 Numb
      </button>
-     <button onclick="showPoem('sensitive')">
+     <button onclick="setThread('Sensitive')">
       🌊 Sensitive
      </button>
-     <button onclick="showPoem('seeker')">
+     <button onclick="setThread('Seeker')">
       🔍 Seeker
      </button>
-     <button onclick="showPoem('forgotten')">
+     <button onclick="setThread('Forgotten')">
       🧷 Forgotten
      </button>
     </div>
@@ -356,12 +356,32 @@ userNameInput.addEventListener("keypress", function(e) {
 });
 document.querySelector(".dreamchat").prepend(userNameInput);
 
+
+function echoResponse(input, thread) {
+  const log = JSON.parse(localStorage.getItem("remindagraphLog") || "[]");
+  const filtered = log.filter(entry => entry.thread === thread);
+  const freq = {};
+  filtered.forEach(entry => {
+    freq[entry.text] = (freq[entry.text] || 0) + 1;
+  });
+  const repeated = Object.keys(freq).filter(word => freq[word] > 1);
+  if (repeated.includes(input)) {
+    return `🔁 “${input}” echoes through this thread (${freq[input]} times).`;
+  } else if (filtered.length > 6 && repeated.length > 0) {
+    return `🧠 Memory loop forming: ${repeated.join(", ")}.`;
+  }
+  return null;
+}
+
+
 document.getElementById("dreamInput").addEventListener("keypress", function(e) {
   if (e.key === "Enter") {
     const input = this.value.trim().toLowerCase();
     dreamMemory.push(input);
     reactToInput(input);
-    const response = coreMemory[input] || `📜 ${userName}, Dreamchat archives: “${input}”`;
+    let response = coreMemory[input] || `Dreamchat listens: “${input}” enters the archive.`;
+        const echo = echoResponse(input, currentThread);
+        if (echo) response += " " + echo;
     document.getElementById("dreamOutput").textContent = response;
     this.value = "";
   }
@@ -374,7 +394,47 @@ document.getElementById("dreamInput").addEventListener("keypress", function(e) {
       updateRemindagraph();
     }
 
-    function updateRemindagraph() {
+    
+const categoryMap = {'States': ['calm', 'focus', 'numb', 'overstimulated', 'sensitive', 'forgotten'], 'Emotion': ['grief', 'love', 'fear', 'hope', 'lonely', 'safe', 'angry', 'joy'], 'Action': ['breathe', 'rest', 'build', 'remember', 'drink', 'light', 'move', 'begin'], 'Symbolic': ['echo', 'silence', 'ritual', 'shadow', 'thread', 'anchor']};
+const categoryGlyphs = {'States': '🧭', 'Emotion': '🌿', 'Action': '⚡', 'Symbolic': '🧵', 'Unknown': '❓'};
+
+function getCategory(word) {
+  for (let cat in categoryMap) {
+    if (categoryMap[cat].includes(word)) return cat;
+  }
+  return "Unknown";
+}
+
+function updateRemindagraph() {
+  const log = JSON.parse(localStorage.getItem("remindagraphLog") || "[]");
+  const selectedThread = document.getElementById("threadFilter")?.value || "All";
+  const grouped = {};
+  log.forEach(entry => {
+    if (selectedThread !== "All" && entry.thread !== selectedThread) return;
+    const category = getCategory(entry.text);
+    if (!grouped[category]) grouped[category] = [];
+    grouped[category].push(entry);
+  });
+
+  const container = document.getElementById("remindagraphGroups");
+  container.innerHTML = "";
+  for (let cat in grouped) {
+    const groupDiv = document.createElement("div");
+    groupDiv.innerHTML = `<strong style='color:#aefcd4;'>${categoryGlyphs[cat] || ""} ${cat}</strong>`;
+    const ul = document.createElement("ul");
+    ul.style.listStyleType = "none";
+    grouped[cat].slice(-10).reverse().forEach(entry => {
+      const li = document.createElement("li");
+      li.textContent = `${entry.time} — “${entry.text}”`;
+      ul.appendChild(li);
+    });
+    groupDiv.appendChild(ul);
+    container.appendChild(groupDiv);
+  }
+}
+
+
+function updateRemindagraph() { // original entry point
       const log = JSON.parse(localStorage.getItem("remindagraphLog") || "[]");
       const ul = document.getElementById("remindagraphLog");
       ul.innerHTML = "";
@@ -385,9 +445,52 @@ document.getElementById("dreamInput").addEventListener("keypress", function(e) {
       });
     }
 
-    function logToRemindagraph(text) {
+    
+function toggleSigil(word) {
+  const stars = JSON.parse(localStorage.getItem("sigilWords") || "[]");
+  if (!stars.includes(word)) stars.push(word);
+  localStorage.setItem("sigilWords", JSON.stringify(stars));
+}
+
+
+
+function handleCommand(cmd) {
+  const log = JSON.parse(localStorage.getItem("remindagraphLog") || "[]");
+  const filtered = log.filter(entry => entry.thread === currentThread);
+  const words = filtered.map(e => e.text);
+
+  if (cmd === "::reflect") {
+    const lastThree = words.slice(-3);
+    return "🪞 Reflecting: " + lastThree.join(" → ");
+  }
+
+  if (cmd === "::echo") {
+    const freq = {};
+    words.forEach(w => freq[w] = (freq[w] || 0) + 1);
+    const repeated = Object.keys(freq).filter(k => freq[k] > 1);
+    return repeated.length ? "🔁 Echoes: " + repeated.join(", ") : "🔇 No echoes found.";
+  }
+
+  if (cmd.startsWith("::sigil ")) {
+    const word = cmd.split("::sigil ")[1].trim();
+    toggleSigil(word);
+    return "🕯️ Word sigiled: " + word;
+  }
+
+  if (cmd === "::clear") {
+    const kept = log.filter(entry => entry.thread !== currentThread);
+    localStorage.setItem("remindagraphLog", JSON.stringify(kept));
+    updateRemindagraph();
+    return "🧹 Current thread view cleared.";
+  }
+
+  return null;
+}
+
+
+function logToRemindagraph(text) {
       const log = JSON.parse(localStorage.getItem("remindagraphLog") || "[]");
-      log.push({ text: text, time: new Date().toLocaleTimeString() });
+      log.push({ text: text, time: new Date().toLocaleTimeString(), thread: currentThread });
       localStorage.setItem("remindagraphLog", JSON.stringify(log));
     }
 
@@ -414,7 +517,25 @@ document.getElementById("dreamInput").addEventListener("keypress", function(e) {
     });
     
     const oldListener = document.getElementById("dreamInput").onkeypress;
-    document.getElementById("dreamInput").addEventListener("keypress", function(e) {
+    
+function echoResponse(input, thread) {
+  const log = JSON.parse(localStorage.getItem("remindagraphLog") || "[]");
+  const filtered = log.filter(entry => entry.thread === thread);
+  const freq = {};
+  filtered.forEach(entry => {
+    freq[entry.text] = (freq[entry.text] || 0) + 1;
+  });
+  const repeated = Object.keys(freq).filter(word => freq[word] > 1);
+  if (repeated.includes(input)) {
+    return `🔁 “${input}” echoes through this thread (${freq[input]} times).`;
+  } else if (filtered.length > 6 && repeated.length > 0) {
+    return `🧠 Memory loop forming: ${repeated.join(", ")}.`;
+  }
+  return null;
+}
+
+
+document.getElementById("dreamInput").addEventListener("keypress", function(e) {
       if (e.key === "Enter") {
         const input = this.value.trim().toLowerCase();
         logToRemindagraph(input);
@@ -442,10 +563,52 @@ document.getElementById("dreamInput").addEventListener("keypress", function(e) {
       updateRemindagraph();
     }
 
-    function updateRemindagraph() {
+    
+const categoryMap = {'States': ['calm', 'focus', 'numb', 'overstimulated', 'sensitive', 'forgotten'], 'Emotion': ['grief', 'love', 'fear', 'hope', 'lonely', 'safe', 'angry', 'joy'], 'Action': ['breathe', 'rest', 'build', 'remember', 'drink', 'light', 'move', 'begin'], 'Symbolic': ['echo', 'silence', 'ritual', 'shadow', 'thread', 'anchor']};
+const categoryGlyphs = {'States': '🧭', 'Emotion': '🌿', 'Action': '⚡', 'Symbolic': '🧵', 'Unknown': '❓'};
+
+function getCategory(word) {
+  for (let cat in categoryMap) {
+    if (categoryMap[cat].includes(word)) return cat;
+  }
+  return "Unknown";
+}
+
+function updateRemindagraph() {
+  const log = JSON.parse(localStorage.getItem("remindagraphLog") || "[]");
+  const selectedThread = document.getElementById("threadFilter")?.value || "All";
+  const grouped = {};
+  log.forEach(entry => {
+    if (selectedThread !== "All" && entry.thread !== selectedThread) return;
+    const category = getCategory(entry.text);
+    if (!grouped[category]) grouped[category] = [];
+    grouped[category].push(entry);
+  });
+
+  const container = document.getElementById("remindagraphGroups");
+  container.innerHTML = "";
+  for (let cat in grouped) {
+    const groupDiv = document.createElement("div");
+    groupDiv.innerHTML = `<strong style='color:#aefcd4;'>${categoryGlyphs[cat] || ""} ${cat}</strong>`;
+    const ul = document.createElement("ul");
+    ul.style.listStyleType = "none";
+    grouped[cat].slice(-10).reverse().forEach(entry => {
+      const li = document.createElement("li");
+      li.textContent = `${entry.time} — “${entry.text}”`;
+      ul.appendChild(li);
+    });
+    groupDiv.appendChild(ul);
+    container.appendChild(groupDiv);
+  }
+}
+
+
+function updateRemindagraph() { // original entry point
       const log = JSON.parse(localStorage.getItem("remindagraphLog") || "[]");
       const grouped = {};
+      const selectedThread = document.getElementById('threadFilter')?.value || 'All';
       log.forEach(entry => {
+        if (selectedThread !== 'All' && entry.thread !== selectedThread) return;
         const category = getCategory(entry.text);
         if (!grouped[category]) grouped[category] = [];
         grouped[category].push(entry);
@@ -468,13 +631,74 @@ document.getElementById("dreamInput").addEventListener("keypress", function(e) {
       }
     }
 
-    function logToRemindagraph(text) {
+    
+function toggleSigil(word) {
+  const stars = JSON.parse(localStorage.getItem("sigilWords") || "[]");
+  if (!stars.includes(word)) stars.push(word);
+  localStorage.setItem("sigilWords", JSON.stringify(stars));
+}
+
+
+
+function handleCommand(cmd) {
+  const log = JSON.parse(localStorage.getItem("remindagraphLog") || "[]");
+  const filtered = log.filter(entry => entry.thread === currentThread);
+  const words = filtered.map(e => e.text);
+
+  if (cmd === "::reflect") {
+    const lastThree = words.slice(-3);
+    return "🪞 Reflecting: " + lastThree.join(" → ");
+  }
+
+  if (cmd === "::echo") {
+    const freq = {};
+    words.forEach(w => freq[w] = (freq[w] || 0) + 1);
+    const repeated = Object.keys(freq).filter(k => freq[k] > 1);
+    return repeated.length ? "🔁 Echoes: " + repeated.join(", ") : "🔇 No echoes found.";
+  }
+
+  if (cmd.startsWith("::sigil ")) {
+    const word = cmd.split("::sigil ")[1].trim();
+    toggleSigil(word);
+    return "🕯️ Word sigiled: " + word;
+  }
+
+  if (cmd === "::clear") {
+    const kept = log.filter(entry => entry.thread !== currentThread);
+    localStorage.setItem("remindagraphLog", JSON.stringify(kept));
+    updateRemindagraph();
+    return "🧹 Current thread view cleared.";
+  }
+
+  return null;
+}
+
+
+function logToRemindagraph(text) {
       const log = JSON.parse(localStorage.getItem("remindagraphLog") || "[]");
-      log.push({ text: text, time: new Date().toLocaleTimeString() });
+      log.push({ text: text, time: new Date().toLocaleTimeString(), thread: currentThread });
       localStorage.setItem("remindagraphLog", JSON.stringify(log));
     }
 
-    document.getElementById("dreamInput").addEventListener("keypress", function(e) {
+    
+function echoResponse(input, thread) {
+  const log = JSON.parse(localStorage.getItem("remindagraphLog") || "[]");
+  const filtered = log.filter(entry => entry.thread === thread);
+  const freq = {};
+  filtered.forEach(entry => {
+    freq[entry.text] = (freq[entry.text] || 0) + 1;
+  });
+  const repeated = Object.keys(freq).filter(word => freq[word] > 1);
+  if (repeated.includes(input)) {
+    return `🔁 “${input}” echoes through this thread (${freq[input]} times).`;
+  } else if (filtered.length > 6 && repeated.length > 0) {
+    return `🧠 Memory loop forming: ${repeated.join(", ")}.`;
+  }
+  return null;
+}
+
+
+document.getElementById("dreamInput").addEventListener("keypress", function(e) {
       if (e.key === "Enter") {
         const input = this.value.trim().toLowerCase();
         logToRemindagraph(input);
