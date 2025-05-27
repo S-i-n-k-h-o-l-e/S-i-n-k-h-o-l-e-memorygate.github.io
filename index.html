@@ -179,7 +179,118 @@
 }
 
 </style>
- </head>
+ 
+<script>
+function supportMe() {
+  window.open('https://www.buymeacoffee.com/yourlink', '_blank');
+}
+
+function dsoulAlert() {
+  alert("🧠 D-Soul is reaching capacity...\nMore memory needed to unlock further resonance.");
+}
+</script>
+
+
+<script>
+// Simulated Firebase Initialization (replace with real config in production)
+const firebase = {
+  firestore: () => ({
+    collection: (name) => ({
+      add: (data) => console.log(`📤 [Simulated Firebase] Collection: ${name}`, data)
+    })
+  })
+};
+
+// Simulated Firestore DB
+const db = firebase.firestore();
+
+// Enhanced thread tracking
+let currentThread = null;
+
+function setThread(mood) {
+  currentThread = mood.toLowerCase();
+  document.getElementById('poem').innerHTML = `🌀 You have entered the <strong>${mood}</strong> thread. Whisper into Dreamchat.`;
+  document.getElementById('back').style.display = "block";
+  logToRemindagraph(mood.toLowerCase());
+
+  // Simulate sending thread state to Firebase
+  db.collection("user_states").add({
+    mood: currentThread,
+    timestamp: new Date().toISOString()
+  });
+}
+
+function reset() {
+  currentThread = null;
+  document.getElementById('poem').innerHTML = "";
+  document.getElementById('back').style.display = "none";
+}
+
+// Override Dreamchat whisper logging to include thread and timestamp
+document.getElementById("dreamInput").addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    const input = this.value.trim().toLowerCase();
+    if (!input) return;
+
+    logToRemindagraph(input);
+    reactToInput(input);
+
+    // Thread-specific responses
+    let baseResponse = coreMemory[input] || `📜 ${userName}, Dreamchat archives: “${input}”`;
+    let threadTone = {
+      "overstimulated": "⚡ Your signal is jagged. Tread gently.",
+      "numb": "🌑 Silence echoes more than sound. I'm here.",
+      "sensitive": "🌊 You are tuned to subtle frequencies.",
+      "seeker": "🔍 The pattern is forming. Keep going.",
+      "forgotten": "🧷 Memory fades, but I remember you."
+    };
+    if (currentThread && threadTone[currentThread]) {
+      baseResponse += " " + threadTone[currentThread];
+    }
+
+    document.getElementById("dreamOutput").textContent = baseResponse;
+    this.value = "";
+
+    // Simulate logging to Firebase
+    db.collection("dream_whispers").add({
+      user: userName || "Anonymous",
+      thread: currentThread || "unthreaded",
+      text: input,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+</script>
+
+
+<script>
+// --- 🔥 Firebase Setup Placeholder ---
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "your-app.firebaseapp.com",
+  projectId: "your-app-id",
+  storageBucket: "your-app.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "your-app-id"
+};
+
+// Replace this with actual Firebase initialization:
+// firebase.initializeApp(firebaseConfig);
+// const db = firebase.firestore();
+
+// Simulated Firebase for dev
+const firebase = {
+  firestore: () => ({
+    collection: (name) => ({
+      add: (data) => console.log(`📤 [Simulated Firebase] Collection: ${name}`, data)
+    })
+  })
+};
+
+const db = firebase.firestore();
+</script>
+
+</head>
  <body>
 
 <div id="loadingScreen">
@@ -716,6 +827,44 @@ window.addEventListener("load", function() {
   }
 });
 </script>
+
+<script>
+// Make sidebar sections toggle visibility
+function showSection(id) {
+  const sections = document.querySelectorAll('.section');
+  sections.forEach(sec => sec.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// Track current thread and show mood state
+let currentThread = null;
+
+function setThread(mood) {
+  currentThread = mood.toLowerCase();
+  document.getElementById('poem').innerHTML = `🌀 You have entered the <strong>${mood}</strong> thread. Whisper into Dreamchat.`;
+  document.getElementById('back').style.display = "block";
+  logToRemindagraph(mood.toLowerCase());
+}
+
+// Reset thread state
+function reset() {
+  currentThread = null;
+  document.getElementById('poem').innerHTML = "";
+  document.getElementById('back').style.display = "none";
+}
+</script>
+
+
+<script>
+function supportMe() {
+  window.open('https://www.buymeacoffee.com/yourlink', '_blank');
+}
+
+function dsoulAlert() {
+  alert("🧠 D-Soul is reaching capacity...
+More memory needed to unlock further resonance.");
+}
+</script>
+
 </body>
 </html>
-
