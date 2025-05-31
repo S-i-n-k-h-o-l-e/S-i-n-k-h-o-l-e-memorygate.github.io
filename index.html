@@ -178,6 +178,39 @@
   100% { opacity: 0.7; }
 }
 
+
+<style>
+#room3 {
+  position: relative;
+  height: 100vh;
+  background: radial-gradient(circle at center, #0f0f0f, #000);
+  overflow: hidden;
+}
+#room3 h1 {
+  animation: fadeIn 4s ease-in-out forwards;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.firefly {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #aefcd4;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: fly 12s infinite ease-in-out;
+}
+@keyframes fly {
+  0% { transform: translate(0, 0); opacity: 0.3; }
+  25% { transform: translate(40px, -60px); opacity: 0.7; }
+  50% { transform: translate(-20px, -30px); opacity: 1; }
+  75% { transform: translate(10px, 40px); opacity: 0.6; }
+  100% { transform: translate(0, 0); opacity: 0.3; }
+}
+</style>
+
 </style>
  
 <script>
@@ -260,13 +293,6 @@ document.getElementById("dreamInput").addEventListener("keypress", function(e) {
     });
   }
 });
-</script>
-<script>
-  function showSection(id) {
-    const sections = document.querySelectorAll('.section');
-    sections.forEach(sec => sec.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-  }
 </script>
 
 
@@ -355,7 +381,6 @@ const db = firebase.firestore();
     </h1>
     <div id="intro">
      <p>
-     <h1>Threadweever’s Trail</h1>
 
 <!-- Begin Echo-Weight + Riddle Gate -->
 <div id="riddleGate">
@@ -463,7 +488,25 @@ function showRoom1() {
      </button>
      <div id="echoOutput">
      </div>
-    </div>
+    
+<div id="room3" style="display:none; animation: rippleBackground 10s infinite alternate;">
+<div class="firefly" style="top:0%; left:0%"></div>
+<div class="firefly" style="top:8%; left:13%"></div>
+<div class="firefly" style="top:16%; left:26%"></div>
+<div class="firefly" style="top:24%; left:39%"></div>
+<div class="firefly" style="top:32%; left:52%"></div>
+<div class="firefly" style="top:40%; left:65%"></div>
+<div class="firefly" style="top:48%; left:78%"></div>
+<div class="firefly" style="top:56%; left:91%"></div>
+<div class="firefly" style="top:64%; left:4%"></div>
+<div class="firefly" style="top:72%; left:17%"></div>
+<div class="firefly" style="top:80%; left:30%"></div>
+<div class="firefly" style="top:88%; left:43%"></div>
+  <h1 style="font-size: 2.5rem; color: #aefcd4; text-align: center; margin-top: 4rem;">
+    patience and trust.
+  </h1>
+</div>
+
    </div>
    <div class="section" id="pocket">
     <h1>
@@ -480,8 +523,8 @@ function showRoom1() {
       Printable zine for grounding
      </li>
     </ul>
-    <a class="button" href="https://shorturl.at/l8BQe">
-     Download Pocket Ally
+    <a class="button" href="https://jagohopper.gumroad.com/l/xzsykn?_gl=1*1rb21tz*_ga*OTk1OTEyMjYzLjE3NDYxNDkwNDg.*_ga_6LJN6D94N6*czE3NDg2NjUxMzYkbzM1JGcxJHQxNzQ4NjY1MTM4JGo1OCRsMCRoMA..">
+     📥 Download Pocket Ally
     </a>
    </div>
   </div>
@@ -954,6 +997,83 @@ function supportMe() {
 function dsoulAlert() {
   alert("🧠 D-Soul is reaching capacity...
 More memory needed to unlock further resonance.");
+}
+</script>
+
+
+<script>
+window.submitEchoWeight = function () {
+  const clarity = document.getElementById("clarity").value;
+  const weight = document.getElementById("weight").value;
+  const emotion = document.getElementById("emotion").value;
+  const dream = document.getElementById("dreamImpression").value;
+
+  if (!clarity || !emotion) {
+    alert("The cat raises an eyebrow. Please answer more completely.");
+    return;
+  }
+
+  const echoEntry = {
+    clarity,
+    weight,
+    emotion,
+    dream,
+    time: new Date().toISOString()
+  };
+
+  localStorage.setItem("echoWeightEntry", JSON.stringify(echoEntry));
+
+  document.getElementById("riddleGate").style.display = "none";
+  document.getElementById("trailCore").style.display = "block";
+
+  if (typeof db !== "undefined" && db.collection) {
+    db.collection("echo_weight_entries").add(echoEntry);
+  }
+};
+
+window.showRoom1 = function () {
+  document.getElementById("room1").style.display = "block";
+};
+</script>
+
+
+<script>
+window.showSection = function(id) {
+  const sections = document.querySelectorAll('.section');
+  sections.forEach(sec => sec.classList.remove('active'));
+  const target = document.getElementById(id);
+  if (target) target.classList.add('active');
+};
+</script>
+
+
+<script>
+function showRoom2() {
+  const room2 = document.getElementById("room2");
+  const continueBtn = room2.querySelector("button");
+  continueBtn.style.display = "none";
+  room2.style.display = "block";
+  setTimeout(() => {
+    continueBtn.style.display = "inline-block";
+  }, 5000); // 5 seconds wait
+}
+</script>
+
+
+<script>
+function showRoom3() {
+  document.getElementById("room3").style.display = "block";
+  document.getElementById("room2").style.display = "none";
+}
+function showRoom2() {
+  const room2 = document.getElementById("room2");
+  const continueBtn = room2.querySelector("button");
+  continueBtn.style.display = "none";
+  room2.style.display = "block";
+  setTimeout(() => {
+    continueBtn.style.display = "inline-block";
+    continueBtn.onclick = showRoom3;
+  }, 5000); // 5 seconds wait
 }
 </script>
 
