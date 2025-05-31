@@ -348,7 +348,91 @@ const db = firebase.firestore();
     </h1>
     <div id="intro">
      <p>
-      ✨ Welcome to the trail. Press below to begin.
+     <h1>Threadweever’s Trail</h1>
+
+<!-- Begin Echo-Weight + Riddle Gate -->
+<div id="riddleGate">
+  <p style="font-style: italic; color: #c6ffe0; margin-bottom: 1rem;">
+    A cat in a green vest sits on the sundial, tail curled precisely. It regards you with knowing eyes.
+  </p>
+  <p style="margin-bottom: 1rem;">
+    <strong>“Why is a memory heavier in the morning than at night?”</strong>
+  </p>
+  <p style="margin-bottom: 2rem;">
+    The cat waits for your answer. It’s not looking for words—it wants resonance.
+  </p>
+
+  <label style="display: block; margin-bottom: 0.5rem;">Memory Clarity:</label>
+  <select id="clarity" style="width: 100%; margin-bottom: 1rem;">
+    <option value="">-- Select --</option>
+    <option value="none">None</option>
+    <option value="fragments">Fragments</option>
+    <option value="vivid">Vivid</option>
+    <option value="overwhelming">Overwhelming</option>
+  </select>
+
+  <label style="display: block; margin-bottom: 0.5rem;">Weight (0–10):</label>
+  <input type="range" id="weight" min="0" max="10" value="5" style="width: 100%; margin-bottom: 1rem;" />
+
+  <label style="display: block; margin-bottom: 0.5rem;">Emotional Thread:</label>
+  <select id="emotion" style="width: 100%; margin-bottom: 1rem;">
+    <option value="">-- Select --</option>
+    <option value="longing">Longing</option>
+    <option value="wonder">Wonder</option>
+    <option value="dread">Dread</option>
+    <option value="grief">Grief</option>
+    <option value="joy">Joy</option>
+  </select>
+
+  <textarea id="dreamImpression" placeholder="Optional dream impression or whisper..." style="width: 100%; margin-bottom: 1rem; height: 80px;"></textarea>
+
+  <button onclick="submitEchoWeight()" class="button">Answer the Cat</button>
+</div>
+
+<div id="trailCore" style="display: none;">
+  <p><strong>The cat blinks once, twice, then vanishes.</strong> A folded vest remains.</p>
+  <p style="margin-bottom: 1rem;">You may now proceed down the trail.</p>
+  <button onclick="showRoom1()" class="button">Enter Room 1</button>
+</div>
+
+<!-- Echo JS Logic -->
+<script>
+function submitEchoWeight() {
+  const clarity = document.getElementById("clarity").value;
+  const weight = document.getElementById("weight").value;
+  const emotion = document.getElementById("emotion").value;
+  const dream = document.getElementById("dreamImpression").value;
+
+  if (!clarity || !emotion) {
+    alert("The cat raises an eyebrow. Please answer more completely.");
+    return;
+  }
+
+  const echoEntry = {
+    clarity,
+    weight,
+    emotion,
+    dream,
+    time: new Date().toISOString()
+  };
+
+  localStorage.setItem("echoWeightEntry", JSON.stringify(echoEntry));
+
+  document.getElementById("riddleGate").style.display = "none";
+  document.getElementById("trailCore").style.display = "block";
+
+  // Optional Firebase simulation:
+  if (typeof db !== "undefined") {
+    db.collection("echo_weight_entries").add(echoEntry);
+  }
+}
+
+function showRoom1() {
+  document.getElementById("room1").style.display = "block";
+}
+</script>
+<!-- End Echo Gate -->
+
      </p>
      <button onclick="startTrail()">
       Enter Room 1
