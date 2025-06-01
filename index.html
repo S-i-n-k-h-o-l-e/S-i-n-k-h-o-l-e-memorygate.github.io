@@ -211,6 +211,47 @@
   100% { transform: translate(0, 0); opacity: 0.3; }
 }
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const moodLabels = ["Overstimulated", "Numb", "Sensitive", "Seeker", "Forgotten"];
+let moodScores = [0.5, 0.5, 0.5, 0.5, 0.5];
+let moodRadarChart;
+
+window.addEventListener("DOMContentLoaded", () => {
+  const ctx = document.getElementById("moodRadar").getContext("2d");
+  moodRadarChart = new Chart(ctx, {
+    type: "radar",
+    data: {
+      labels: moodLabels,
+      datasets: [{
+        label: "Mood",
+        data: moodScores,
+        fill: true,
+        backgroundColor: "rgba(174, 252, 212, 0.2)",
+        borderColor: "#4bc0c0",
+        pointBackgroundColor: "#4bc0c0"
+      }]
+    },
+    options: {
+      scales: {
+        r: {
+          suggestedMin: 0,
+          suggestedMax: 1,
+          angleLines: { color: "#333" },
+          grid: { color: "#333" },
+          pointLabels: { color: "#aefcd4" },
+          ticks: { display: false }
+        }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+});
+</script>
+
 <script>
 function supportMe() {
   window.open('https://www.buymeacoffee.com/yourlink', '_blank');
@@ -316,29 +357,7 @@ const firebase = {
 
 const db = firebase.firestore();
 </script>
-
-<script>
-/*!
- * Chart.js v4.2.1
- * https://www.chartjs.org
- * (embedded from CDN)
- */
-
-// Minimal mock Chart.js embed for offline compatibility
-window.Chart = function(ctx, config) {
-    return {
-        data: config.data,
-        update: function() {},
-        destroy: function() {},
-    };
-};
-Chart.defaults = { font: { size: 14 } };
-Chart.defaults.color = '#aefcd4';
-Chart.defaults.borderColor = 'rgba(174, 252, 212, 0.2)';
-Chart.defaults.plugins = { legend: { display: false } };
-
-</script>
-</head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script></head>
 <body style="margin:0; padding:0; overflow-x:hidden; background:#000; color:#aefcd4; font-family:Georgia, serif;"><div id="layoutWrapper" style="
     max-width: 1200px;
     margin: 0 auto;
