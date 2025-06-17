@@ -3,14 +3,14 @@ import { ForceGraph2D } from 'react-force-graph';
 import { createRoot } from 'react-dom/client';
 
 const initialNodes = [
-  { id: '🧠 Content Type', type: 'category', color: '#00bcd4' },
-  { id: '🕰 Temporal Dimension', type: 'category', color: '#ff9800' },
-  { id: '🧭 Context / Location', type: 'category', color: '#4caf50' },
-  { id: '💠 Emotional / Affective Tag', type: 'category', color: '#e91e63' },
-  { id: '🧵 Thematic Thread', type: 'category', color: '#9c27b0' },
-  { id: '📦 Form & Format', type: 'category', color: '#3f51b5' },
-  { id: '🔁 Status or Actionability', type: 'category', color: '#ffc107' },
-  { id: '🔒 Privacy & Access', type: 'category', color: '#f44336' },
+  { id: '🧠 Content Type', type: 'category', color: '#00bcd4', glow: '#00e6e6' },
+  { id: '🕰 Temporal Dimension', type: 'category', color: '#ff9800', glow: '#ffc266' },
+  { id: '🧭 Context / Location', type: 'category', color: '#4caf50', glow: '#80e27e' },
+  { id: '💠 Emotional / Affective Tag', type: 'category', color: '#e91e63', glow: '#ff80ab' },
+  { id: '🧵 Thematic Thread', type: 'category', color: '#9c27b0', glow: '#d05ce3' },
+  { id: '📦 Form & Format', type: 'category', color: '#3f51b5', glow: '#9fa8da' },
+  { id: '🔁 Status or Actionability', type: 'category', color: '#ffc107', glow: '#ffe082' },
+  { id: '🔒 Privacy & Access', type: 'category', color: '#f44336', glow: '#ef9a9a' },
 ];
 
 const initialLinks = [];
@@ -25,7 +25,8 @@ export default function MemoryMap() {
       id: newId,
       type: 'memory',
       label: 'New Memory',
-      color: '#ffffff'
+      color: '#ffffff',
+      glow: '#cccccc'
     };
     setNodes([...nodes, newNode]);
     setLinks([...links, { source: categoryId, target: newId }]);
@@ -38,23 +39,33 @@ export default function MemoryMap() {
   };
 
   return (
-    <div style={{ width: '100vw', height: '100vh', background: '#000000' }}>
+    <div style={{ width: '100vw', height: '100vh', background: 'radial-gradient(ellipse at center, #000000 60%, #111111 100%)', overflow: 'hidden' }}>
       <ForceGraph2D
         graphData={{ nodes, links }}
         nodeLabel={(node) => node.id}
         nodeCanvasObject={(node, ctx, globalScale) => {
           const label = node.id;
           const fontSize = 14 / globalScale;
-          ctx.font = `${fontSize}px Sans-Serif`;
-          ctx.fillStyle = node.color;
+          ctx.font = `${fontSize}px Space Grotesk, sans-serif`;
+
+          // Glow
+          ctx.shadowColor = node.glow;
+          ctx.shadowBlur = node.type === 'category' ? 20 : 10;
+
+          // Node
           ctx.beginPath();
           ctx.arc(node.x, node.y, node.type === 'category' ? 10 : 6, 0, 2 * Math.PI, false);
+          ctx.fillStyle = node.color;
           ctx.fill();
+
+          // Label
+          ctx.shadowBlur = 0;
           ctx.fillStyle = '#ffffff';
           ctx.fillText(label, node.x + 12, node.y + 4);
         }}
         onNodeClick={handleNodeClick}
-        backgroundColor="#000000"
+        backgroundColor="transparent"
+        cooldownTicks={100}
       />
     </div>
   );
