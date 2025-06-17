@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { ForceGraph2D } from 'react-force-graph';
+import { createRoot } from 'react-dom/client';
 
 const initialNodes = [
-  { id: '🧠 Content Type', type: 'category' },
-  { id: '🕰 Temporal Dimension', type: 'category' },
-  { id: '🧭 Context / Location', type: 'category' },
-  { id: '💠 Emotional / Affective Tag', type: 'category' },
-  { id: '🧵 Thematic Thread', type: 'category' },
-  { id: '📦 Form & Format', type: 'category' },
-  { id: '🔁 Status or Actionability', type: 'category' },
-  { id: '🔒 Privacy & Access', type: 'category' },
+  { id: '🧠 Content Type', type: 'category', color: '#00bcd4' },
+  { id: '🕰 Temporal Dimension', type: 'category', color: '#ff9800' },
+  { id: '🧭 Context / Location', type: 'category', color: '#4caf50' },
+  { id: '💠 Emotional / Affective Tag', type: 'category', color: '#e91e63' },
+  { id: '🧵 Thematic Thread', type: 'category', color: '#9c27b0' },
+  { id: '📦 Form & Format', type: 'category', color: '#3f51b5' },
+  { id: '🔁 Status or Actionability', type: 'category', color: '#ffc107' },
+  { id: '🔒 Privacy & Access', type: 'category', color: '#f44336' },
 ];
 
 const initialLinks = [];
@@ -24,6 +25,7 @@ export default function MemoryMap() {
       id: newId,
       type: 'memory',
       label: 'New Memory',
+      color: '#ffffff'
     };
     setNodes([...nodes, newNode]);
     setLinks([...links, { source: categoryId, target: newId }]);
@@ -36,15 +38,15 @@ export default function MemoryMap() {
   };
 
   return (
-    <div className="w-screen h-screen bg-black text-white">
+    <div style={{ width: '100vw', height: '100vh', background: '#000000' }}>
       <ForceGraph2D
         graphData={{ nodes, links }}
         nodeLabel={(node) => node.id}
         nodeCanvasObject={(node, ctx, globalScale) => {
           const label = node.id;
-          const fontSize = 12 / globalScale;
+          const fontSize = 14 / globalScale;
           ctx.font = `${fontSize}px Sans-Serif`;
-          ctx.fillStyle = node.type === 'category' ? '#00ffcc' : '#ffcc00';
+          ctx.fillStyle = node.color;
           ctx.beginPath();
           ctx.arc(node.x, node.y, node.type === 'category' ? 10 : 6, 0, 2 * Math.PI, false);
           ctx.fill();
@@ -52,7 +54,14 @@ export default function MemoryMap() {
           ctx.fillText(label, node.x + 12, node.y + 4);
         }}
         onNodeClick={handleNodeClick}
+        backgroundColor="#000000"
       />
     </div>
   );
+}
+
+const container = document.getElementById('root');
+if (container) {
+  const root = createRoot(container);
+  root.render(<MemoryMap />);
 }
